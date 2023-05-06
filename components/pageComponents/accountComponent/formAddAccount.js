@@ -1,0 +1,136 @@
+import { Button, Form, Input, message, Select, Spin } from 'antd'
+import axios from 'axios'
+import React, { memo, useState } from 'react'
+import { BASE_URL } from '../../../api/requet'
+import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
+const validateMessages = {
+  required: '${label} is required!',
+  types: {
+    email: '${label} is not a valid email!',
+    number: '${label} is not a valid number!'
+  },
+  number: {
+    range: '${label} must be between ${min} and ${max}'
+  }
+}
+
+const FormAddAccount = () => {
+  const [accountRole, setAccountRole] = useState('')
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onFinish = (values) => {
+    setIsLoading(true)
+    axios
+      .post(`${BASE_URL}account`, values)
+      .then(() => {
+        setIsLoading(false)
+        message.info('Thêm thành công')
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        message.error(error.response.data.message)
+      })
+  }
+  const onFinishFailed = (errorInfo) => {
+  }
+  const SelectRole = (value) => {
+    setAccountRole(value)
+  }
+
+  return (
+    <>
+      <Spin size="large" spinning={isLoading}>
+        <Form
+          name="basic"
+          initialValues={{
+            remember: true
+          }}
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          validateMessages={validateMessages}
+        >
+          <Form.Item
+            label="Role"
+            name="role"
+            rules={[
+              {
+                required: true,
+                message: 'Xin Hãy chọn Quyền!'
+              }
+            ]}
+          >
+            <Select
+              // defaultValue={2}
+              style={{
+                width: 120
+              }}
+              onChange={SelectRole}
+              options={[
+                {
+                  value: 2,
+                  label: 'User'
+                },
+                {
+                  value: 1,
+                  label: 'Admin'
+                }
+              ]}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Tài Khoản"
+            name="userName"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp Tài Khoản!'
+              },
+              {
+                pattern: /^.{4,}$/,
+                message: 'Tài khoản quá ngắn! '
+              }
+            ]}
+          >
+            <Input
+              value={userName}
+              onBlur={(e) => setUserName(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Mật Khẩu"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp Mật Khẩu !'
+              },
+              {
+                pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/,
+                message:
+                  'Mật khẩu phải trên 8 ký tự và phải gồm có 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt và 1 số, ví dụ: Mobifone1@ '
+              }
+            ]}
+          >
+            <Input.Password
+              value={password}
+              onBlur={(e) => setPassword(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item style={{ textAlign: 'center' }}>
+            <StyledButtonPressedEffect type="primary" htmlType="submit">
+              Thêm 
+            </StyledButtonPressedEffect>
+          </Form.Item>
+        </Form>
+      </Spin>
+    </>
+  )
+}
+
+export default memo(FormAddAccount)
