@@ -38,14 +38,14 @@ const TableAntStyled = styled(Table)`
 
 const AccComoponent = () => {
   //get wifi form back-end
-  const [accountInfo, setAccountInfo] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [accountUserInfo, setAccountUserInfo] = useState([])
+  const [accountInfo, setAccountInfo] = useState([])
 
   const [data, setData] = useAtom(accountDataAtom)
   const [dataOri, setDataOri] = useState('')
   const [skip, setSkip] = useState(0)
   const [pageSize, setPageSize] = useState(10)
-  const [isLoading, setIsLoading] = useState(false)
   const [totalItem, setTotalItem] = useState(0)
 
   const [dataSearch, setDataAccSearch] = useAtom(dataAccSearchAtom)
@@ -59,6 +59,7 @@ const AccComoponent = () => {
       )
       setAccountInfo(response.data.result.items)
       setTotalItem(response.data.result.totalItems)
+      console.log("data",accountInfo)
      
     }
     setData([])
@@ -102,7 +103,9 @@ const AccComoponent = () => {
         key: index,
         userName: item[1].userName,
         password: item[1].password,
-        permission: item[1].role
+        permission: item[1].role,
+        phoneNumber: item[1].phoneNumber,
+        email: item[1].email,
       })
     })
     setDataOri(originData)
@@ -148,7 +151,8 @@ const AccComoponent = () => {
     form.setFieldsValue({
       userName: '',
       password: '',
-      imei: '',
+      phoneNumber:'',
+      email:'',
       permission: '',
       ...record
     })
@@ -181,7 +185,10 @@ const AccComoponent = () => {
           .put(`${BASE_URL}account`, {
             role: newData[index].permission,
             userName: newData[index].userName,
-            password: newData[index].password
+            password: newData[index].password,
+            phoneNumber: newData[index].phoneNumber,
+            email: newData[index].email,
+
           })
           .then(() => {
             message.info('Thay đổi thành công')
@@ -209,6 +216,7 @@ const AccComoponent = () => {
     }
     const index = newData.findIndex((item) => key === item.key)
     const userName= newData[index].userName
+    console.log('aasasa',newData[index])
     axios.delete(`${BASE_URL}account/username?Username=${userName}`) 
     const newDataAfterDelete = newData.filter((item) => item.key !== key)
     setData(newDataAfterDelete)
@@ -217,7 +225,7 @@ const AccComoponent = () => {
     {
       title: 'Thao tác',
       dataIndex: 'operation',
-      width: '90px',
+      width: '15%',
       fixed: 'left',
       render: (_, record) => {
         const editable = isEditing(record)
@@ -271,9 +279,21 @@ const AccComoponent = () => {
       editable: true
     },
     {
+      title: 'Số điện thoại',
+      dataIndex: 'phoneNumber',
+      width: '20%',
+      editable: true
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      width: '20%',
+      editable: true
+    },
+    {
       title: 'Quyền',
       dataIndex: 'permission',
-      width: '80px',
+      width: '120px',
       editable: true
     }
   ]

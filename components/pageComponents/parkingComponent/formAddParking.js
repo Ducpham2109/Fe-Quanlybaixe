@@ -41,6 +41,7 @@ const FormAddParking = ( ) => {
     }
     return(
         <>
+        
         <Spin size="Large" spinning={isLoading}>
             <Form  
              name="basic"
@@ -50,7 +51,10 @@ const FormAddParking = ( ) => {
           layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          validateMessages={validateMessages}>
+          validateMessages={validateMessages}
+          >
+           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Thêm Bãi Đỗ</h2>
+
             <Form.Item
             label="ParkingCode"
             name="ParkingCode"
@@ -79,7 +83,7 @@ const FormAddParking = ( ) => {
             </Form.Item>
             <Form.Item
             label="Địa Chỉ"
-            name="ParkingAddess"
+            name="ParkingAddress"
             style={{ paddingBottom: '1px' }}
 
             rules={[{required: true, message: 'Hãy nhập địa chỉ!',},]}
@@ -94,7 +98,7 @@ const FormAddParking = ( ) => {
               <Col span={"12"}>
             <Form.Item
             label="Giá xe oto buổi sáng"
-            name="Mmprice"
+            name="Nmprice"
             style={{ paddingBottom: '1px' }}
 
             rules={[{required: true, message: 'Hãy nhập giá tiền!',},]}
@@ -109,7 +113,7 @@ const FormAddParking = ( ) => {
             <Col span={"12"}>
             <Form.Item
             label="Giá xe oto buổi tối"
-            name="MnPrice"
+            name="NnPrice"
             style={{ paddingBottom: '1px' }}
 
             rules={[{required: true, message: 'Hãy nhập giá tiền!',},]}
@@ -126,7 +130,7 @@ const FormAddParking = ( ) => {
               <Col span={"12"}>
             <Form.Item
             label="Giá xe máy buổi sáng"
-            name="NmPrice"
+            name="MMPrice"
             style={{ paddingBottom: '1px' }}
 
             rules={[{required: true, message: 'Hãy nhập giá tiền!',},]}
@@ -141,7 +145,7 @@ const FormAddParking = ( ) => {
             <Col span={"12"}>
             <Form.Item
             label="Giá xe máy buổi tối"
-            name="NnPrice"
+            name="MnPrice"
             style={{ paddingBottom: '1px' }}
 
             rules={[{required: true, message: 'Hãy nhập giá tiền!',},]}

@@ -1,8 +1,8 @@
 import { Button, Modal } from 'antd'
 import React, { memo, useState } from 'react'
-import FormAddAccount from './formAddAccount'
+import FormAddVehicle from './formAddVehicle'
 
-const AddAccountModal = () => {
+const AddVehicleModal = () => {
   const [, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const showModal = () => {
@@ -20,19 +20,18 @@ const AddAccountModal = () => {
   }
   return (
     <>
-      <Button onClick={showModal}>Thêm tài khoản </Button>
+      <Button onClick={showModal}>Thêm xe vào bãi </Button>
       <Modal
         open={open}
-    
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}
         width={'350px'}
       >
-        <FormAddAccount />
+        <FormAddVehicle />
       </Modal>
     </>
   )
 }
 
-export default memo(AddAccountModal)
+export default memo(AddVehicleModal)

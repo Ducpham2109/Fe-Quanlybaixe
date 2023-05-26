@@ -24,7 +24,6 @@ const AddParkingModal = () => {
         <Button onClick={showModal}>Thêm Bãi Đỗ</Button>
         <Modal
         open={open}
-        title=" ----------Thêm Bãi Đỗ---------- "
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}

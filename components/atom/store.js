@@ -27,9 +27,16 @@ export const accountLoginAtom = atom({
   password: ''
 })
 export const deviceClickRowAtom = atom({})
+export const vehicleModalData = atom({})
+export const vehicleBillModalData = atom({})
+
+export const vehicleTypeModalData = atom({})
+
+
 
 export const wifi1InfoAtom = atom([])
 export const accountDataAtom = atom([])
+export const vehiclesDataAtom = atom([])
 
 export const searchByIdAtom = atom(0)
 export const rowDeviceObjectAtom = atom({})
@@ -55,11 +62,26 @@ export const totalAccAtom = atom(10)
 export const dataAccSearchAtom = atom([])
 export const totalAccSearchAtom = atom([])
 export const valueAccSearchAtom = atom('')
+// Parking Search
+export const dataParkSearchAtom = atom([])
+export const totalParkSearchAtom = atom([])
+export const valueParkSearchAtom = atom('')
+export const parkingDataAtom = atom([])
+export const dataParkingAtom = atom([])
+export const modalCostVehicle = atom()
+
+
+
 //
 export const userReceiveNotificationAtom = atom([])
 export const isNotificationCounterAtom = atom(false)
+export const modalbillVisible = atom(false)
+
+
 export const isNotificationCounterNumberAtom = atom([])
 
 export const chatSenderAtom = atom('')
+
 // export const chatUserSenderAtom = atom('')
+
 

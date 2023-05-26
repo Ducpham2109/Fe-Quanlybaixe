@@ -18,6 +18,9 @@ const FormAddAccount = () => {
   const [accountRole, setAccountRole] = useState('')
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
+
   const [isLoading, setIsLoading] = useState(false)
 
   const onFinish = (values) => {
@@ -51,8 +54,11 @@ const FormAddAccount = () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           validateMessages={validateMessages}
-        >
+          >
+           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Thêm tài khoản</h2>
+
           <Form.Item
+       
             label="Role"
             name="role"
             rules={[
@@ -119,6 +125,38 @@ const FormAddAccount = () => {
             <Input.Password
               value={password}
               onBlur={(e) => setPassword(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp email !'
+              },
+            
+            ]}
+          >
+            <Input
+              value={email}
+              onBlur={(e) => setEmail(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Số Điện Thoại"
+            name="phoneNumber"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp số điện thoại !'
+              },
+           
+            ]}
+          >
+            <Input
+              value={phoneNumber}
+              onBlur={(e) => setPhoneNumber(e.target.value)}
             />
           </Form.Item>
 

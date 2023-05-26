@@ -6,9 +6,9 @@ const ListIcon = (prop) => {
       <svg
         width={prop.width}
         height={prop.height}
+        color={prop.color}
         fill="currentColor"
         viewBox="0 0 1024 1024"
-        color={prop.color}
       >
         <path
           fill={prop.light ? COLOR.PRIMARY.WHITE : `#3a416f`}
