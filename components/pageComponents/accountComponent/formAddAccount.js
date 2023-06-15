@@ -20,24 +20,34 @@ const FormAddAccount = () => {
   const [password, setPassword] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
-
   const [isLoading, setIsLoading] = useState(false)
+  var cookies = document.cookie.split(';');
 
-  const onFinish = (values) => {
-    setIsLoading(true)
-    axios
-      .post(`${BASE_URL}account`, values)
-      .then(() => {
-        setIsLoading(false)
-        message.info('Thêm thành công')
-      })
-      .catch((error) => {
-        setIsLoading(false)
-        message.error(error.response.data.message)
-      })
+  // Tìm và lấy giá trị của "parkingCode" từ cookie
+  var rolee;
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("role=")) {
+      rolee = cookie.substring("role=".length, cookie.length);
+      break;
+    }
   }
-  const onFinishFailed = (errorInfo) => {
-  }
+  
+const onFinish = (values) => {
+  setIsLoading(true)
+  axios
+    .post(`${BASE_URL}account`, values)
+    .then(() => {
+      setIsLoading(false)
+      message.info('Thêm thành công')
+    })
+    .catch((error) => {
+      setIsLoading(false)
+      message.error(error.response.data.message)
+    })
+}
+const onFinishFailed = (errorInfo) => {
+}
   const SelectRole = (value) => {
     setAccountRole(value)
   }
@@ -56,9 +66,8 @@ const FormAddAccount = () => {
           validateMessages={validateMessages}
           >
            <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Thêm tài khoản</h2>
-
+          {rolee == 0&&
           <Form.Item
-       
             label="Role"
             name="role"
             rules={[
@@ -74,6 +83,7 @@ const FormAddAccount = () => {
                 width: 120
               }}
               onChange={SelectRole}
+             
               options={[
                 {
                   value: 2,
@@ -85,8 +95,38 @@ const FormAddAccount = () => {
                 }
               ]}
             />
-          </Form.Item>
 
+        
+          </Form.Item>
+}
+        {rolee == 1&&
+          <Form.Item
+            label="Role"
+            name="role"
+            rules={[
+              {
+                required: true,
+                message: 'Xin Hãy chọn Quyền!'
+              }
+            ]}
+          >
+            <Select
+              // defaultValue={2}
+              style={{
+                width: 120
+              }}
+              onChange={SelectRole}
+             
+              options={[
+                {
+                  value: 2,
+                  label: 'User'
+                },
+             
+              ]}
+            />
+          </Form.Item>
+}
           <Form.Item
             label="Tài Khoản"
             name="userName"

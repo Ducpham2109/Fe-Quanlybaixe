@@ -1,6 +1,8 @@
-import { Form, Input, Spin } from "antd"
+import { Form, Input, Spin, message } from "antd"
 import { memo, useState } from "react"
 import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
+import { apiChangePassword } from "../../../api/accountAPI"
+import Cookies from "js-cookie"
 
 const validateMessages = {
     required: '${label} is required!',
@@ -15,9 +17,26 @@ const validateMessages = {
 const FormChangePass = ()=>{
     const [isLoading, setLoading] = useState(false)
     const [oldPasswordTemp, setOldPasswordTemp] = useState('')
+    const [userName, setUserName] = useState('')
+
     const [newPasswordTemp, setNewPasswordTemp] = useState('')
-    const onFinish= ()=>{
-        setLoading(true)
+    const onFinish = (values) => {
+      setLoading(true)
+      values.userName = Cookies.get('userName')
+      console.log("user", values)
+      apiChangePassword(values)
+        .then(() => {
+          message.info('Đổi mật khẩu thành công')
+          setLoading(false)
+          Cookies.remove('role')
+          Cookies.remove('userName')
+          Cookies.remove('jwt_token')
+          router.push(UrlPath.auth.url)
+        })
+        .catch((error) => {
+          setLoading(false)
+          message.error("Đổi mật khẩu không thành công")
+        })
     }
     const onFinishFailed = (errorInfo) => {
     }
@@ -26,9 +45,7 @@ const FormChangePass = ()=>{
         <Spin size="large" spinning={isLoading}>
         <Form
           name="basic"
-          initialValues={{
-            remember: true
-          }}
+       
           layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -39,14 +56,14 @@ const FormChangePass = ()=>{
              name="oldPassword"
              rules={[
                {
-                 required: true,
+              
                  message: 'Xin Hãy Nhâp Mật Khẩu Cũ!'
                },
-               {
-                 pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/,
-                 message:
-                   'Mật khẩu phải trên 8 ký tự và phải gồm có 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt và 1 số, ví dụ: Mobifone1@ '
-               }
+              //  {
+              //    pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/,
+              //    message:
+              //      'Mật khẩu phải trên 8 ký tự và phải gồm có 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt và 1 số, ví dụ: Mobifone1@ '
+              //  }
              ]}
              >
                 <Input
@@ -60,7 +77,7 @@ const FormChangePass = ()=>{
             name="newPassword"
             rules={[
               {
-                required: true,
+             
                 message: 'Xin Hãy Nhâp Mật Khẩu Mới!'
               },
               {

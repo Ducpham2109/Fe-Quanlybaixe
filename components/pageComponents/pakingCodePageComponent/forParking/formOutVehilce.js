@@ -176,7 +176,7 @@ return (
               <p>Hình ảnh xe vào:  {imageIn}</p> 
 
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
          label="Hình ảnh xe ra"
          name="imageOut"
          style={{ marginBottom:"7px"}}
@@ -186,7 +186,7 @@ return (
             value={imageOut}
             onBlur={(e) => setImageOut(e.target.value)}
             />
-       </Form.Item>
+       </Form.Item> */}
               <Form.Item
        
          name="cost"

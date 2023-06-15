@@ -47,6 +47,8 @@ const FormLogin = () => {
        
         Cookies.set('userName', userNameTemp, { expires: 7 })
         Cookies.set('role', res.data.role, { expires: 7 })
+        Cookies.set('parkingCode', res.data.parkingCode, { expires: 7 })
+
        
 
         const metaViewport = document.querySelector('meta[name="viewport"]');
@@ -73,7 +75,7 @@ const FormLogin = () => {
   const handleSubmitForgotPassword = async () => {
     setIsLoading(true)
     await axios
-      .post(`${BASE_URL}Email/forgotPassword`, { toEmail: emailTemp })
+      .post(`${BASE_URL}email/fogotPassWord`, { toEmail: emailTemp })
       .then(() => {
         message.info('Success - Check Email')
         setIsLoading(false)
@@ -189,7 +191,7 @@ const FormLogin = () => {
               htmlType="submit"
               onClick={handleSubmitForgotPassword}
             >
-              Đăng nhập
+              Lấy mật khẩu
             </StyledButtonPressedEffect>
           </Form.Item>
         </Form>

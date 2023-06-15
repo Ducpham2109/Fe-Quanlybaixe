@@ -4,17 +4,20 @@ import {
   CategoryScale,
   Chart as ChartJS,
   Legend,
+  LineController,
+  LineElement,
   LinearScale,
+  PointElement,
   Title,
   Tooltip, 
   scales
 } from 'chart.js'
 import React, { useEffect, useState } from 'react'
-import { Bar } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { BASE_URL } from '../../api/requet'
-import Cookies from 'js-cookie'
+import moment from 'moment'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale,LineController,PointElement,LineElement, LinearScale, BarElement, Title, Tooltip, Legend)
 export const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -24,7 +27,7 @@ export const options = {
       },
       title: {
         display: true,
-        text: 'Biểu đồ thống kê doanh thu theo từng tháng '
+        text: 'Biểu đồ thống kê doanh thu theo từng ngày '
       },
       tooltip: {
         mode: 'index',
@@ -49,7 +52,7 @@ export const options = {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Tháng',
+            text: 'Ngày',
           },
         },
         y: {
@@ -64,41 +67,41 @@ export const options = {
     
   }
   
-export function VerticalBarChart() {
+export function WaveChart() {
   const [month, setMonth] = useState()
   const [revenue, setRevenue]= useState([])
   const [labels, setLabels] = useState([])
+  const [parkingCode,setParkingCode] = useState()
+const [currentMonth, setCurrentMonth] = useState("");
 
   useEffect(() => {
-    
+    const initialValues =(sessionStorage.getItem('parkingCode'))
+    setParkingCode(initialValues);
+  }, []);
+  useEffect(() => {
+    const monthNumber = parseInt(moment().format("M"));
+    setCurrentMonth(monthNumber);
+  },[currentMonth]);
+  console.log("cu",currentMonth)
+  useEffect(() => {
+    if (currentMonth !== "") {
     const getData = async () => {
       const revenueData = [];
-      if(parseInt(Cookies.get('role')) === 0){
-      for (let i = 1; i <= 12; i++) {
+      for (let i = 1; i <= 30; i++) {
       const response = await axios.get(
-        `${BASE_URL}bill/revenue/month?Month=${i}`
+        `${BASE_URL}bill/revenue/parkingCode/month/day?Day=${i}&Month=${currentMonth}&ParkingCode=${parkingCode}`
       )
       revenueData.push(response.data.revenve)
     }
     setRevenue(revenueData);
   }
-  else{
-    for (let i = 1; i <= 12; i++) {
-    const response = await axios.get(
-      `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=1`
-    )
-    revenueData.push(response.data.revenve)
-  }
-  setRevenue(revenueData);
+  getData()
 }
-}
-
-    getData()
-  }, [])
+  }, [currentMonth])
+console.log("re",revenue)
 useEffect(()=>{
   const label = revenue.map((item,index)=>{
-    console.log("in",index)
-    const monthH= index +1;
+    const monthH=`${index}-${index+3}`
     return monthH
   })
 setLabels([... label])
@@ -109,10 +112,12 @@ setLabels([... label])
         datasets: [
           {
             label: 'Doanh thu',
-        data: labels.map((item, index) => revenue[index]),
-            backgroundColor: 'rgba(255, 99, 132, 0.5)'
+            data: labels.map((item, index) => revenue[index]),
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
           },
         ]
       }
-    return <Bar options={options} data={data}  />
+    return <Line  options={options} data={data}  />
   }

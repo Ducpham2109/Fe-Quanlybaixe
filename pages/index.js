@@ -3,22 +3,25 @@ import { useEffect, useState } from 'react'
 
 
 import { RoleEnum } from '../shares/role'
-import Adminhome from '../components/pageComponents/homeComponent/adminhome'
 import UserHome from '../components/pageComponents/homeComponent/userHome'
+import SuperAdminhome from '../components/pageComponents/homeComponent/SuperAdminhome'
+import Adminhome from '../components/pageComponents/homeComponent/adminhome'
 
 const Index = () => {
-  const [isRoleVip, setIsRoleVip] = useState()
-
+  const [isRoleSuper, setIsRoleSuper] = useState()
+  const [isRoleAdmin, setIsRoleAdmin] = useState()
   const [role, setRole] = useState(0)
 
   useEffect(() => {
     setRole(parseInt(Cookies.get('role')))
-    setIsRoleVip(role === RoleEnum.superAdmin || role === RoleEnum.admin)
+    setIsRoleSuper(role === RoleEnum.superAdmin)
+    setIsRoleAdmin(role === RoleEnum.admin)
   })
 
   return (
     <>
-      {isRoleVip && <Adminhome />}
+      {isRoleSuper && <SuperAdminhome />}
+      {isRoleAdmin && <Adminhome /> }
       {role === RoleEnum.user && <UserHome/>}
       
     </>

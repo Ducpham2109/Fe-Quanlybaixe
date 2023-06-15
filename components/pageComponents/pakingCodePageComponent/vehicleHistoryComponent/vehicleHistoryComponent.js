@@ -32,6 +32,8 @@ const VehicleHistoryComponent = () => {
     const [dataOri, setDataOri] = useState('')
     const [skip, setSkip] = useState(0)
     const [bills, setBills] = useState([])
+    const [billsAdmin, setBillsAdmin] = useState([])
+
     const [dataSearch, setDataAccSearch] = useAtom(dataParkSearchAtom)
     const [totalSearch, setTotalAccSearch] = useAtom(totalParkSearchAtom)
     const [valueSearch, setValueAccSearch] = useAtom(valueParkSearchAtom)
@@ -39,10 +41,22 @@ const VehicleHistoryComponent = () => {
     const [vehicleType, setVehicleyType] = useState()
     const [parking, setParking] = useAtom(dataParkingAtom)
     const [isCellClicked, setIsCellClicked] = useState(false);
-  
     const [modalData, setModalData] = useAtom(vehicleModalData)
     const [billmodalData, setBillModalData] = useAtom(vehicleBillModalData)
+    var cookies = document.cookie.split(';');
 
+    // Tìm và lấy giá trị của "parkingCode" từ cookie
+    var parkingCode;
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.startsWith("parkingCode=")) {
+        parkingCode = cookie.substring("parkingCode=".length, cookie.length);
+        break;
+      }
+    }
+    
+    // Sử dụng giá trị parkingCode
+    console.log("parking",parkingCode);
     const onFinish = (values) => {
       setIsLoading(true)}
      const onFinishFailed = () => {
@@ -67,27 +81,34 @@ const VehicleHistoryComponent = () => {
       }
     }, [billmodalData, isCellClicked]);
      
-    
     useEffect(() => {
-      const getData = async () => {
-        const response = await axios.get(
-          `${BASE_URL}bill?Skip=${skip}&PageSize=${pageSize}`
-        )
-        setBills(response.data.result.items)
-        console.log(bills)
-
-        // setTotalItem(response.data.result.totalItems)
-      
-      }
-      setData([])
-      getData()
-    }, [skip])
-  
+      const fetchData = async () => {
+        try {
+          if (parseInt(Cookies.get('role')) === 0) {
+            const response = await axios.get(
+              `${BASE_URL}bill?Skip=${skip}&PageSize=${pageSize}`
+            );
+            setBills(response.data.result.items);
+          } else {
+            const response = await axios.get(
+              `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parkingCode}`
+            );
+            setBillsAdmin(response.data.result.items);
+          }
+        } catch (error) {
+          // Xử lý lỗi khi gọi API
+          console.error(error);
+        }
+      };
+    
+      fetchData();
+    }, [skip]);
+    
   const originData = []
   
   useEffect(() => {
     Object.entries(
-      parseInt(Cookies.get('role')) === 0 ? bills : bills
+      parseInt(Cookies.get('role')) === 0 ? bills : billsAdmin
     ).map((item, index) => {
       originData.push({
         key: index,
@@ -107,7 +128,7 @@ const VehicleHistoryComponent = () => {
  
   
     
-  }, [bills])
+  }, [bills,billsAdmin])
   
     const columns = [
      
@@ -153,18 +174,6 @@ const VehicleHistoryComponent = () => {
         width: '8%',
         editable: true
       },
-      {
-        title: 'Hình ảnh vào',
-        dataIndex: 'imageIn',
-        width: '12%',
-        editable: true
-      },
-      {
-       title: 'Hình ảnh ra',
-       dataIndex: 'imageOut',
-       width: '12%',
-       editable: true
-     },
      {
       title: 'Thao tác',
       dataIndex: 'operation',

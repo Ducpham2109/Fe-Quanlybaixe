@@ -1,10 +1,10 @@
+import RevenuePakingCode from "../../../../components/pageComponents/pakingCodePageComponent/revenuePakingCode/revenuePakingCode"
+
 const Index = () => {
   
     return (
       <>
-      <div>
-        home home userscccxcccdscsdcscsdcscs
-      </div>
+      <RevenuePakingCode/>
        
       </>
     )

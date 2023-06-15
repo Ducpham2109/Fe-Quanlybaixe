@@ -30,43 +30,73 @@ const ParkingComponent = ()=>{
     const [pageSize, setPageSize] = useState(10)
     const [totalItem, setTotalItem] = useState(0)
     const [, setDeviceClickRow] = useAtom(deviceClickRowAtom)
-  
+    const [parkingAdminInfo,setParkingAdminInfo] = useState()
     const [dataSearch, setDataAccSearch] = useAtom(dataParkSearchAtom)
     const [totalSearch, setTotalAccSearch] = useAtom(totalParkSearchAtom)
     const [valueSearch, setValueAccSearch] = useAtom(valueParkSearchAtom)
-    useEffect(() => {
-      const getData = async () => {
-        const response = await axios.get(
-          `${BASE_URL}parking?Skip=${skip}&PageSize=${pageSize}`
-        )
-        setParkingInfo(response.data.result.items)
-        setTotalItem(response.data.result.totalItems)
-      
+
+    var cookies = document.cookie.split(';');
+
+    // Tìm và lấy giá trị của "parkingCode" từ cookie
+    var parkingCode;
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.startsWith("parkingCode=")) {
+        parkingCode = cookie.substring("parkingCode=".length, cookie.length);
+        break;
       }
-      setData([])
-      getData()
-    }, [skip])
+    }
 
- const originData = []
-
-  useEffect(() => {
-    Object.entries(
-      parseInt(Cookies.get('role')) === 0 ? parkingInfo : parkingInfo
-    ).map((item, index) => {
-      originData.push({
-        key: index,
-        parkingCode: item[1].parkingCode,
-        parkingName: item[1].parkingName,
-        parkingAddress: item[1].parkingAddress,
-        mmPrice: item[1].mmPrice,
-        mnPrice: item[1].mnPrice,
-        nmPrice: item[1].nmPrice,
-        nnPrice: item[1].nnPrice
-      })
-      console.log(originData)
-    })
-    setDataOri(originData)
-  }, [parkingInfo])
+// Sử dụng giá trị parkingCode
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          if (parseInt(Cookies.get('role')) === 0) {
+            const response = await axios.get(
+              `${BASE_URL}parking?Skip=${skip}&PageSize=${pageSize}`
+            );
+            setParkingInfo(response.data.result.items);
+          } else {
+            const response = await axios.get(
+              `${BASE_URL}parking/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parkingCode}`
+            );
+            setParkingAdminInfo(response.data.result.items);
+          }
+        } catch (error) {
+          // Xử lý lỗi khi gọi API
+          console.error(error);
+        }
+      };
+    
+      fetchData();
+    }, [skip]);
+    
+    const originData = [];
+    
+    useEffect(() => {
+      const processData = () => {
+        const data = parseInt(Cookies.get('role')) === 0 ? parkingInfo : parkingAdminInfo;
+        if (data) {
+          Object.entries(data).map((item, index) => {
+            originData.push({
+              key: index,
+              parkingCode: item[1].parkingCode,
+              parkingName: item[1].parkingName,
+              parkingAddress: item[1].parkingAddress,
+              mmPrice: item[1].mmPrice,
+              mnPrice: item[1].mnPrice,
+              nmPrice: item[1].nmPrice,
+              nnPrice: item[1].nnPrice,
+              capacity: item[1].capacity
+            });
+          });
+          setDataOri(originData);
+        }
+      };
+    
+      processData();
+    }, [parkingInfo, parkingAdminInfo]);
+    
 
 
   const handlePaging = (page, pageSizeAnt) => {
@@ -145,6 +175,7 @@ const ParkingComponent = ()=>{
         mnPrice: '',
         nmPrice: '',
         nnPrice: '',
+        capacity: '',
         ...record
       })
       setEditingKey(record.key)
@@ -181,7 +212,8 @@ const ParkingComponent = ()=>{
               mmPrice: newData[index].mmPrice,
               mnPrice: newData[index].mnPrice,
               nmPrice: newData[index].nmPrice,
-              nnPrice: newData[index].nnPrice
+              nnPrice: newData[index].nnPrice,
+              capacity: newData[index].capacity,
             })
             .then(() => {
               message.info('Thay đổi thành công')
@@ -225,7 +257,7 @@ const ParkingComponent = ()=>{
       {
         title: 'Thao tác',
         dataIndex: 'operation',
-        width: '13%',
+        width: '10%',
         fixed: 'left',
         render: (_, record) => {
           const editable = isEditing(record)
@@ -287,37 +319,43 @@ const ParkingComponent = ()=>{
       {
         title: ' Tên Bãi Đỗ',
         dataIndex: 'parkingName',
-        width: '13%',
+        width: '10%',
         editable: true
       },
       {
         title: 'Địa Chỉ',
         dataIndex: 'parkingAddress',
-        width: '20%',
+        width: '15%',
+        editable: true
+      },
+      {
+        title: 'Sức chứa',
+        dataIndex: 'capacity',
+        width: '10%',
         editable: true
       },
       {
         title: ' Giá oto sáng',
         dataIndex: 'nmPrice',
-        width: '12%',
+        width: '10%',
         editable: true
       },
       {
         title: 'Giá oto tối',
         dataIndex: 'nnPrice',
-        width: '12%',
+        width: '10%',
         editable: true
       },
       {
         title: 'Giá xe máy sáng',
         dataIndex: 'mmPrice',
-        width: '12%',
+        width: '11%',
         editable: true
       },
       {
         title: 'Giá xe máy tối',
         dataIndex: 'mnPrice',
-        width: '12%',
+        width: '10%',
         editable: true
       }
     ]
@@ -352,12 +390,15 @@ const ParkingComponent = ()=>{
                     }>
                 </Button>
            <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
-            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-              <AddParkingModal title="Thêm bãi đỗ" form="add" />
+            <Col xs={{ span: 24 }} lg={{ span: 4 }}>{parseInt(Cookies.get('role')) === 0&&
+              <AddParkingModal title="Thêm bãi đỗ" form="add" />}
             </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 20 }}>
-              <SearchParking/>
+            <Row justify="center">
+            <Col  xs={{ span: 24 }} lg={{ span: 20 }}>
+            {parseInt(Cookies.get('role')) === 0&&
+                  <SearchParking/>}
             </Col>
+            </Row>
           </Row>
           <Form form={form} component={false}>
             <TableAntStyled

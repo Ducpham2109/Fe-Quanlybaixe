@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 export const RowAntStyled = styled(Row)`
   width: 100%;
-  height: ${(props) => props.$height};
+  height: ${(
+    props) => props.$height};
   border-top: 1px solid hsla(0, 0%, 100%, 0.08);
 `
 export const H5Styled = styled.h5`

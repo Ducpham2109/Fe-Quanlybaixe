@@ -32,7 +32,10 @@ const HelpUserPageComponent = () => {
       <Spin size="large" spinning={isLoading}>
         <Row justify="center" style={{paddingTop: '60px'}}>
           <Col span={10} style={{ textAlign: 'center' }}>
-            <StyledH2Hepl >Thông Báo đến User</StyledH2Hepl>
+          {parseInt(Cookies.get('role')) === 0&&
+            <StyledH2Hepl >Thông Báo đến  mọi người </StyledH2Hepl>}
+              {parseInt(Cookies.get('role')) === 1&&
+            <StyledH2Hepl >Thông Báo đến User </StyledH2Hepl>}
             <Form
               labelAlign="thông báo"
               name="basic"

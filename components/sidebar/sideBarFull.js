@@ -30,6 +30,7 @@ function SideBarFull({ onClick })  {
     const logo = '/images/logoauth.png'
     const router = useRouter()
     const [isRoleVip, setIsRoleVip] = useState()
+
   const [isActiveParkingPage, setIsActiveParkingPage] = useState()
   const [role, setRole] = useState(0)
   const [isActiveDeivce, setIsActiveDevice] = useState(false)
@@ -40,7 +41,7 @@ function SideBarFull({ onClick })  {
    // setAdminImei(sessionStorage.getItem('deviceImei'))
     setParkingCode(sessionStorage.getItem('parkingCode'))
     
-    setIsRoleVip(role === RoleEnum.superAdmin || role === RoleEnum.admin)
+    setIsRoleVip(role === RoleEnum.superAdmin||RoleEnum.admin)
     setIsActiveParkingPage(
        router.pathname === `${UrlPath.parkingCode.url}[parking]` ||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/sending`||
@@ -94,7 +95,7 @@ function SideBarFull({ onClick })  {
             {UrlPath.home.title}
           </MenuButtonSideBarFull>
 
-          {isRoleVip && (
+          {isRoleVip &&(
             <MenuButtonTemp
               marginLeft={'10px'}
               onClickMenuButtonTemp={handleClickDeviceMenuButton}
@@ -173,12 +174,11 @@ function SideBarFull({ onClick })  {
               }
             </div>
           )}
-
-          
-           
          
-          {isRoleVip && (
+          {isRoleVip  && (
+          
             <MenuButtonSideBarFull
+            
               active={router.pathname === UrlPath.account.url}
               href={UrlPath.account.url}
               icon={
@@ -194,13 +194,13 @@ function SideBarFull({ onClick })  {
               {UrlPath.account.title}
             </MenuButtonSideBarFull>
           )}
+          
            {isRoleVip && (
             <MenuButtonSideBarFull
                     active={
                       router.pathname === `${UrlPath.parkingCode.url}[parking]/sending`
                     }
                     
-
                     href={`${UrlPath.parkingCode.url}${parkingCodeee}/vehicleHistory`}
                     icon={
                       <ListIcon
@@ -228,7 +228,7 @@ function SideBarFull({ onClick })  {
               <HelpIcon light={router.pathname === UrlPath.help.url ? 1 : 0} />
             }
           >
-            {UrlPath.help.title}
+            Thông Báo
           </MenuButtonSideBarFull>
           </DivSideBarStyled3>
 

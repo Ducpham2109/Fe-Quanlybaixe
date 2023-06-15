@@ -31,6 +31,7 @@ import EditIcon from '../../icons/editIcon'
 import ReloadIcon from '../../icons/reloadIcon'
 import AddAccountModal from './addAccountModal'
 import SearchAccount from './searchAccount'
+import AddAdminModal from './addAdminModal'
 
 const TableAntStyled = styled(Table)`
   background-color: #f5f0bb !important;
@@ -41,6 +42,8 @@ const AccComoponent = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [accountUserInfo, setAccountUserInfo] = useState([])
   const [accountInfo, setAccountInfo] = useState([])
+  const [accountAdminInfo, setAccountAdminInfo] = useState([])
+
 
   const [data, setData] = useAtom(accountDataAtom)
   const [dataOri, setDataOri] = useState('')
@@ -51,20 +54,44 @@ const AccComoponent = () => {
   const [dataSearch, setDataAccSearch] = useAtom(dataAccSearchAtom)
   const [totalSearch, setTotalAccSearch] = useAtom(totalAccSearchAtom)
   const [valueSearch, setValueAccSearch] = useAtom(valueAccSearchAtom)
-
+  const [role,setRole] = useState()
+   
   useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get(
-        `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
-      )
-      setAccountInfo(response.data.result.items)
-      setTotalItem(response.data.result.totalItems)
-      console.log("data",accountInfo)
-     
+
+var cookies = document.cookie.split(';');
+// Tìm và lấy giá trị của "parkingCode" từ cookie
+for (var i = 0; i < cookies.length; i++) {
+var cookie = cookies[i].trim();
+if (cookie.startsWith("role=")) {
+  setRole(cookie.substring("role=".length, cookie.length))
+  break;
+}
+}
+}, [role]);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      if (parseInt(Cookies.get('role')) === 0) {
+        const response = await axios.get(
+          `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
+        );
+      setAccountInfo(response.data)
+
+      } else {
+        const response = await axios.get(
+          `${BASE_URL}account/role?Skip=${skip}&PageSize=${pageSize}&role=2`
+        );
+        setAccountAdminInfo(response.data.result.items);
+      }
+    } catch (error) {
+      // Xử lý lỗi khi gọi API
+      console.error(error);
     }
-    setData([])
-    getData()
-  }, [skip])
+  };
+
+  fetchData();
+}, [skip]);
+
   const handlePaging = (page, pageSizeAnt) => {
     setSkip((page - 1) * 10)
     setPageSize(pageSizeAnt)
@@ -97,7 +124,7 @@ const AccComoponent = () => {
 
   useEffect(() => {
     Object.entries(
-      parseInt(Cookies.get('role')) === 0 ? accountInfo : accountInfo
+      parseInt(Cookies.get('role')) === 0 ? accountInfo : accountAdminInfo
     ).map((item, index) => {
       originData.push({
         key: index,
@@ -106,10 +133,12 @@ const AccComoponent = () => {
         permission: item[1].role,
         phoneNumber: item[1].phoneNumber,
         email: item[1].email,
+        parkingCode: item[1].parkingCode,
       })
     })
     setDataOri(originData)
-  }, [accountInfo])
+  }, [accountInfo,accountAdminInfo])
+  console.log("ori,", dataOri)
   const EditableCell = ({
     editing,
     dataIndex,
@@ -180,31 +209,30 @@ const AccComoponent = () => {
           ...item,
           ...row
         })
-
         await axios
-          .put(`${BASE_URL}account`, {
-            role: newData[index].permission,
-            userName: newData[index].userName,
-            password: newData[index].password,
-            phoneNumber: newData[index].phoneNumber,
-            email: newData[index].email,
-
-          })
-          .then(() => {
-            message.info('Thay đổi thành công')
-            setData(newData)
-          })
-          .catch((error) => {
-            message.error(error.response.data.message)
-            setData(newDataConfigFailure)
-          })
-      } else {
-        newData.push(row)
-        setData(newData)
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo)
+        .put(`${BASE_URL}account`, {
+          role: newData[index].permission,
+          userName: newData[index].userName,
+          password: newData[index].password,
+          phoneNumber: newData[index].phoneNumber,
+          email: newData[index].email,
+        })
+        .then(() => {
+          message.info('Thay đổi thành công')
+          setData(newData)
+        })
+        .catch((error) => {
+          message.error(error.response.data.message)
+          setData(newDataConfigFailure)
+        })
+    } else {
+      newData.push(row)
+      setData(newData)
     }
+  } catch (errInfo) {
+    console.log('Validate Failed:', errInfo)
+  }
+      
     setEditingKey('')
     setIsLoading(false)
   }
@@ -215,12 +243,18 @@ const AccComoponent = () => {
       var newData = [...data]
     }
     const index = newData.findIndex((item) => key === item.key)
-    const userName= newData[index].userName
     console.log('aasasa',newData[index])
+
+    const userName= newData[index].userName
+    // if(record.parkingCode){
+    axios.delete(`${BASE_URL}management/username?Username=${userName}`) 
+
+    // }
     axios.delete(`${BASE_URL}account/username?Username=${userName}`) 
     const newDataAfterDelete = newData.filter((item) => item.key !== key)
     setData(newDataAfterDelete)
   }
+
   const columns = [
     {
       title: 'Thao tác',
@@ -262,6 +296,7 @@ const AccComoponent = () => {
                 </div>
               </Popconfirm>
             </Col>
+            
           </Row>
         )
       }
@@ -269,33 +304,39 @@ const AccComoponent = () => {
     {
       title: 'Tên Đăng Nhập',
       dataIndex: 'userName',
-      width: '25%',
+      width: '15%',
       editable: true
     },
     {
       title: 'Mật Khẩu',
       dataIndex: 'password',
-      width: '20%',
+      width: '17%',
       editable: true
     },
     {
       title: 'Số điện thoại',
       dataIndex: 'phoneNumber',
-      width: '20%',
+      width: '17%',
       editable: true
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      width: '20%',
+      width: '23%',
       editable: true
     },
     {
       title: 'Quyền',
       dataIndex: 'permission',
-      width: '120px',
+      width: '100px',
       editable: true
-    }
+    },
+    {
+      title: 'Quản lý bãi',
+      dataIndex: 'parkingCode',
+      width: '130px',
+      editable: true,
+    },
   ]
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -333,7 +374,11 @@ const AccComoponent = () => {
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <AddAccountModal title="Thêm" form="add" />
             </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 20 }}>
+            
+            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
+            {role == 0 && <AddAdminModal title="Thêm" form="add" />}
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <SearchAccount />
             </Col>
           </Row>
@@ -365,7 +410,9 @@ const AccComoponent = () => {
             total={dataSearch.length === 0 ? totalItem : totalSearch}
             onChange={handlePaging}
             style={{ float: 'right', margin: '10px' }}
-          />
+            />
+            
+            
         </Container>
       </Spin>
     </>

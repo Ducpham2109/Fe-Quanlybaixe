@@ -22,6 +22,8 @@ const FormAddParking = ( ) => {
     const [mnPrice, setMnPrice] = useState('')
     const [nmPrice, setNmPrice] = useState('')
     const [nnPrice, setNnPrice] = useState('')
+    const [capacity, setCapacity] = useState('')
+
 
     const [isLoading, setLoading]= useState(false)
     const onFinish = (values) => {
@@ -54,7 +56,7 @@ const FormAddParking = ( ) => {
           validateMessages={validateMessages}
           >
            <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Thêm Bãi Đỗ</h2>
-
+{/* 
             <Form.Item
             label="ParkingCode"
             name="ParkingCode"
@@ -67,7 +69,7 @@ const FormAddParking = ( ) => {
               value={pakingCode}
               onBlur={(e) => setParkingCode(e.target.value)}
             />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
             label="Tên Bãi Đỗ"
             name="ParkingName"
@@ -92,6 +94,17 @@ const FormAddParking = ( ) => {
                 <Input
               value={parkingAddress}
               onBlur={(e) => setPakingAddress(e.target.value)}
+            />
+            </Form.Item>
+            <Form.Item
+            label="Sức chứa"
+            name="Capacity"
+            style={{ paddingBottom: '1px' }}
+            rules={[{required: true, message: 'Hãy nhập sức chứa !',},]}
+            >
+                <Input
+              value={capacity}
+              onBlur={(e) => setCapacity(e.target.value)}
             />
             </Form.Item>
             <Row gutter={[16, 48]}>

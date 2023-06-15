@@ -16,14 +16,16 @@ const RightMenuAdmin = (props) => {
     const myRefAccountIcon = useRef()
     const myRefPopup = useRef()
     const [isClickAccountIcon, setIsClickAccountIcon] = useState(false)
+    useEffect(() => {
+      setUserName(Cookies.get('userName'))
+    })
     const { FormChangePassRef } = props
     const handleClickLogOut = (e) => {
         e.preventDefault()
-        Cookies.remove('userId')
         Cookies.remove('userName')
         Cookies.remove('jwt_token')
-        Cookies.remove('imei')
         Cookies.remove('role')
+         Cookies.remove('parkingCode')
         router.push(UrlPath.auth.url)
       }
     
@@ -32,9 +34,7 @@ const RightMenuAdmin = (props) => {
         setIsClickAccountIcon(!isClickAccountIcon)
        
       }
-      useEffect(() => {
-        setUserName(Cookies.get('userName'))
-      })
+     
   return (
     <>
      <DivStyled width={'200px'} mgTop={'10px'} mgLeft={'-120px'}>

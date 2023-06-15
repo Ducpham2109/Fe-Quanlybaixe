@@ -12,7 +12,6 @@ import {
 import React, { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import { BASE_URL } from '../../api/requet'
-import Cookies from 'js-cookie'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export const options = {
@@ -64,34 +63,27 @@ export const options = {
     
   }
   
-export function VerticalBarChart() {
+export function VerticalBarChartCode() {
   const [month, setMonth] = useState()
   const [revenue, setRevenue]= useState([])
   const [labels, setLabels] = useState([])
-
+  const [parkingCode,setParkingCode] = useState()
+  useEffect(() => {
+    const initialValues =(sessionStorage.getItem('parkingCode'))
+    setParkingCode(initialValues);
+  }, []);
   useEffect(() => {
     
     const getData = async () => {
       const revenueData = [];
-      if(parseInt(Cookies.get('role')) === 0){
       for (let i = 1; i <= 12; i++) {
       const response = await axios.get(
-        `${BASE_URL}bill/revenue/month?Month=${i}`
+        `${BASE_URL}bill/revenue/month?Month=${i}&ParkingCode=${parkingCode}`
       )
       revenueData.push(response.data.revenve)
     }
     setRevenue(revenueData);
   }
-  else{
-    for (let i = 1; i <= 12; i++) {
-    const response = await axios.get(
-      `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=1`
-    )
-    revenueData.push(response.data.revenve)
-  }
-  setRevenue(revenueData);
-}
-}
 
     getData()
   }, [])

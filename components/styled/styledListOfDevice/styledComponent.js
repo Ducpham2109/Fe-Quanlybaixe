@@ -47,10 +47,16 @@ export const StyledDiv = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
   @media (min-width: 992px) {
+    margin-top: 50px;
+    margin-bottom: 50px;
 
-    margin-bottom: 70px;
+  }
+  @media (min-width: 576px) and (max-width: 992px) {
+    margin-top: 30px;
   }
   @media (max-width: 576px) {
+    margin-top: 20px;
+
     margin-top: ${(props) => props.top576};
   }
   margin-bottom: ${(props) => props.marginBottom};
@@ -79,11 +85,19 @@ export const StyledGrandchildrenDiv = styled.div`
   right: 10px; 
   
 `
+
 export const StyledDivChart = styled.div`
   background-color: #fff;
-  border-radius: 8px;
+  padding:10px;
+  border-radius: 12px;
+  height: 330px;
   box-shadow: 0 0 2rem 0 rgb(136 152 170 / 15%);
   position: relative;
+  @media (min-width: 576px) and (max-width: 992px) {
+    margin-top: 30px;
+  }
   left: ${(props) => props.left};
   top: ${(props) => props.top};
+  @media (max-width: 576px) {
+    margin-top: 35px;}
 `
