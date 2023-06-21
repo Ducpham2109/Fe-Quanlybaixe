@@ -1,11 +1,9 @@
-import RevenuePakingCode from "../../../../components/pageComponents/pakingCodePageComponent/revenuePakingCode/revenuePakingCode"
+import ParkingCodeComponent from "../../../../components/pageComponents/pakingCodePageComponent/pakingCodeComponent"
 
 const Index = () => {
-  
     return (
       <>
-      <RevenuePakingCode/>
-       
+        <ParkingCodeComponent/>
       </>
     )
   }

@@ -40,11 +40,10 @@ function SideBarFull({ onClick })  {
     setRole(parseInt(Cookies.get('role')))
    // setAdminImei(sessionStorage.getItem('deviceImei'))
     setParkingCode(sessionStorage.getItem('parkingCode'))
-    
-    setIsRoleVip(role === RoleEnum.superAdmin||RoleEnum.admin)
+    setIsRoleVip(role === RoleEnum.superAdmin || role === RoleEnum.admin)
     setIsActiveParkingPage(
        router.pathname === `${UrlPath.parkingCode.url}[parking]` ||
-       router.pathname === `${UrlPath.parkingCode.url}[parking]/sending`||
+       router.pathname === `${UrlPath.parkingCode.url}[parking]/sendMoto`||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/revenue` ||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/forParking`
      )
@@ -127,6 +126,46 @@ function SideBarFull({ onClick })  {
               {
                 isActiveParkingPage && (
                   <div>
+                     <MenuChildrenButton
+                    active={
+                      router.pathname === `${UrlPath.parkingCode.url}[parking]/revenue`
+                    }
+                    href={`${UrlPath.parkingCode.url}${parkingCodeee}/revenue`}
+                    icon={
+                      <ListIcon
+                        width={'1.5em'}
+                        height={'1.5em'}
+                        light={
+                          router.pathname ===
+                          `${UrlPath.parkingCode.url}[parking]/revenue`
+                            ? 1
+                            : 0
+                        }
+                      />
+                    }
+                    >
+                    Gửi xe oto
+                    </MenuChildrenButton>
+                     <MenuChildrenButton
+                    active={
+                      router.pathname === `${UrlPath.parkingCode.url}[parking]/sendMoto`
+                    }
+                    href={`${UrlPath.parkingCode.url}${parkingCodeee}/sendMoto`}
+                    icon={
+                      <ListIcon
+                        width={'1.5em'}
+                        height={'1.5em'}
+                        light={
+                          router.pathname ===
+                          `${UrlPath.parkingCode.url}[parking]/sendMoto`
+                            ? 1
+                            : 0
+                        }
+                      />
+                    }
+                    >
+                    Gửi xe máy
+                    </MenuChildrenButton>
                     <MenuChildrenButton
                     active={
                       router.pathname === `${UrlPath.parkingCode.url}[parking]/forParking`
@@ -147,26 +186,6 @@ function SideBarFull({ onClick })  {
                     >
                       Thông tin xe gửi
                     
-                    </MenuChildrenButton>
-                    <MenuChildrenButton
-                    active={
-                      router.pathname === `${UrlPath.parkingCode.url}[parking]/revenue`
-                    }
-                    href={`${UrlPath.parkingCode.url}${parkingCodeee}/revenue`}
-                    icon={
-                      <ListIcon
-                        width={'1.5em'}
-                        height={'1.5em'}
-                        light={
-                          router.pathname ===
-                          `${UrlPath.parkingCode.url}[parking]/revenue`
-                            ? 1
-                            : 0
-                        }
-                      />
-                    }
-                    >
-                      Chi tiết doanh thu
                     </MenuChildrenButton>
                   
                   </div>
@@ -194,8 +213,6 @@ function SideBarFull({ onClick })  {
               {UrlPath.account.title}
             </MenuButtonSideBarFull>
           )}
-          
-           {isRoleVip && (
             <MenuButtonSideBarFull
                     active={
                       router.pathname === `${UrlPath.parkingCode.url}[parking]/sending`
@@ -217,10 +234,6 @@ function SideBarFull({ onClick })  {
                     >
                      Lịch sử xe gửi
                     </MenuButtonSideBarFull>
-                    )}
-
-        
-
           <MenuButtonSideBarFull
             active={router.pathname === UrlPath.help.url}
             href={UrlPath.help.url}

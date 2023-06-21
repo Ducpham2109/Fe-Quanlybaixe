@@ -19,5 +19,9 @@ export const UrlPath = {
   vehicleHistory: {
     url: '/parking/',
     title:'Thông tin xe gửi'
+  },
+  sendMoto: {
+    url: '/parking/',
+    title:'Gửi xe máy'
   }
 }

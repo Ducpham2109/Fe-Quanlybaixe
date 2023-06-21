@@ -3,7 +3,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { memo, useState } from 'react'
 import { BASE_URL } from '../../../api/requet'
-import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
+import { StyledButtonPressedEffect, StyledH2Hepl } from '../../styled/styledListOfDevice/styledComponent'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -30,10 +30,10 @@ const HelpUserPageComponent = () => {
 
   return (
     <>
-      <Spin size="large" spinning={isLoading}>
-        <Row justify="center">
+    <Spin size="large" spinning={isLoading}>
+        <Row justify="center" style={{paddingTop: '60px'}}>
           <Col span={10} style={{ textAlign: 'center' }}>
-            <h2>Gửi ý kiến phải ánh</h2>
+            <StyledH2Hepl >Gửi ý kiến đến Admin </StyledH2Hepl>
             <Form
               labelAlign="thông báo"
               name="basic"
@@ -45,21 +45,6 @@ const HelpUserPageComponent = () => {
               validateMessages={validateMessages}
             >
               <Form.Item
-                name="imei"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy Nhâp imei!'
-                  }
-                ]}
-              >
-                <Input
-                  placeholder="Số Imei"
-                  value={imei}
-                  onBlur={(e) => setImei(e.target.value)}
-                />
-              </Form.Item>
-              <Form.Item
                 name="headerContent"
                 rules={[
                   {
@@ -69,6 +54,7 @@ const HelpUserPageComponent = () => {
                 ]}
               >
                 <Input
+                style={{ height: '50px' }}
                   placeholder="Tiêu đề"
                   value={headerContent}
                   onBlur={(e) => setHeaderContent(e.target.value)}
@@ -89,6 +75,7 @@ const HelpUserPageComponent = () => {
                 ]}
               >
                 <Input.TextArea
+                style={{ height: '100px' }}
                   value={content}
                   placeholder="Nội Dung"
                   onBlur={(e) => setContent(e.target.value)}
@@ -96,7 +83,7 @@ const HelpUserPageComponent = () => {
               </Form.Item>
 
               <Form.Item style={{ textAlign: 'center' }}>
-                <StyledButtonPressedEffect htmlType="submit">
+                <StyledButtonPressedEffect type="primary" htmlType="submit">
                   Gửi
                 </StyledButtonPressedEffect>
               </Form.Item>

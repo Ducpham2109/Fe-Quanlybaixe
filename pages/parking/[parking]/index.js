@@ -1,13 +1,14 @@
-import ParkingCodeComponent from "../../../components/pageComponents/pakingCodePageComponent/pakingCodeComponent"
 
-
+import RevenuePakingCode from "../../../components/pageComponents/pakingCodePageComponent/revenuePakingCode/revenuePakingCode"
 
 const Index = () => {
-    return (
-      <>
-        <ParkingCodeComponent/>
-      </>
-    )
-  }
   
-  export default Index
+  return (
+    <>
+    <RevenuePakingCode/>
+     
+    </>
+  )
+}
+
+export default Index
