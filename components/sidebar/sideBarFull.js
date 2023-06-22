@@ -44,6 +44,7 @@ function SideBarFull({ onClick })  {
     setIsActiveParkingPage(
        router.pathname === `${UrlPath.parkingCode.url}[parking]` ||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/sendMoto`||
+       router.pathname === `${UrlPath.parkingCode.url}[parking]/sendCar`||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/revenue` ||
        router.pathname === `${UrlPath.parkingCode.url}[parking]/forParking`
      )
@@ -128,16 +129,16 @@ function SideBarFull({ onClick })  {
                   <div>
                      <MenuChildrenButton
                     active={
-                      router.pathname === `${UrlPath.parkingCode.url}[parking]/revenue`
+                      router.pathname === `${UrlPath.parkingCode.url}[parking]/sendCar`
                     }
-                    href={`${UrlPath.parkingCode.url}${parkingCodeee}/revenue`}
+                    href={`${UrlPath.parkingCode.url}${parkingCodeee}/sendCar`}
                     icon={
                       <ListIcon
                         width={'1.5em'}
                         height={'1.5em'}
                         light={
                           router.pathname ===
-                          `${UrlPath.parkingCode.url}[parking]/revenue`
+                          `${UrlPath.parkingCode.url}[parking]/sendCar`
                             ? 1
                             : 0
                         }

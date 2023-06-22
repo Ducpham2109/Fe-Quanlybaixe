@@ -1,4 +1,4 @@
-import SendMotoComponent from "../../../../components/pageComponents/pakingCodePageComponent/sendMotoComponent/senMotoConponent";
+import SendMotoComponent from "../../../../components/pageComponents/pakingCodePageComponent/sendVehiclesComponent/senMotoConponent";
 
 const Index = () => {
     return (

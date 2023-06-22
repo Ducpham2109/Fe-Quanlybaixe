@@ -26,6 +26,7 @@ const HeaderStyled = styled(Header)`
 const FooterStyled = styled(Footer)`
   height: 76px;
   z-index: 9;
+
   @media (max-width: 576px) {
     position: fixed;
     right: 0;
@@ -35,7 +36,7 @@ const FooterStyled = styled(Footer)`
 `
 const ContentStyledAnt = styled(Content)`
   margin-top: 64px;
-  margin-bottom: 70px;
+  background-color: #ccc;
 `
 const AdminLayout = ({ children }) => {
   const [isSideBarLess, setSideBarLess] = useState(false)

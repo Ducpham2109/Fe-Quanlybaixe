@@ -12,6 +12,12 @@ export const H5Styled = styled.h5`
   text-transform: uppercase;
   font-size: 14px;
 `
+export const H8Styled = styled.h5`
+  color: #101010;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 400;
+`
 export const SpanStyled = styled.span`
   font-size:20px ;
   font-weight: 600;

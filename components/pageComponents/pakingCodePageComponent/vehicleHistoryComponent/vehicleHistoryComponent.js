@@ -32,6 +32,8 @@ const VehicleHistoryComponent = () => {
     const [dataOri, setDataOri] = useState('')
     const [skip, setSkip] = useState(0)
     const [bills, setBills] = useState([])
+    const [billsUser, setBillsUser] = useState([])
+
     const [billsAdmin, setBillsAdmin] = useState([])
 
     const [dataSearch, setDataAccSearch] = useAtom(dataParkSearchAtom)
@@ -89,11 +91,19 @@ const VehicleHistoryComponent = () => {
               `${BASE_URL}bill?Skip=${skip}&PageSize=${pageSize}`
             );
             setBills(response.data.result.items);
-          } else {
+          } 
+          if (parseInt(Cookies.get('role')) === 1)  {
             const response = await axios.get(
               `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parkingCode}`
             );
             setBillsAdmin(response.data.result.items);
+          }
+          else{
+            const response = await axios.get(
+              `${BASE_URL}bill/userName?UserName=superAdmin`
+            );
+            setBillsAdmin(response.data.result.items);
+            
           }
         } catch (error) {
           // Xử lý lỗi khi gọi API
@@ -126,8 +136,6 @@ const VehicleHistoryComponent = () => {
     })
     setDataOri(originData)
  
-  
-    
   }, [bills,billsAdmin])
   
     const columns = [

@@ -83,15 +83,15 @@ console.log("parking",parkingCode);
   }
 }, [currentMonth])
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get(
-        `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
-      )
-      setTotalItemAcc(response.data.result.totalItems)
-    }
-    getData()
-  }, [skip])
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const response = await axios.get(
+  //       `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
+  //     )
+  //     setTotalItemAcc(response.data.result.totalItems)
+  //   }
+  //   getData()
+  // }, [skip])
     return (
       <>
         <Col span={23} style={{ marginLeft: '18px' }}>
