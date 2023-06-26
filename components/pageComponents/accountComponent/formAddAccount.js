@@ -21,33 +21,32 @@ const FormAddAccount = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  var cookies = document.cookie.split(';');
+  var cookies = document.cookie.split(';')
 
   // Tìm và lấy giá trị của "parkingCode" từ cookie
-  var rolee;
+  var rolee
   for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i].trim();
-    if (cookie.startsWith("role=")) {
-      rolee = cookie.substring("role=".length, cookie.length);
-      break;
+    var cookie = cookies[i].trim()
+    if (cookie.startsWith('role=')) {
+      rolee = cookie.substring('role='.length, cookie.length)
+      break
     }
   }
-  
-const onFinish = (values) => {
-  setIsLoading(true)
-  axios
-    .post(`${BASE_URL}account`, values)
-    .then(() => {
-      setIsLoading(false)
-      message.info('Thêm thành công')
-    })
-    .catch((error) => {
-      setIsLoading(false)
-      message.error(error.response.data.message)
-    })
-}
-const onFinishFailed = (errorInfo) => {
-}
+
+  const onFinish = (values) => {
+    setIsLoading(true)
+    axios
+      .post(`${BASE_URL}account`, values)
+      .then(() => {
+        setIsLoading(false)
+        message.info('Thêm thành công')
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        message.error(error.response.data.message)
+      })
+  }
+  const onFinishFailed = (errorInfo) => {}
   const SelectRole = (value) => {
     setAccountRole(value)
   }
@@ -64,69 +63,66 @@ const onFinishFailed = (errorInfo) => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           validateMessages={validateMessages}
-          >
-           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>Thêm tài khoản</h2>
-          {rolee == 0&&
-          <Form.Item
-            label="Role"
-            name="role"
-            rules={[
-              {
-                required: true,
-                message: 'Xin Hãy chọn Quyền!'
-              }
-            ]}
-          >
-            <Select
-              // defaultValue={2}
-              style={{
-                width: 120
-              }}
-              onChange={SelectRole}
-             
-              options={[
+        >
+          <h2 style={{ fontSize: '20px', textAlign: 'center' }}>
+            Thêm tài khoản
+          </h2>
+          {rolee == 0 && (
+            <Form.Item
+              label="Role"
+              name="role"
+              rules={[
                 {
-                  value: 2,
-                  label: 'User'
-                },
-                {
-                  value: 1,
-                  label: 'Admin'
+                  required: true,
+                  message: 'Xin Hãy chọn Quyền!'
                 }
               ]}
-            />
-
-        
-          </Form.Item>
-}
-        {rolee == 1&&
-          <Form.Item
-            label="Role"
-            name="role"
-            rules={[
-              {
-                required: true,
-                message: 'Xin Hãy chọn Quyền!'
-              }
-            ]}
-          >
-            <Select
-              // defaultValue={2}
-              style={{
-                width: 120
-              }}
-              onChange={SelectRole}
-             
-              options={[
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 120
+                }}
+                onChange={SelectRole}
+                options={[
+                  {
+                    value: 2,
+                    label: 'User'
+                  },
+                  {
+                    value: 1,
+                    label: 'Admin'
+                  }
+                ]}
+              />
+            </Form.Item>
+          )}
+          {rolee == 1 && (
+            <Form.Item
+              label="Role"
+              name="role"
+              rules={[
                 {
-                  value: 2,
-                  label: 'User'
-                },
-             
+                  required: true,
+                  message: 'Xin Hãy chọn Quyền!'
+                }
               ]}
-            />
-          </Form.Item>
-}
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 120
+                }}
+                onChange={SelectRole}
+                options={[
+                  {
+                    value: 2,
+                    label: 'User'
+                  }
+                ]}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             label="Tài Khoản"
             name="userName"
@@ -174,14 +170,10 @@ const onFinishFailed = (errorInfo) => {
               {
                 required: true,
                 message: 'Hãy Nhâp email !'
-              },
-            
+              }
             ]}
           >
-            <Input
-              value={email}
-              onBlur={(e) => setEmail(e.target.value)}
-            />
+            <Input value={email} onBlur={(e) => setEmail(e.target.value)} />
           </Form.Item>
           <Form.Item
             label="Số Điện Thoại"
@@ -190,8 +182,7 @@ const onFinishFailed = (errorInfo) => {
               {
                 required: true,
                 message: 'Hãy Nhâp số điện thoại !'
-              },
-           
+              }
             ]}
           >
             <Input
@@ -202,7 +193,7 @@ const onFinishFailed = (errorInfo) => {
 
           <Form.Item style={{ textAlign: 'center' }}>
             <StyledButtonPressedEffect type="primary" htmlType="submit">
-              Thêm 
+              Thêm
             </StyledButtonPressedEffect>
           </Form.Item>
         </Form>

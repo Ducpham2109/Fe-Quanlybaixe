@@ -3,9 +3,14 @@ import axios from 'axios'
 import { useAtom } from 'jotai'
 import { memo, useEffect, useState } from 'react'
 
-
 import { BASE_URL } from '../../../../api/requet'
-import { dataAccSearchAtom, pageSizeAccAtom, skipAccAtom, totalAccSearchAtom, valueAccSearchAtom } from '../../../atom/store'
+import {
+  dataAccSearchAtom,
+  pageSizeAccAtom,
+  skipAccAtom,
+  totalAccSearchAtom,
+  valueAccSearchAtom
+} from '../../../atom/store'
 import Cookies from 'js-cookie'
 
 const { Search } = Input
@@ -15,12 +20,11 @@ const SearchAccount = () => {
   const [skip] = useAtom(skipAccAtom)
   const [pageSize] = useAtom(pageSizeAccAtom)
   const [dataSearch, setDataAccSearch] = useAtom(dataAccSearchAtom)
-  const [parkingCode, setParkingCode] = useState();
+  const [parkingCode, setParkingCode] = useState()
   useEffect(() => {
-    const initialValues =(sessionStorage.getItem('parkingCode'))
-    setParkingCode(initialValues);
-    
-  }, []);
+    const initialValues = sessionStorage.getItem('parkingCode')
+    setParkingCode(initialValues)
+  }, [])
   const handleSearchAccount = (value) => {
     setIsLoading(true)
     const getVehicles = async () => {
@@ -35,8 +39,8 @@ const SearchAccount = () => {
             message.info('Lấy dữ liệu thành công')
             //setValueAccSearch(value)
             setDataAccSearch(response.data.result.items)
-            console.log("aabbbbbaaaa",dataSearch  )
-           // setTotalAccSearch(response.data.result.totalItems)
+            console.log('aabbbbbaaaa', dataSearch)
+            // setTotalAccSearch(response.data.result.totalItems)
           }
         })
         .catch((error) => {
@@ -46,8 +50,6 @@ const SearchAccount = () => {
       setIsLoading(false)
     }
     getVehicles()
-
-   
   }
   // useEffect(() => {
   //   const searchData = Object.entries(
@@ -67,7 +69,7 @@ const SearchAccount = () => {
   //     console.log("aaaaaa",dataSearch)
 
   // }, [vehicles]);
-  
+
   return (
     <>
       <Spin size="large" spinning={isLoading}>

@@ -17,7 +17,7 @@ const MenuButtonSideBarLess = ({ active, icon, href }) => {
             style={{
               padding: '10px',
               backgroundColor: active ? COLOR.THAN[1] : COLOR.GRAY[3],
-              borderRadius: '8px',
+              borderRadius: '8px'
               // boxShadow: `1px 5px 6px ${COLOR.GRAY[2]}`
             }}
           >

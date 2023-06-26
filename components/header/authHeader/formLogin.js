@@ -19,7 +19,6 @@ const FormLogin = () => {
   const [emailTemp, setEmailTemp] = useState('')
   const [isForgotPassword, setIsForgotPassword] = useState(true)
   const [isLogin, setIsLogin] = useState(false)
-
   const router = useRouter()
   const [isLoading, setIsLoading] = useAtom(loadingAtom)
   const [, setAccount] = useAtom(updateAccountAtom)
@@ -35,7 +34,6 @@ const FormLogin = () => {
         router.push(UrlPath.home.url)
 
         setUser({
-         
           userName: userNameTemp,
           password: passwordTemp
         })
@@ -44,15 +42,16 @@ const FormLogin = () => {
         })
 
         //luu gia tri id ng dung len cookie
-       
+
         Cookies.set('userName', userNameTemp, { expires: 7 })
         Cookies.set('role', res.data.role, { expires: 7 })
         Cookies.set('parkingCode', res.data.parkingCode, { expires: 7 })
 
-       
-
-        const metaViewport = document.querySelector('meta[name="viewport"]');
-        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+        const metaViewport = document.querySelector('meta[name="viewport"]')
+        metaViewport.setAttribute(
+          'content',
+          'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+        )
       })
       .catch(() => {
         setIsLoading(false)
@@ -62,8 +61,7 @@ const FormLogin = () => {
   const onFinish = (values) => {
     console.log('Success:', values)
   }
-  const onFinishFailed = (errorInfo) => {
-  }
+  const onFinishFailed = (errorInfo) => {}
   const handleForgotPassword = () => {
     setIsForgotPassword(false)
     setIsLogin(true)

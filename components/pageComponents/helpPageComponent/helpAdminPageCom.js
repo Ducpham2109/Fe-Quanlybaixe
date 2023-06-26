@@ -3,7 +3,10 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { memo, useState } from 'react'
 import { BASE_URL } from '../../../api/requet'
-import { StyledButtonPressedEffect, StyledH2Hepl } from '../../styled/styledListOfDevice/styledComponent'
+import {
+  StyledButtonPressedEffect,
+  StyledH2Hepl
+} from '../../styled/styledListOfDevice/styledComponent'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -16,26 +19,26 @@ const validateMessages = {
 }
 
 const HelpUserPageComponent = () => {
-
   const [headerContent, setHeaderContent] = useState('')
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const onFinish = async (values) => {
     setIsLoading(true)
- 
   }
   const onFinishFailed = () => {}
 
   return (
     <>
       <Spin size="large" spinning={isLoading}>
-        <Row justify="center" style={{paddingTop: '60px'}}>
+        <Row justify="center" style={{ paddingTop: '60px' }}>
           <Col span={10} style={{ textAlign: 'center' }}>
-          {parseInt(Cookies.get('role')) === 0&&
-            <StyledH2Hepl >Thông Báo đến  mọi người </StyledH2Hepl>}
-              {parseInt(Cookies.get('role')) === 1&&
-            <StyledH2Hepl >Thông Báo đến User </StyledH2Hepl>}
+            {parseInt(Cookies.get('role')) === 0 && (
+              <StyledH2Hepl>Thông Báo đến mọi người </StyledH2Hepl>
+            )}
+            {parseInt(Cookies.get('role')) === 1 && (
+              <StyledH2Hepl>Thông Báo đến User </StyledH2Hepl>
+            )}
             <Form
               labelAlign="thông báo"
               name="basic"
@@ -56,7 +59,7 @@ const HelpUserPageComponent = () => {
                 ]}
               >
                 <Input
-                style={{ height: '50px' }}
+                  style={{ height: '50px' }}
                   placeholder="Tiêu đề"
                   value={headerContent}
                   onBlur={(e) => setHeaderContent(e.target.value)}
@@ -77,7 +80,7 @@ const HelpUserPageComponent = () => {
                 ]}
               >
                 <Input.TextArea
-                style={{ height: '100px' }}
+                  style={{ height: '100px' }}
                   value={content}
                   placeholder="Nội Dung"
                   onBlur={(e) => setContent(e.target.value)}

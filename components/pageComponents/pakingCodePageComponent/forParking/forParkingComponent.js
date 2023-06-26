@@ -1,18 +1,37 @@
-import { Button, Col, Form, Modal, Pagination, Row, Spin, Table, Tooltip } from "antd"
-import Container from "../../../../components/containers/container"
-import COLOR from "../../../../utils/color"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/router"
-import ReloadIcon from "../../../../components/icons/reloadIcon"
-import axios from "axios"
-import { useAtom } from "jotai"
-import Cookies from "js-cookie"
-import { dataAccSearchAtom, deviceClickRowAtom, modalCostVehicle, modalbillVisible, totalAccSearchAtom, valueAccSearchAtom, vehicleModalData, vehiclesDataAtom } from "../../../atom/store"
-import SearchVehicle from "./searchVehicle"
-import AddVehicleModal from "./addVehicleModal"
-import { BASE_URL } from "../../../../api/requet"
-import FormOutVehilce from "./formOutVehilce"
-import ExitParking from "../../../icons/exitParking"
+import {
+  Button,
+  Col,
+  Form,
+  Modal,
+  Pagination,
+  Row,
+  Spin,
+  Table,
+  Tooltip
+} from 'antd'
+import Container from '../../../../components/containers/container'
+import COLOR from '../../../../utils/color'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import ReloadIcon from '../../../../components/icons/reloadIcon'
+import axios from 'axios'
+import { useAtom } from 'jotai'
+import Cookies from 'js-cookie'
+import {
+  dataAccSearchAtom,
+  deviceClickRowAtom,
+  modalCostVehicle,
+  modalbillVisible,
+  totalAccSearchAtom,
+  valueAccSearchAtom,
+  vehicleModalData,
+  vehiclesDataAtom
+} from '../../../atom/store'
+import SearchVehicle from './searchVehicle'
+import AddVehicleModal from './addVehicleModal'
+import { BASE_URL } from '../../../../api/requet'
+import FormOutVehilce from './formOutVehilce'
+import ExitParking from '../../../icons/exitParking'
 
 const ForParkingComponent = (prop) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,78 +47,93 @@ const ForParkingComponent = (prop) => {
   const [dataSearch, setDataAccSearch] = useAtom(dataAccSearchAtom)
   const [totalSearch, setTotalAccSearch] = useAtom(totalAccSearchAtom)
   const [valueSearch, setValueAccSearch] = useAtom(valueAccSearchAtom)
-  const [parrkingCode, setParkingCode] = useState();
-  const [cost,setCost]= useAtom(modalCostVehicle)
+  const [parrkingCode, setParkingCode] = useState()
+  const [cost, setCost] = useAtom(modalCostVehicle)
 
-  const [code,setCode]= useState()
+  const [code, setCode] = useState()
   const router = useRouter()
   const [form] = Form.useForm()
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   const showModal = () => {
-    setVisible(true);
-  };
+    setVisible(true)
+  }
   const [modalData, setModalData] = useAtom(vehicleModalData)
 
- const 
- handleClickExit = (record) => {
-  setModalData(record);
-  setModalVisible(true);
-}
+  const handleClickExit = (record) => {
+    setModalData(record)
+    setModalVisible(true)
+  }
 
   const handleOk = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
 
   const handleCancel = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
+  useEffect(() => {
+    const initialValues = sessionStorage.getItem('parkingCode')
+    setParkingCode(initialValues)
+  }, [])
+  console.log('pa', parrkingCode)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}entryVehicles?Skip=${skip}&PageSize=${pageSize}`
+        )
+        setVehicles(response.data.result.items)
+      } catch (error) {
+        // Xử lý lỗi khi gọi API
+        console.error(error)
+      }
+    }
+
+    fetchData()
+  }, [skip])
+  console.log('ve', vehicles)
   // const [editingKey, setEditingKey] = useState('')
   // const isEditing = (record) => record.key === editingKey
-  useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get(
-        `${BASE_URL}entryVehicles?Skip=${skip}&PageSize=${pageSize}`
-        
-        )
-      setVehicles(response.data.result.items)
-    //  setTotalItem(response.data.result.totalItems)
-    }
-  getData([])
-  }, [skip])
-  useEffect(() => {
-    const initialValues =(sessionStorage.getItem('parkingCode'))
-    setParkingCode(initialValues);
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const response = await axios.get(
+  //       `${BASE_URL}entryVehicles?Skip=3&PageSize=10`
+  //       )
+  //     setVehicles(response.data.result.items)
+  //   //  setTotalItem(response.data.result.totalItems)
+  //   }
+  // getData([])
+  // }, [skip])
 
-//   const handlePaging = (page, pageSizeAnt) => {
-//     setSkip((page - 1) * 10)
-//     setPageSize(pageSizeAnt)
-//     const getImei = async () => {
-//       await axios
-//         .get(
-//           `${BASE_URL}entryVehicles/search?Skip=${
-//             (page - 1) * 10
-//           }&PageSize=${pageSizeAnt}&Search=${valueSearch}`
-//         )
-//         .then((response) => {
-//           if (response.data.result.items.length === 0) {
-//             message.error('Không tìm thấy kết quả nào')
-//           } else {
-//             setDataAccSearch(response.data.result.items)
-//             setTotalAccSearch(response.data.result.totalItems)
-//           }
-//         })
-//         .catch((error) => {
-//           message.error('Không tồn tại')
-//           // setData(newDataConfigFailure)
-//         })
-//     }
-//     if (dataSearch.length === 0) {
-//     } else {
-//       getImei()
-//     }
-//   }
+  //   const handlePaging = (page, pageSizeAnt) => {
+  //     setSkip((page - 1) * 10)
+  //     setPageSize(pageSizeAnt)
+  //     const getImei = async () => {
+  //       await axios
+  //         .get(
+  //           `${BASE_URL}entryVehicles/search?Skip=${
+  //             (page - 1) * 10
+  //           }&PageSize=${pageSizeAnt}&Search=${valueSearch}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.result.items.length === 0) {
+  //             message.error('Không tìm thấy kết quả nào')
+  //           } else {
+  //             setDataAccSearch(response.data.result.items)
+  //             setTotalAccSearch(response.data.result.totalItems)
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           message.error('Không tồn tại')
+  //           // setData(newDataConfigFailure)
+  //         })
+  //     }
+  //     if (dataSearch.length === 0) {
+  //     } else {
+  //       getImei()
+  //     }
+  //   }
 
   const originData = []
   useEffect(() => {
@@ -114,18 +148,16 @@ const ForParkingComponent = (prop) => {
         username: item[1].username,
         vehicleyType: item[1].vehicleyType,
         image: item[1].image,
-        lisenseVehicle: item[1].lisenseVehicle,
-      }));
-    setDataOri(filteredData);
-  }, [vehicles]);
+        lisenseVehicle: item[1].lisenseVehicle
+      }))
+    setDataOri(filteredData)
+  }, [vehicles])
 
-  const handleClose =()=>{
+  const handleClose = () => {
     setCost()
-    console.log("han")
-
+    console.log('han')
   }
   const columns = [
- 
     {
       title: 'ParkingCode',
       dataIndex: 'parkingCode',
@@ -163,34 +195,36 @@ const ForParkingComponent = (prop) => {
       editable: true
     },
     {
-        title: 'Thao tác',
-        dataIndex: 'operation',
-        width: '10%',
-        fixed: 'left',
-      
-        onCell: (record) => {
-          return {
-            record,
-            
-            onClick: () => {
-              // gọi hàm để hiển thị modal
-              // showModal(record);
-              handleClickExit(record)
-            },
-          };
-        },
-        render: () => (
-          <Tooltip title="Cho xe ra" mouseEnterDelay={0.5}>       
-            <div ><ExitParking width={"30px"} height={"30px"} color={"red"}/></div>
-            </Tooltip>
-        ),
-      }, 
-    ]
-    return (
-      <>
-   <Spin spinning={isLoading} tip = "Đang xử lý">
-        <Container backgroundColor={COLOR.BEE[1]}> 
-        <Button 
+      title: 'Thao tác',
+      dataIndex: 'operation',
+      width: '10%',
+      fixed: 'left',
+
+      onCell: (record) => {
+        return {
+          record,
+
+          onClick: () => {
+            // gọi hàm để hiển thị modal
+            // showModal(record);
+            handleClickExit(record)
+          }
+        }
+      },
+      render: () => (
+        <Tooltip title="Cho xe ra" mouseEnterDelay={0.5}>
+          <div>
+            <ExitParking width={'30px'} height={'30px'} color={'red'} />
+          </div>
+        </Tooltip>
+      )
+    }
+  ]
+  return (
+    <>
+      <Spin spinning={isLoading} tip="Đang xử lý">
+        <Container backgroundColor={COLOR.BEE[1]}>
+          <Button
             onClick={() => router.reload()}
             icon={
               <ReloadIcon
@@ -198,21 +232,20 @@ const ForParkingComponent = (prop) => {
                 width={'17px'}
                 height={'17px'}
               />
-            }>
-            
-        </Button>
-        <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
+            }
+          ></Button>
+          <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <AddVehicleModal title="Thêm" form="add" />
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 20 }}>
-              <SearchVehicle/>
+              <SearchVehicle />
             </Col>
           </Row>
           <Form form={form} component={false}>
             <Table
-            columns={columns}
-            bordered
+              columns={columns}
+              bordered
               scroll={{
                 x: 400,
                 y: 600
@@ -224,20 +257,19 @@ const ForParkingComponent = (prop) => {
                     : data
                   : dataSearch
               }
-            rowClassName="editable-row">
-        
-            </Table>
-          
-       <Modal
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onOk={() => setModalVisible(false)}
-        footer={[]}
-        afterClose={handleClose}
-        width={'500px'}
-      >
-           <FormOutVehilce form={prop.form} title={prop.title}/>
-      </Modal>
+              rowClassName="editable-row"
+            ></Table>
+
+            <Modal
+              visible={modalVisible}
+              onCancel={() => setModalVisible(false)}
+              onOk={() => setModalVisible(false)}
+              footer={[]}
+              afterClose={handleClose}
+              width={'500px'}
+            >
+              <FormOutVehilce form={prop.form} title={prop.title} />
+            </Modal>
           </Form>
           {/* <Pagination
             total={dataSearch.length === 0 ? totalItem : totalSearch}
@@ -246,8 +278,8 @@ const ForParkingComponent = (prop) => {
           /> */}
         </Container>
       </Spin>
-      </>
-    )
-  }
-  
-  export default ForParkingComponent
+    </>
+  )
+}
+
+export default ForParkingComponent

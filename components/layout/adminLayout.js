@@ -36,7 +36,7 @@ const FooterStyled = styled(Footer)`
 `
 const ContentStyledAnt = styled(Content)`
   margin-top: 64px;
-  background-color: #ccc;
+  // background-color: #ccc;
 `
 const AdminLayout = ({ children }) => {
   const [isSideBarLess, setSideBarLess] = useState(false)
@@ -84,20 +84,6 @@ const AdminLayout = ({ children }) => {
         <Layout style={{ backgroundColor: COLOR.GRAY[1], minHeight: '100vh' }}>
           <HeaderStyled style={{ backgroundColor: COLOR.THAN[1] }}>
             <HeaderBar onToggleSidebar={handleToggleSidebar} />
-            {/* {isSideBarOverlay && (
-              <Swap
-                match={[
-                  ['(min-width: 768px)', <></>],
-                  [
-                    'default',
-                    <SideBarOverlay
-                      key={3}
-                      onClick={handleClickSideBarOverlay}
-                    />
-                  ]
-                ]}
-              />
-            )} */}
           </HeaderStyled>
           <ContentStyledAnt>{children}</ContentStyledAnt>
           <FooterStyled

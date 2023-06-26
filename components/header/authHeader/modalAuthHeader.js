@@ -23,13 +23,12 @@ const ModalAuthHeader = () => {
   const handleCancel = () => {
     setOpen(false)
   }
-  
+
   return (
     <>
       <StyledButtonPressedEffect onClick={showModal} type="primary">
         Đăng Nhập
       </StyledButtonPressedEffect>
-     
 
       <Modal
         open={open}
@@ -40,7 +39,7 @@ const ModalAuthHeader = () => {
         footer={[]}
         closable={false}
       >
-         <FormLogin />
+        <FormLogin />
       </Modal>
     </>
   )

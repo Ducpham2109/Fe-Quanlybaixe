@@ -115,7 +115,7 @@ const AuthHeader = () => {
                   <RightMenu />
                 </Drawer>
               </StyledDivMenu>
-              <StyledDivLogoMenu style={{marginTop:'-17px'}}>
+              <StyledDivLogoMenu style={{ marginTop: '-17px' }}>
                 <Image
                   src="/images/logoauth.png"
                   alt="logo Dparking"

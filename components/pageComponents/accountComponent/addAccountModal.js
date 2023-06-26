@@ -23,7 +23,6 @@ const AddAccountModal = () => {
       <Button onClick={showModal}>Thêm tài khoản </Button>
       <Modal
         open={open}
-    
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}

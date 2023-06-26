@@ -44,7 +44,6 @@ const AccComoponent = () => {
   const [accountInfo, setAccountInfo] = useState([])
   const [accountAdminInfo, setAccountAdminInfo] = useState([])
 
-
   const [data, setData] = useAtom(accountDataAtom)
   const [dataOri, setDataOri] = useState('')
   const [skip, setSkip] = useState(0)
@@ -54,43 +53,41 @@ const AccComoponent = () => {
   const [dataSearch, setDataAccSearch] = useAtom(dataAccSearchAtom)
   const [totalSearch, setTotalAccSearch] = useAtom(totalAccSearchAtom)
   const [valueSearch, setValueAccSearch] = useAtom(valueAccSearchAtom)
-  const [role,setRole] = useState()
-   
+  const [role, setRole] = useState()
+
   useEffect(() => {
-
-var cookies = document.cookie.split(';');
-// Tìm và lấy giá trị của "parkingCode" từ cookie
-for (var i = 0; i < cookies.length; i++) {
-var cookie = cookies[i].trim();
-if (cookie.startsWith("role=")) {
-  setRole(cookie.substring("role=".length, cookie.length))
-  break;
-}
-}
-}, [role]);
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      if (parseInt(Cookies.get('role')) === 0) {
-        const response = await axios.get(
-          `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
-        );
-      setAccountInfo(response.data)
-
-      } else {
-        const response = await axios.get(
-          `${BASE_URL}account/role?Skip=${skip}&PageSize=${pageSize}&role=2`
-        );
-        setAccountAdminInfo(response.data.result.items);
+    var cookies = document.cookie.split(';')
+    // Tìm và lấy giá trị của "parkingCode" từ cookie
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim()
+      if (cookie.startsWith('role=')) {
+        setRole(cookie.substring('role='.length, cookie.length))
+        break
       }
-    } catch (error) {
-      // Xử lý lỗi khi gọi API
-      console.error(error);
     }
-  };
+  }, [role])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (parseInt(Cookies.get('role')) === 0) {
+          const response = await axios.get(
+            `${BASE_URL}account?Skip=${skip}&PageSize=${pageSize}`
+          )
+          setAccountInfo(response.data)
+        } else {
+          const response = await axios.get(
+            `${BASE_URL}account/role?Skip=${skip}&PageSize=${pageSize}&role=2`
+          )
+          setAccountAdminInfo(response.data.result.items)
+        }
+      } catch (error) {
+        // Xử lý lỗi khi gọi API
+        console.error(error)
+      }
+    }
 
-  fetchData();
-}, [skip]);
+    fetchData()
+  }, [skip])
 
   const handlePaging = (page, pageSizeAnt) => {
     setSkip((page - 1) * 10)
@@ -133,12 +130,12 @@ useEffect(() => {
         permission: item[1].role,
         phoneNumber: item[1].phoneNumber,
         email: item[1].email,
-        parkingCode: item[1].parkingCode,
+        parkingCode: item[1].parkingCode
       })
     })
     setDataOri(originData)
-  }, [accountInfo,accountAdminInfo])
-  console.log("ori,", dataOri)
+  }, [accountInfo, accountAdminInfo])
+  console.log('ori,', dataOri)
   const EditableCell = ({
     editing,
     dataIndex,
@@ -180,8 +177,8 @@ useEffect(() => {
     form.setFieldsValue({
       userName: '',
       password: '',
-      phoneNumber:'',
-      email:'',
+      phoneNumber: '',
+      email: '',
       permission: '',
       ...record
     })
@@ -210,29 +207,29 @@ useEffect(() => {
           ...row
         })
         await axios
-        .put(`${BASE_URL}account`, {
-          role: newData[index].permission,
-          userName: newData[index].userName,
-          password: newData[index].password,
-          phoneNumber: newData[index].phoneNumber,
-          email: newData[index].email,
-        })
-        .then(() => {
-          message.info('Thay đổi thành công')
-          setData(newData)
-        })
-        .catch((error) => {
-          message.error(error.response.data.message)
-          setData(newDataConfigFailure)
-        })
-    } else {
-      newData.push(row)
-      setData(newData)
+          .put(`${BASE_URL}account`, {
+            role: newData[index].permission,
+            userName: newData[index].userName,
+            password: newData[index].password,
+            phoneNumber: newData[index].phoneNumber,
+            email: newData[index].email
+          })
+          .then(() => {
+            message.info('Thay đổi thành công')
+            setData(newData)
+          })
+          .catch((error) => {
+            message.error(error.response.data.message)
+            setData(newDataConfigFailure)
+          })
+      } else {
+        newData.push(row)
+        setData(newData)
+      }
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo)
     }
-  } catch (errInfo) {
-    console.log('Validate Failed:', errInfo)
-  }
-      
+
     setEditingKey('')
     setIsLoading(false)
   }
@@ -243,14 +240,14 @@ useEffect(() => {
       var newData = [...data]
     }
     const index = newData.findIndex((item) => key === item.key)
-    console.log('aasasa',newData[index])
+    console.log('aasasa', newData[index])
 
-    const userName= newData[index].userName
+    const userName = newData[index].userName
     // if(record.parkingCode){
-    axios.delete(`${BASE_URL}management/username?Username=${userName}`) 
+    axios.delete(`${BASE_URL}management/username?Username=${userName}`)
 
     // }
-    axios.delete(`${BASE_URL}account/username?Username=${userName}`) 
+    axios.delete(`${BASE_URL}account/username?Username=${userName}`)
     const newDataAfterDelete = newData.filter((item) => item.key !== key)
     setData(newDataAfterDelete)
   }
@@ -296,7 +293,6 @@ useEffect(() => {
                 </div>
               </Popconfirm>
             </Col>
-            
           </Row>
         )
       }
@@ -335,8 +331,8 @@ useEffect(() => {
       title: 'Quản lý bãi',
       dataIndex: 'parkingCode',
       width: '130px',
-      editable: true,
-    },
+      editable: true
+    }
   ]
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -374,9 +370,9 @@ useEffect(() => {
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <AddAccountModal title="Thêm" form="add" />
             </Col>
-            
+
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-            {role == 0 && <AddAdminModal title="Thêm" form="add" />}
+              {role == 0 && <AddAdminModal title="Thêm" form="add" />}
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <SearchAccount />
@@ -410,9 +406,7 @@ useEffect(() => {
             total={dataSearch.length === 0 ? totalItem : totalSearch}
             onChange={handlePaging}
             style={{ float: 'right', margin: '10px' }}
-            />
-            
-            
+          />
         </Container>
       </Spin>
     </>

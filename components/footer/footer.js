@@ -5,7 +5,8 @@ const FooterCus = () => {
     <>
       <Footer
         style={{
-          textAlign: 'center' , backgroundColor: '#8DEEEE' 
+          textAlign: 'center',
+          backgroundColor: '#8DEEEE'
         }}
       >
         @Design by: Pham Trung Duc

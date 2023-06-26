@@ -36,7 +36,7 @@ const SearchAccount = () => {
             //setValueAccSearch(value)
             setDataAccSearch(response.data.result.items)
             console.log()
-           // setTotalAccSearch(response.data.result.totalItems)
+            // setTotalAccSearch(response.data.result.totalItems)
           }
         })
         .catch((error) => {
@@ -47,8 +47,7 @@ const SearchAccount = () => {
     }
     getUsername()
   }
-  
-  
+
   return (
     <>
       <Spin size="large" spinning={isLoading}>

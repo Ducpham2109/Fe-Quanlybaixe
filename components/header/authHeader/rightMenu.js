@@ -1,10 +1,10 @@
-import React from 'react';
-import ModalAuthHeader from './modalAuthHeader';
+import React from 'react'
+import ModalAuthHeader from './modalAuthHeader'
 const RightMenu = () => {
   return (
     <>
       <ModalAuthHeader />
     </>
-  );
-};
-export default RightMenu;
+  )
+}
+export default RightMenu
