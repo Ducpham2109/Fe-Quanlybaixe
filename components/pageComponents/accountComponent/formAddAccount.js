@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Select, Spin } from 'antd'
+import { Button, Col, Form, Input, message, Row, Select, Spin } from 'antd'
 import axios from 'axios'
 import React, { memo, useState } from 'react'
 import { BASE_URL } from '../../../api/requet'
@@ -17,6 +17,7 @@ const validateMessages = {
 const FormAddAccount = () => {
   const [accountRole, setAccountRole] = useState('')
   const [userName, setUserName] = useState('')
+  const [parkingCode, setParkingCode] = useState('')
   const [password, setPassword] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
@@ -67,6 +68,8 @@ const FormAddAccount = () => {
           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>
             Thêm tài khoản
           </h2>
+          <Row gutter={[16,32]}>
+            <Col>
           {rolee == 0 && (
             <Form.Item
               label="Role"
@@ -84,19 +87,52 @@ const FormAddAccount = () => {
                   width: 120
                 }}
                 onChange={SelectRole}
+                defaultValue={{
+                  value: 1,
+                  label: 'Admin'
+                }}
+              />
+            </Form.Item>
+          )}
+          </Col>
+          <Col >
+          {rolee == 0 && (
+            <Form.Item
+              label="Bãi quản lý"
+              name="parkingCode"
+              rules={[
+                {
+                  required: true,
+                  message: 'Xin Hãy chọn bãi xe!'
+                }
+              ]}
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 200
+                }}
+                onChange={SelectRole}
                 options={[
                   {
-                    value: 2,
-                    label: 'User'
+                    value: 1,
+                    label: 'Chợ Láng Hạ'
                   },
                   {
-                    value: 1,
-                    label: 'Admin'
+                    value: 2,
+                    label: '88 Láng Hạ'
+                  }, 
+                   {
+                    value: 3,
+                    label: '112 Giải Phóng'
                   }
                 ]}
               />
             </Form.Item>
           )}
+          </Col>
+          </Row>
+          
           {rolee == 1 && (
             <Form.Item
               label="Role"
@@ -114,12 +150,10 @@ const FormAddAccount = () => {
                   width: 120
                 }}
                 onChange={SelectRole}
-                options={[
-                  {
-                    value: 2,
-                    label: 'User'
-                  }
-                ]}
+                defaultValue={{
+                  value: 2,
+                  label: 'User'
+                }}
               />
             </Form.Item>
           )}
@@ -163,6 +197,19 @@ const FormAddAccount = () => {
               onBlur={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
+          {/* <Form.Item
+            label="Quyền quản lý bãi"
+            name="parkingCode"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp ParkingCode!'
+              }
+            ]}
+             >
+            <Input value={parkingCode} onBlur={(e) => setParkingCode(e.target.value)} />
+
+             </Form.Item> */}
           <Form.Item
             label="Email"
             name="email"

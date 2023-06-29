@@ -26,7 +26,7 @@ const AddAccountModal = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}
-        width={'350px'}
+        width={'400px'}
       >
         <FormAddAccount />
       </Modal>

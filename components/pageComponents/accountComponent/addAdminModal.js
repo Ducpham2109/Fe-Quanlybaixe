@@ -26,7 +26,7 @@ const AddAdminModal = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}
-        width={'350px'}
+        width={'400px'}
       >
         <FormAddAdmin />
       </Modal>

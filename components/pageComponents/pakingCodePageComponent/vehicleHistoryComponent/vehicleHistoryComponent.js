@@ -49,29 +49,30 @@ const VehicleHistoryComponent = () => {
   const [isCellClicked, setIsCellClicked] = useState(false)
   const [billmodalData, setBillModalData] = useAtom(vehicleBillModalData)
   const [userName, setUserName] = useState('')
-  const [parkingCode, setParkingCode] = useState('')
+  // const [parkingCode, setParkingCode] = useState('')
 
 
   useEffect(() => {
-    const initialValues = sessionStorage.getItem('parkingCode')
-    setParkingCode(initialValues)
+    // const initialValues = parseInt(Cookies.get('parkingCode'))
+    // setParkingCode(initialValues)
     const parsedUserName = String(Cookies.get('userName'))
     setUserName(parsedUserName)
   }, [])
-  // var cookies = document.cookie.split(';')
+//   useEffect(()=>{
+//   var cookies = document.cookie.split(';')
 
-  // // Tìm và lấy giá trị của "parkingCode" từ cookie
-  // var parkingCode
-  // for (var i = 0; i < cookies.length; i++) {
-  //   var cookie = cookies[i].trim()
-  //   if (cookie.startsWith('parkingCode=')) {
-  //     parkingCode = cookie.substring('parkingCode='.length, cookie.length)
-  //     break
-  //   }
-  // }
+//   // Tìm và lấy giá trị của "parkingCode" từ cookie
+//   var parkingCode;
+//   for (var i = 0; i < cookies.length; i++) {
+//     var cookie = cookies[i].trim()
+//     if (cookie.startsWith('parkingCode=')) {
+//       parkingCode = cookie.substring('parkingCode='.length, cookie.length)
+//       break
+//     }
+//   }
+// },[])
 
-  // Sử dụng giá trị parkingCode
-  console.log('parking', parkingCode)
+  
   const onFinish = (values) => {
     setIsLoading(true)
   }
@@ -136,7 +137,7 @@ const VehicleHistoryComponent = () => {
         }
         if (parseInt(Cookies.get('role')) === 1) {
           const response = await axios.get(
-            `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parkingCode}`
+            `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
           )
           setBillsAdmin(response.data.result.items)
         } else {

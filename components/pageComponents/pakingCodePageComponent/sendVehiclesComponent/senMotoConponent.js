@@ -29,7 +29,7 @@ const SendMotoComponent = () => {
   const [userName, setUserName] = useState('')
 
   useEffect(() => {
-    const initialValues = sessionStorage.getItem('parkingCode')
+    const initialValues = parseInt(Cookies.get('parkingCode'));
     setParkingCode(initialValues)
     const parsedUserName = String(Cookies.get('userName'))
     setUserName(parsedUserName)

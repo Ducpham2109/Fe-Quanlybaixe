@@ -3,23 +3,38 @@ import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import axios from 'axios';
 import { capturedImagee } from '../../atom/store';
+import { message } from 'antd';
 
 const CameraComponent = () => {
   const webcamRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false)
   const [capturedImage, setCapturedImage] = useAtom(capturedImagee);
   const [cameraActive, setCameraActive] = useState(true);
+  const [url, setUrl] = useState('')
   const cloudinaryCloudName = 'dmjzk4esn';
   const cloudinaryUploadPreset = 'ImageMoto';
 //  const cloudinaryApiKey = '129629451734981';
 //   const cloudinaryApiSecret = 'rfi8Hh0CX3mkFtDjquGOBMXQorg';
-  const capturePhoto = () => {
+  const capturePhoto = async( ) => {
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
     uploadImageToCloudinary(imageSrc);
     setTimeout(() => {
       setCapturedImage(null);
     }, 3000);
-    console.log("im", imageSrc)
+    console.log("im", url)
+    setIsLoading(true)
+    try {
+      const urla = 'http://localhost:80/api/recognition';
+      const requestBody = {url}; // Thay đổi giá trị dữ liệu tùy theo yêu cầu
+  
+      const response = await axios.post(urla, requestBody);
+      console.log(response.data); // Xử lý dữ liệu trả về từ API
+      // Thực hiện các hành động khác sau khi gọi API thành công
+    } catch (error) {
+      console.error(error); // Xử lý lỗi trong trường hợp gọi API không thành công
+    }
+  
   };
 
   const uploadImageToCloudinary = async (imageData) => {
@@ -40,7 +55,7 @@ const CameraComponent = () => {
           // },
         }
       );
-
+      setUrl(response.data.secure_url)
       console.log('Image uploaded successfully:', response.data.secure_url);
       // Lưu URL của ảnh vào cơ sở dữ liệu hoặc xử lý phản hồi khác tùy ý
     } catch (error) {

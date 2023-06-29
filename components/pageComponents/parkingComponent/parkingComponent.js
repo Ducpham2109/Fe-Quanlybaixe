@@ -34,18 +34,23 @@ const ParkingComponent = ()=>{
     const [dataSearch, setDataAccSearch] = useAtom(dataParkSearchAtom)
     const [totalSearch, setTotalAccSearch] = useAtom(totalParkSearchAtom)
     const [valueSearch, setValueAccSearch] = useAtom(valueParkSearchAtom)
-
-    var cookies = document.cookie.split(';');
-
-    // Tìm và lấy giá trị của "parkingCode" từ cookie
-    var parkingCode;
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.startsWith("parkingCode=")) {
-        parkingCode = cookie.substring("parkingCode=".length, cookie.length);
-        break;
+    useEffect(() => {
+      var cookies = document.cookie.split(';');
+      var parkingCode;
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith("parkingCode=")) {
+          parkingCode = cookie.substring("parkingCode=".length, cookie.length);
+          break;
+        }
       }
-    }
+    
+      // Sử dụng giá trị parkingCode ở đây
+      console.log(parkingCode);
+      // Các hành động khác...
+    
+    }, []); // Thay đổi dependency array nếu cần thiết
+    
 
 // Sử dụng giá trị parkingCode
     useEffect(() => {

@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import { BASE_URL } from '../../api/requet'
+import Cookies from 'js-cookie'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export const options = {
@@ -69,7 +70,7 @@ export function VerticalBarChartCode() {
   const [labels, setLabels] = useState([])
   const [parkingCode,setParkingCode] = useState()
   useEffect(() => {
-    const initialValues =(sessionStorage.getItem('parkingCode'))
+    const initialValues = parseInt(Cookies.get('parkingCode'))
     setParkingCode(initialValues);
   }, []);
   useEffect(() => {
@@ -80,7 +81,7 @@ export function VerticalBarChartCode() {
       const response = await axios.get(
         `${BASE_URL}bill/revenue/month?Month=${i}&ParkingCode=${parkingCode}`
       )
-      revenueData.push(response.data.revenve)
+      revenueData.push(response.data.revenve) 
     }
     setRevenue(revenueData);
   }

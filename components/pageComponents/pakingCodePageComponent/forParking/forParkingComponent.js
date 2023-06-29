@@ -73,7 +73,7 @@ const ForParkingComponent = (prop) => {
     setVisible(false)
   }
   useEffect(() => {
-    const initialValues = sessionStorage.getItem('parkingCode')
+    const initialValues = parseInt(Cookies.get('parkingCode'))
     setParkingCode(initialValues)
   }, [])
   console.log('pa', parrkingCode)

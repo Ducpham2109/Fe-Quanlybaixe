@@ -1,9 +1,8 @@
-import { Form, Input, Spin, message } from 'antd'
-import { useState } from 'react'
-import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
-import { BASE_URL } from '../../../api/requet'
+import { Button, Col, Form, Input, message, Row, Select, Spin } from 'antd'
 import axios from 'axios'
-
+import React, { memo, useState } from 'react'
+import { BASE_URL } from '../../../api/requet'
+import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -14,25 +13,61 @@ const validateMessages = {
     range: '${label} must be between ${min} and ${max}'
   }
 }
-const FormAddAdmin = () => {
-  const [username, setUsername] = useState('')
+
+const FormAddAccount = () => {
+  const [accountRole, setAccountRole] = useState('')
+  const [userName, setUserName] = useState('')
   const [parkingCode, setParkingCode] = useState('')
+  const [password, setPassword] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  var cookies = document.cookie.split(';')
+
+  // Tìm và lấy giá trị của "parkingCode" từ cookie
+  var rolee
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim()
+    if (cookie.startsWith('role=')) {
+      rolee = cookie.substring('role='.length, cookie.length)
+      break
+    }
+  }
 
   const onFinish = (values) => {
-    setIsLoading(true)
+    console.log("va", values)
+    setIsLoading(true);
+
     axios
-      .post(`${BASE_URL}management`, values)
+      .post(`${BASE_URL}account`, values)
       .then(() => {
-        setIsLoading(false)
-        message.info('Thêm thành công')
+        // Gọi API đầu tiên thành công
+        setIsLoading(false);
+        // Tiếp tục gọi API thứ hai
+        setIsLoading(true);
+    
+        axios
+          .post(`${BASE_URL}management`, values)
+          .then(() => {
+            setIsLoading(false);
+            message.info('Thêm thành công');
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            message.error(error.response.data.message);
+          });
       })
       .catch((error) => {
-        setIsLoading(false)
-        message.error(error.response.data.message)
-      })
+        setIsLoading(false);
+        message.error(error.response.data.message);
+      });
+    
   }
   const onFinishFailed = (errorInfo) => {}
+  const SelectRole = (value) => {
+    setAccountRole(value)
+  }
+
   return (
     <>
       <Spin size="large" spinning={isLoading}>
@@ -47,13 +82,102 @@ const FormAddAdmin = () => {
           validateMessages={validateMessages}
         >
           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>
-            {' '}
-            Thêm quyền Admin
+            Thêm tài khoản Admin 
           </h2>
+          <Row gutter={[16,32]}>
+            <Col>
+          {rolee == 0 && (
+            <Form.Item
+              label="Role"
+              name="role"
+              rules={[
+                {
+                  required: true,
+                  message: 'Xin Hãy chọn Quyền!'
+                }
+              ]}
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 120
+                }}
+                onChange={SelectRole}
+                options={[
+                  {
+                    value: 1,
+                    label: 'Admin'
+                  },
+                ]}
+              />
+            </Form.Item>
+          )}
+          </Col>
+          <Col >
+          {rolee == 0 && (
+            <Form.Item
+              label="Bãi quản lý"
+              name="parkingCode"
+              rules={[
+                {
+                  required: true,
+                  message: 'Xin Hãy chọn bãi xe!'
+                }
+              ]}
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 200
+                }}
+                onChange={SelectRole}
+                options={[
+                  {
+                    value: 1,
+                    label: 'Chợ Láng Hạ'
+                  },
+                  {
+                    value: 2,
+                    label: '88 Láng Hạ'
+                  }, 
+                   {
+                    value: 3,
+                    label: '112 Giải Phóng'
+                  }
+                ]}
+              />
+            </Form.Item>
+          )}
+          </Col>
+          </Row>
+          
+          {rolee == 1 && (
+            <Form.Item
+              label="Role"
+              name="role"
+              rules={[
+                {
+                  required: true,
+                  message: 'Xin Hãy chọn Quyền!'
+                }
+              ]}
+            >
+              <Select
+                // defaultValue={2}
+                style={{
+                  width: 120
+                }}
+                onChange={SelectRole}
+                defaultValue={{
+                  value: 2,
+                  label: 'User'
+                }}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             label="Tài Khoản"
-            name="username"
-            style={{ paddingTop: '20px' }}
+            name="userName"
             rules={[
               {
                 required: true,
@@ -66,25 +190,69 @@ const FormAddAdmin = () => {
             ]}
           >
             <Input
-              value={username}
-              onBlur={(e) => setUsername(e.target.value)}
+              value={userName}
+              onBlur={(e) => setUserName(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item
-            label="ParkingCode"
-            name="parkingCode"
-            style={{ paddingBottom: '20px' }}
+            label="Mật Khẩu"
+            name="password"
             rules={[
               {
                 required: true,
-                message: 'Hãy Nhâp parkingCode !'
+                message: 'Hãy Nhâp Mật Khẩu !'
+              },
+              {
+                pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/,
+                message:
+                  'Mật khẩu phải trên 8 ký tự và phải gồm có 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt và 1 số, ví dụ: Mobifone1@ '
+              }
+            ]}
+          >
+            <Input.Password
+              value={password}
+              onBlur={(e) => setPassword(e.target.value)}
+            />
+          </Form.Item>
+          {/* <Form.Item
+            label="Quyền quản lý bãi"
+            name="parkingCode"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp ParkingCode!'
+              }
+            ]}
+             >
+            <Input value={parkingCode} onBlur={(e) => setParkingCode(e.target.value)} />
+
+             </Form.Item> */}
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp email !'
+              }
+            ]}
+          >
+            <Input value={email} onBlur={(e) => setEmail(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="Số Điện Thoại"
+            name="phoneNumber"
+            rules={[
+              {
+                required: true,
+                message: 'Hãy Nhâp số điện thoại !'
               }
             ]}
           >
             <Input
-              value={parkingCode}
-              onBlur={(e) => setParkingCode(e.target.value)}
+              value={phoneNumber}
+              onBlur={(e) => setPhoneNumber(e.target.value)}
             />
           </Form.Item>
 
@@ -99,4 +267,4 @@ const FormAddAdmin = () => {
   )
 }
 
-export default FormAddAdmin
+export default memo(FormAddAccount)

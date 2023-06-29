@@ -35,20 +35,7 @@ const Adminhome = () => {
   //   setParkingCode(parseInt(Cookies.get('parkingCode ')))
   // },[parkingCode]);
   //    console.log("park",parkingCode)
-  var cookies = document.cookie.split(';')
-
-  // Tìm và lấy giá trị của "parkingCode" từ cookie
-  var parkingCode
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i].trim()
-    if (cookie.startsWith('parkingCode=')) {
-      parkingCode = cookie.substring('parkingCode='.length, cookie.length)
-      break
-    }
-  }
-
-  // Sử dụng giá trị parkingCode
-  console.log('parking', parkingCode)
+  
   useEffect(() => {
     const monthNumber = parseInt(moment().format('M'))
     setCurrentMonth(monthNumber)
@@ -57,7 +44,7 @@ const Adminhome = () => {
     if (currentMonth !== '') {
       const getData = async () => {
         const response = await axios.get(
-          `${BASE_URL}bill/revenue/parkingCode/month?Month=${currentMonth}&ParkingCode=${parkingCode}`
+          `${BASE_URL}bill/revenue/parkingCode/month?Month=${currentMonth}&ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
         )
         setMonthRevenue(response.data.revenve)
         console.log('re', response.data.revenve)
@@ -66,22 +53,21 @@ const Adminhome = () => {
     }
   }, [currentMonth])
   useEffect(() => {
-    if (parkingCode) {
+    
       const gettData = async () => {
         const response = await axios.get(
-          `${BASE_URL}parking/capacity/parkingCode?ParkingCode=${parkingCode}`
+          `${BASE_URL}parking/capacity/parkingCode?ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
         )
         setCapacity(response.data.capacity)
         console.log('aaa', response.data.capacity)
       }
-      gettData()
-    }
-  }, [parkingCode])
+      gettData()  
+  }, [])
   useEffect(() => {
     if (currentMonth !== '') {
       const getData = async () => {
         const response = await axios.get(
-          `${BASE_URL}entryVehicles/parkingCode/month?ParkingCode=${parkingCode}&Month=${currentMonth}`
+          `${BASE_URL}entryVehicles/parkingCode/month?ParkingCode=${parseInt(Cookies.get('parkingCode'))}&Month=${currentMonth}`
         )
         setTotalVehicleFalse(response.data.totalVehiclesFalse)
       }

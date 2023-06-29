@@ -325,14 +325,24 @@ const AccComoponent = () => {
       title: 'Quyền',
       dataIndex: 'permission',
       width: '100px',
-      editable: true
+      editable: true,
+      render: (text) => {
+        if (text === 1) {
+          return 'Admin';
+        }
+        if (text === 2) {
+          return 'User';
+        }
+
+        return text;
+      },
     },
-    {
-      title: 'Quản lý bãi',
-      dataIndex: 'parkingCode',
-      width: '130px',
-      editable: true
-    }
+          {
+            title: 'Quản lý bãi',
+            dataIndex: 'parkingCode',
+            width: '130px',
+            editable: true,
+          },
   ]
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -368,11 +378,8 @@ const AccComoponent = () => {
 
           <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-              <AddAccountModal title="Thêm" form="add" />
-            </Col>
-
-            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-              {role == 0 && <AddAdminModal title="Thêm" form="add" />}
+            {role==0 && <AddAdminModal title="Thêm" form="add" />}
+            {role==1 && <AddAccountModal title="Thêm" form="add" />}
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <SearchAccount />
