@@ -13,6 +13,7 @@ import moment from 'moment'
 import { BASE_URL } from '../../../../api/requet'
 import Webcam from 'react-webcam';
 import axios from 'axios';
+import OutCarComponent from './outCarComponent'
 
 const StyledRow = styled(Row)`
   border: 1px solid #000;
@@ -22,144 +23,49 @@ const StyledCol = styled(Col)`
   border: 3px solid #000;
   padding: 0px;
 `
-const SendMotoComponent = () => {
+const OutMotoComponent = () => {
   const [capturedImage, setCapturedImage] = useAtom(capturedImagee)
-  const [type, setType] = useState('xe may')
+  const [type, setType] = useState('')
   const [IDCard, setIDCard] = useState()
   const [parkingCode, setParkingCode] = useState()
   const [entryTime, setEntryTime] = useState()
   const [userName, setUserName] = useState('')
-  const [license, setLisense]=useAtom(licenseMoto)
+  const [lisenseVehicle, setlisenseVehicle]=useAtom(licenseMoto)
   const webcamRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false)
   const [cameraActive, setCameraActive] = useState(true);
-  const cloudinaryCloudName = 'dmjzk4esn';
-  const cloudinaryUploadPreset = 'ImageMoto';
-const [url, setUrlImage] = useState('')
+  const [outTime, setOutTime] = useState('')
+  const [vehicleyType, setvehicleyType] = useState()
+  const [cost, setCost] = useState()
+  const [image, setImage] = useState()
+
 
   useEffect(() => {
     const initialValues = parseInt(Cookies.get('parkingCode'));
     setParkingCode(initialValues)
     const parsedUserName = String(Cookies.get('userName'))
     setUserName(parsedUserName)
-    setEntryTime(moment().format('HH:mm:ss  YYYY-MM-DD '))
+    setOutTime(moment().format('HH:mm:ss  YYYY-MM-DD '))
   }, [])
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-  
-  const handleKeyDown = (event) => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      handleSubmit();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard} `
+        )
+        setImage(response.data.image)
+        setvehicleyType(response.data.vehicleyType)
+        setlisenseVehicle(response.data.lisenseVehicle)
+        setEntryTime(response.data.entryTime)
+      } catch (error) {
+        // Xử lý lỗi khi gọi API
+        console.error(error)
+      }
     }
-  };
-  
-  const handleSubmit = async () => {
-    try {
-      const entryUrl = `${BASE_URL}entryVehicles`;
-      const entryRequestData = {
-        // IDCard: IDCard,
-        lisenseVehicle: license,
-        vehicleyType: type,
-        parkingCode: parkingCode,
-        userName: userName,
-        entryTime: entryTime,
-        image: url,
-      };
-    
-      setIsLoading(true);
 
-      axios.post(entryUrl, entryRequestData)
-        .then(() => {
-          setIsLoading(false);
-          message.info('Thêm thành công');
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          message.error(error.response.data.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const capturePhoto = async( ) => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setCapturedImage(imageSrc);
-    uploadImageToCloudinary(imageSrc);
-    setTimeout(() => {
-      setCapturedImage(null);
-    }, 3000);
-    console.log("im", url)
-    setIsLoading(true)
-    try {
-      const recognitionUrl = 'http://localhost:80/api/recognition';
-      const requestBody = url // Thay đổi giá trị dữ liệu tùy theo yêu cầu
-    
-    
-      const recognitionResponse = await axios.post(recognitionUrl, requestBody);
-      setLisense(recognitionResponse.data.license_plate)
-      console.log(recognitionResponse.data); // Xử lý dữ liệu trả về từ API
-    
-      
-    } catch (error) {
-      console.error(error); // Xử lý lỗi trong trường hợp gọi API không thành công
-    }
-    
-  
-  };
-
-  const uploadImageToCloudinary = async (imageData) => {
-    const formData = new FormData();
-    formData.append('file', imageData);
-    formData.append('upload_preset', cloudinaryUploadPreset);
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      setUrlImage(response.data.secure_url)
-      console.log('Image uploaded successfully:', response.data.secure_url);
-      // Lưu URL của ảnh vào cơ sở dữ liệu hoặc xử lý phản hồi khác tùy ý
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
-  // useEffect(()=>{ 
-  //   // Tạo một đối tượng chứa dữ liệu để gửi lên API
-  //   const values = {
-  //     IDCard: IDCard,
-  //     licensePlate: license,
-  //     vehicleType: type,
-  //     parkingCode: parkingCode,
-  //     senderAccount: userName,
-  //     entryTime: entryTime
-  //   };
-  //   // Gửi yêu cầu POST bằng axios
-  //   console.log('va', values)
-  //   setIsLoading(true)
-  //   axios
-  //     .post(`${BASE_URL}entryVehicles`, values)
-  //     .then(() => {
-  //       setIsLoading(false)
-  //       message.info('Thêm thành công')
-  //     })
-  //     .catch((error) => {
-  //       setIsLoading(false)
-  //       message.error(error.response.data.message)
-  //     })
-  
-  // },[license])
-  
+    fetchData()
+  }, [IDCard ])
+ 
   return (
     <>
       <Row justify="center">
@@ -185,7 +91,7 @@ const [url, setUrlImage] = useState('')
           height: '100%',
         }}
       >
-        {cameraActive && (
+         {cameraActive && (
           <div style={{ width: '100%', height: '100%' }}>
             <Webcam
               audio={false}
@@ -196,7 +102,7 @@ const [url, setUrlImage] = useState('')
           </div>
         )}
       </div>
-      {cameraActive && <button onClick={capturePhoto}>Chụp ảnh</button>}
+      
               </Row>
             </StyledCol>
             <StyledCol
@@ -205,7 +111,7 @@ const [url, setUrlImage] = useState('')
               lg={12}
               style={{ marginTop: '5px', textAlign: 'center' }}
             >
-              <Row
+           <Row
                 style={{
                   marginTop: '20px',
                   display: 'flex',
@@ -213,9 +119,9 @@ const [url, setUrlImage] = useState('')
                   alignItems: 'center'
                 }}
               >
-                {capturedImage && (
+                {image && (
                   <img
-                    src={capturedImage}
+                    src={image}
                     alt="Ảnh chụp"
                     style={{ maxWidth: '100%', maxHeight: '100%' }}
                   />
@@ -246,10 +152,13 @@ const [url, setUrlImage] = useState('')
                 </Col>
               </Row>
               <Row>
-                <h2>Biển số xe: {license} </h2>
+                <h2>Biển số xe: {lisenseVehicle} </h2>
               </Row>
               <Row>
-                <h2>Loại xe: {type} </h2>
+                <h2>Loại xe: {vehicleyType} </h2>
+              </Row>
+              <Row>
+                <h2>Thành tiền: {cost} </h2>
               </Row>
             </Col>
             <Col
@@ -265,7 +174,10 @@ const [url, setUrlImage] = useState('')
                 <h2>Tài khoản gửi: {userName} </h2>
               </Row>
               <Row>
-                <h2>Thời gian vào:{entryTime} </h2>
+                <h2>Thời gian vào :{entryTime} </h2>
+              </Row>
+              <Row>
+                <h2>Thời gian ra :{outTime} </h2>
               </Row>
             </Col>
           </Row>
@@ -275,4 +187,4 @@ const [url, setUrlImage] = useState('')
   )
 }
 
-export default SendMotoComponent
+export default OutMotoComponent

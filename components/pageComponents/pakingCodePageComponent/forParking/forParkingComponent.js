@@ -167,19 +167,19 @@ const ForParkingComponent = (prop) => {
     {
       title: ' Tên tài khoản',
       dataIndex: 'username',
-      width: '15%',
+      width: '13%',
       editable: true
     },
     {
       title: 'Loại xe',
       dataIndex: 'vehicleyType',
-      width: '15%',
+      width: '10%',
       editable: true
     },
     {
       title: 'Biển số xe',
       dataIndex: 'lisenseVehicle',
-      width: '15%',
+      width: '12%',
       editable: true
     },
     {
@@ -191,7 +191,7 @@ const ForParkingComponent = (prop) => {
     {
       title: 'Hình ảnh',
       dataIndex: 'image',
-      width: '20%',
+      width: '28%',
       editable: true
     },
     {

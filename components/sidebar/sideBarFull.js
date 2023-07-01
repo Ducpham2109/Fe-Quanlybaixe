@@ -153,7 +153,7 @@ function SideBarFull({ onClick }) {
               )}
           {isActiveDeivce && (
             <div>
-              <MenuChildrenButton
+                 <MenuChildrenButton
                 active={
                   router.pathname ===
                   `${UrlPath.parkingCode.url}/sendMoto`
@@ -172,7 +172,7 @@ function SideBarFull({ onClick }) {
                   />
                 }
               >
-                Gửi xe máy
+                Gửi xe máy 
               </MenuChildrenButton>
               <MenuChildrenButton
                 active={
@@ -195,6 +195,30 @@ function SideBarFull({ onClick }) {
               >
                 Gửi xe oto
               </MenuChildrenButton>
+              
+           
+              <MenuChildrenButton
+                active={
+                  router.pathname ===
+                  `${UrlPath.parkingCode.url}/outMoto`
+                }
+                href={`${UrlPath.parkingCode.url}/outMoto`}
+                icon={
+                  <ListIcon
+                    width={'1.5em'}
+                    height={'1.5em'}
+                    light={
+                      router.pathname ===
+                      `${UrlPath.parkingCode.url}/outMoto`
+                        ? 1
+                        : 0
+                    }
+                  />
+                }
+              >
+                Cho xe ra
+              </MenuChildrenButton>
+      
               <MenuChildrenButton
                 active={
                   router.pathname ===

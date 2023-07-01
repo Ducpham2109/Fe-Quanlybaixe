@@ -1,8 +1,8 @@
-import { useAtom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import axios from 'axios';
-import { capturedImagee } from '../../atom/store';
+import { capturedImagee, licenseMoto } from '../../atom/store';
 import { message } from 'antd';
 
 const CameraComponent = () => {
@@ -11,6 +11,7 @@ const CameraComponent = () => {
   const [capturedImage, setCapturedImage] = useAtom(capturedImagee);
   const [cameraActive, setCameraActive] = useState(true);
   const [url, setUrl] = useState('')
+  const [lisense, setLisense]=useAtom(licenseMoto)
   const cloudinaryCloudName = 'dmjzk4esn';
   const cloudinaryUploadPreset = 'ImageMoto';
 //  const cloudinaryApiKey = '129629451734981';
@@ -26,9 +27,10 @@ const CameraComponent = () => {
     setIsLoading(true)
     try {
       const urla = 'http://localhost:80/api/recognition';
-      const requestBody = {url}; // Thay đổi giá trị dữ liệu tùy theo yêu cầu
+      const requestBody = 'https://res.cloudinary.com/deae9vxvg/image/upload/v1687963412/b67mtgekdjqjlbsjjb74.jpg'; // Thay đổi giá trị dữ liệu tùy theo yêu cầu
   
       const response = await axios.post(urla, requestBody);
+      setLisense(response.data.license_plate);
       console.log(response.data); // Xử lý dữ liệu trả về từ API
       // Thực hiện các hành động khác sau khi gọi API thành công
     } catch (error) {

@@ -27,5 +27,13 @@ export const UrlPath = {
   sendCar: {
     url: '/parking/',
     title:'Gửi xe oto'
+  },
+  outMoto: {
+    url: '/parking/',
+    title:'Xe máy ra'
+  },
+  outOto: {
+    url: '/parking/',
+    title:'Xe ôto ra'
   }
 }

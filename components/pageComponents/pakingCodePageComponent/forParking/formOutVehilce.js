@@ -11,6 +11,7 @@ import {
 import axios from 'axios'
 import { BASE_URL } from '../../../../api/requet'
 import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
 
 const validateMessages = {
   required: '${label} is required!',
@@ -48,6 +49,7 @@ const FormOutVehilce = () => {
     setUserName(modalData.username)
     setLisenseVehicle(modalData.lisenseVehicle)
     setVehicleyType(modalData.vehicleyType)
+    setParkingCode(parseInt(Cookies.get('parkingCode')))
   })
   const onFinish = async (values) => {
     console.log('values', values)
@@ -85,10 +87,6 @@ const FormOutVehilce = () => {
   }
 
   const onFinishFailed = () => {}
-  useEffect(() => {
-    const initialValues = sessionStorage.getItem('parkingCode')
-    setParkingCode(initialValues)
-  }, [])
   useEffect(() => {
     if (parkingCode && lisenseVehicle) {
       form.setFieldsValue({

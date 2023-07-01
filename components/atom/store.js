@@ -55,7 +55,10 @@ export const totalDeviceAtom = atom(10)
 export const dataSearchAtom = atom([])
 export const totalSearchAtom = atom([])
 export const valueSearchAtom = atom('')
+//bien
+export const licenseMoto = atom()
 // anh
+
 export const capturedImagee = atom(null)
 // account search
 export const skipAccAtom = atom(0)

@@ -22,7 +22,7 @@ const StyledCol = styled(Col)`
   border: 3px solid #000;
   padding: 0px;
 `
-const SendMotoComponent = () => {
+const OutCarComponent = () => {
   const [capturedImage, setCapturedImage] = useAtom(capturedImagee)
   const [type, setType] = useState('xe may')
   const [IDCard, setIDCard] = useState()
@@ -98,7 +98,7 @@ const [url, setUrlImage] = useState('')
     setIsLoading(true)
     try {
       const recognitionUrl = 'http://localhost:80/api/recognition';
-      const requestBody = url // Thay đổi giá trị dữ liệu tùy theo yêu cầu
+      const requestBody = 'https://res.cloudinary.com/deae9vxvg/image/upload/v1687963412/b67mtgekdjqjlbsjjb74.jpg' // Thay đổi giá trị dữ liệu tùy theo yêu cầu
     
     
       const recognitionResponse = await axios.post(recognitionUrl, requestBody);
@@ -186,7 +186,7 @@ const [url, setUrlImage] = useState('')
         }}
       >
         {cameraActive && (
-          <div style={{ width: '100%', height: '100%' }}>
+          <div style={{ width: '90%', height: '90%' }}>
             <Webcam
               audio={false}
               ref={webcamRef}
@@ -251,6 +251,9 @@ const [url, setUrlImage] = useState('')
               <Row>
                 <h2>Loại xe: {type} </h2>
               </Row>
+              <Row>
+                <h2>Thành tiền: {cost} </h2>
+              </Row>
             </Col>
             <Col
               xs={24}
@@ -267,6 +270,9 @@ const [url, setUrlImage] = useState('')
               <Row>
                 <h2>Thời gian vào:{entryTime} </h2>
               </Row>
+              <Row>
+                <h2>Thời gian ra:{outTime} </h2>
+              </Row>
             </Col>
           </Row>
         </Col>
@@ -275,4 +281,4 @@ const [url, setUrlImage] = useState('')
   )
 }
 
-export default SendMotoComponent
+export default OutCarComponent
