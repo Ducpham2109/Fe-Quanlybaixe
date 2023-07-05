@@ -1,4 +1,4 @@
-import { Col, Input, Row, message } from 'antd'
+import { Col, Form, Input, Row, message } from 'antd'
 import {
   H5Styled,
   H8Styled
@@ -11,10 +11,19 @@ import { useEffect, useRef, useState } from 'react'
 import Cookies from 'js-cookie'
 import moment from 'moment'
 import { BASE_URL } from '../../../../api/requet'
-import Webcam from 'react-webcam';
-import axios from 'axios';
-import OutCarComponent from './outCarComponent'
-
+import Webcam from 'react-webcam'
+import axios from 'axios'
+import { StyledButtonPressedEffect } from '../../../styled/styledListOfDevice/styledComponent'
+const validateMessages = {
+  required: '${label} is required!',
+  types: {
+    email: '${label} is not a valid email!',
+    number: '${label} is not a valid number!'
+  },
+  number: {
+    range: '${label} must be between ${min} and ${max}'
+  }
+}
 const StyledRow = styled(Row)`
   border: 1px solid #000;
   padding: 20px;
@@ -29,43 +38,129 @@ const OutMotoComponent = () => {
   const [IDCard, setIDCard] = useState()
   const [parkingCode, setParkingCode] = useState()
   const [entryTime, setEntryTime] = useState()
-  const [userName, setUserName] = useState('')
-  const [lisenseVehicle, setlisenseVehicle]=useAtom(licenseMoto)
-  const webcamRef = useRef(null);
+  const [username, setUserName] = useState('')
+  const [lisenseVehicle, setlisenseVehicle] = useAtom(licenseMoto)
+  const inputRef = useRef(null)
+  const webcamRef = useRef(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [cameraActive, setCameraActive] = useState(true);
+  const [cameraActive, setCameraActive] = useState(true)
   const [outTime, setOutTime] = useState('')
   const [vehicleyType, setvehicleyType] = useState()
   const [cost, setCost] = useState()
+  const [form] = Form.useForm()
   const [image, setImage] = useState()
 
-
   useEffect(() => {
-    const initialValues = parseInt(Cookies.get('parkingCode'));
+    const initialValues = parseInt(Cookies.get('parkingCode'))
     setParkingCode(initialValues)
     const parsedUserName = String(Cookies.get('userName'))
     setUserName(parsedUserName)
     setOutTime(moment().format('HH:mm:ss  YYYY-MM-DD '))
+    inputRef.current.focus()
   }, [])
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard} `
-        )
-        setImage(response.data.image)
-        setvehicleyType(response.data.vehicleyType)
-        setlisenseVehicle(response.data.lisenseVehicle)
-        setEntryTime(response.data.entryTime)
-      } catch (error) {
-        // Xử lý lỗi khi gọi API
-        console.error(error)
-      }
-    }
 
-    fetchData()
-  }, [IDCard ])
- 
+  const onFinishFailed = () => {}
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  })
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      const button = document.querySelector('button[type="submit"]')
+      button.click()
+    } else if (event.key === 'Enter') {
+      event.preventDefault()
+      fetchData(IDCard)
+    }
+  }
+
+  const onFinish = async (values) => {
+      (values.IDCard = IDCard),
+      (values.username = username),
+      (values.lisenseVehicle = lisenseVehicle),
+      (values.entryTime = entryTime),
+      (values.outTime = outTime),
+      (values.vehicleyType = vehicleyType),
+      (values.parkingCode = parkingCode),
+      (values.cost = cost),
+      setIsLoading(true)
+    axios
+      .delete(
+        `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard}`
+      )
+      .then((response) => {
+       
+        console.log('va', values)
+        axios
+          .post(`${BASE_URL}bill`, values)
+
+          .then(() => {
+            setIsLoading(false)
+            message.info('Cho xe ra thành công')
+            inputRef.current.focus()
+            setIDCard()
+            setlisenseVehicle()
+            setvehicleyType()
+             
+            setEntryTime()
+          })
+          .catch((error) => {
+            setIsLoading(false)
+            message.error(error.response.data.message)
+            setIDCard()
+            inputRef.current.focus()
+          })
+      })
+      .catch((error) => {
+        inputRef.current.focus()
+        setIDCard()
+        setIsLoading(false)
+        message.error(error.response.data.message)
+      })
+  }
+  const fetchData = async (IDCard) => {
+    console.log(IDCard)
+    try {
+      const response = await axios.get(
+        `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard} `
+      )
+      const res = await axios.get(
+        `${BASE_URL}entryVehicles/cost?IDCard=${IDCard}&ParkingCode=${parkingCode}`
+      )
+
+      setImage(response.data.result.items[0].image)
+      console.log('aaaaaaa', response.data.result.items[0].image)
+      setvehicleyType(response.data.result.items[0].vehicleyType)
+      setlisenseVehicle(response.data.result.items[0].lisenseVehicle)
+      setEntryTime(response.data.result.items[0].entryTime)
+      setCost(res.data.cost)
+      const cost= res.data.cost;
+      const idCard = IDCard
+      const data = { cost, idCard };
+     
+      console.log("cost", data)
+      const putResponse = await axios.put(`${BASE_URL}ticket/money`, data)
+      .then(() => {
+        setIsLoading(false)
+        message.info('Thanh toán thành công thành công')
+      })
+      .catch((error) => {
+        setIsLoading(false)
+         message.error(error.response.data.message)
+         console.log(error)
+      })
+      
+    } catch (error) {
+      message.error('IDCard chưa được gắn biển số')
+      setIDCard('')  
+      console.error(error)
+    }
+  }
   return (
     <>
       <Row justify="center">
@@ -83,26 +178,28 @@ const OutMotoComponent = () => {
               style={{ marginTop: '5px', textAlign: 'center' }}
             >
               <Row style={{ marginTop: '20px' }}>
-              <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-        }}
-      >
-         {cameraActive && (
-          <div style={{ width: '100%', height: '100%' }}>
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              videoSource="usb" // Chỉ định sử dụng webcam cắm qua cổng USB
-              style={{ width: '100%', height: '100%', transform: 'scaleX(-1)' }}
-            />
-          </div>
-        )}
-      </div>
-      
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '80%'
+                  }}
+                >
+                  <div style={{ width: '80%', height: '80%' }}>
+                    <Webcam
+                      audio={false}
+                      ref={webcamRef}
+                      videoSource="usb" // Specify the webcam connected via USB
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        transform: 'scaleX(-1)'
+                      }}
+                    />
+                  </div>
+                </div>
+                {/* <button onClick={capturePhoto}>Chụp ảnh</button> */}
               </Row>
             </StyledCol>
             <StyledCol
@@ -111,7 +208,7 @@ const OutMotoComponent = () => {
               lg={12}
               style={{ marginTop: '5px', textAlign: 'center' }}
             >
-           <Row
+              <Row
                 style={{
                   marginTop: '20px',
                   display: 'flex',
@@ -119,70 +216,107 @@ const OutMotoComponent = () => {
                   alignItems: 'center'
                 }}
               >
-                {image && (
-                  <img
-                    src={image}
-                    alt="Ảnh chụp"
-                    style={{ maxWidth: '100%', maxHeight: '100%' }}
-                  />
-                )}
+                <img
+                  src={image}
+                  alt="Ảnh chụp"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
               </Row>
             </StyledCol>
           </Row>
         </Col>
       </Row>
-      <Row justify="center" style={{ marginTop: '20px' }}>
-        <Col span={20} style={{ marginLeft: '18px' }}>
-          <Row>
-            <Col
-              xs={24}
-              sm={12}
-              lg={12}
-              style={{ marginTop: '5px', textAlign: 'center' }}
+      <Col span={20} style={{ marginLeft: '120px' }}>
+        <Form
+          name="basic"
+          form={form}
+          initialValues={{
+            remember: true
+          }}
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          validateMessages={validateMessages}
+        >
+          <Row justify="center">
+            <Col xs={24} sm={12} lg={12}>
+              <Row>
+                <Form.Item
+                  name="IDCard"
+                  style={{ paddingTop: '20px', marginBottom: '7px' }}
+                >
+                  <h2 style={{ display: 'flex', alignItems: 'center' }}>
+                    IDCard:
+                    <Input
+                      ref={inputRef}
+                      value={IDCard}
+                      onChange={(e) => setIDCard(e.target.value)}
+                    />
+                  </h2>
+                </Form.Item>
+              </Row>
+              <Row>
+                <Row>
+                  <Form.Item name="parkingCode" style={{ marginBottom: '7px' }}>
+                    <h2>ParkingCode : {parkingCode}</h2>
+                  </Form.Item>
+                </Row>
+                {/* <Form.Item
+              name="parkingCode"
             >
-              <Row align="middle" gutter={16}>
-                <Col>
-                  <h2>ID Card:</h2>
-                </Col>
-                <Col>
-                  <Input
-                    value={IDCard}
-                    onBlur={(e) => setIDCard(e.target.value)}
-                  />
-                </Col>
+              <h2>ParkingCode: {parkingCode} </h2>
+            </Form.Item> */}
               </Row>
               <Row>
-                <h2>Biển số xe: {lisenseVehicle} </h2>
+                <Form.Item name="username" style={{ marginBottom: '7px' }}>
+                  <h2>Tài khoản gửi: {username}</h2>
+                </Form.Item>
               </Row>
+
               <Row>
-                <h2>Loại xe: {vehicleyType} </h2>
-              </Row>
-              <Row>
-                <h2>Thành tiền: {cost} </h2>
+                <Form.Item name="cost" style={{ marginBottom: '7px' }}>
+                  <h2>Thành tiền: {cost}</h2>
+                </Form.Item>
               </Row>
             </Col>
-            <Col
-              xs={24}
-              sm={12}
-              lg={12}
-              style={{ marginTop: '5px', textAlign: 'center' }}
-            >
+            <Col xs={24} sm={12} lg={12}>
               <Row>
-                <h2>Parking Code: {parkingCode} </h2>
+                <Form.Item
+                  name="entryTime"
+                  style={{ paddingTop: '20px', marginBottom: '7px' }}
+                >
+                  <h2>Thời gian vào: {entryTime}</h2>
+                </Form.Item>
               </Row>
               <Row>
-                <h2>Tài khoản gửi: {userName} </h2>
+                <Form.Item name="outTime" style={{ marginBottom: '7px' }}>
+                  <h2>Thời gian ra: {outTime}</h2>
+                </Form.Item>
+              </Row>
+
+              <Row>
+                <Form.Item
+                  name="lisenseVehicle"
+                  style={{ marginBottom: '7px' }}
+                >
+                  <h2>Biển số xe: {lisenseVehicle}</h2>
+                </Form.Item>
               </Row>
               <Row>
-                <h2>Thời gian vào :{entryTime} </h2>
-              </Row>
-              <Row>
-                <h2>Thời gian ra :{outTime} </h2>
+                <Form.Item name="vehicleyType" style={{ marginBottom: '7px' }}>
+                  <h2>Loại xe: {vehicleyType}</h2>
+                </Form.Item>
               </Row>
             </Col>
+
+            <Form.Item style={{ textAlign: 'center' }}>
+              <StyledButtonPressedEffect type="primary" htmlType="submit">
+                Cho xe ra
+              </StyledButtonPressedEffect>
+            </Form.Item>
           </Row>
-        </Col>
-      </Row>
+        </Form>
+      </Col>
     </>
   )
 }

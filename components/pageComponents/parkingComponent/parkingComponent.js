@@ -107,31 +107,31 @@ const ParkingComponent = ()=>{
   const handlePaging = (page, pageSizeAnt) => {
     setSkip((page - 1) * 10)
     setPageSize(pageSizeAnt)
-    const getParking = async () => {
-      await axios
-        .get(
-          `${BASE_URL}account/search?Skip=${
-            (page - 1) * 10
-          }&PageSize=${pageSizeAnt}&Search=${valueSearch}`
-        )
-        .then((response) => {
-          if (response.data.result.items.length === 0) {
-            message.error('Không tìm thấy kết quả nào')
-          } else {s
-            setDataAccSearch(response.data.result.item)
-            setTotalAccSearch(response.data.result.totalItems)
-          }
-        })
+    // const getParking = async () => {
+    //   await axios
+    //     .get(
+    //       `${BASE_URL}account/search?Skip=${
+    //         (page - 1) * 10
+    //       }&PageSize=${pageSizeAnt}&Search=${valueSearch}`
+    //     )
+    //     .then((response) => {
+    //       if (response.data.result.items.length === 0) {
+    //         message.error('Không tìm thấy kết quả nào')
+    //       } else {s
+    //         setDataAccSearch(response.data.result.item)
+    //         setTotalAccSearch(response.data.result.totalItems)
+    //       }
+    //     })
 
-        .catch((error) => {
-          message.error('Không tồn tại')
-          // setData(newDataConfigFailure)
-        })
-    }
-    if (dataSearch.length === 0) {
-    } else {
-      getParking()
-    }
+    //     .catch((error) => {
+    //       message.error('Không tồn tại')
+    //       // setData(newDataConfigFailure)
+    //     })
+    // }
+    // if (dataSearch.length === 0) {
+    // } else {
+    //   getParking()
+    // }
   }
   const EditableCell = ({
     editing,

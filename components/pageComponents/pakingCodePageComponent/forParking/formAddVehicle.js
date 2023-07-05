@@ -4,6 +4,7 @@ import { StyledButtonPressedEffect } from '../../../styled/styledListOfDevice/st
 import moment from 'moment/moment'
 import axios from 'axios'
 import { BASE_URL } from '../../../../api/requet'
+import Cookies from 'js-cookie'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -21,7 +22,7 @@ const FormAddVehicle = () => {
   const [image, setImage] = useState()
 
   const [form] = Form.useForm()
-  const [parkingCode, setParkingCode] = useState()
+  const [parkingCode, setParkingCode] = useState(parseInt(Cookies.get('parkingCode')))
   const [entryTime, setEntryTime] = useState(
     moment().format('HH:mm:ss  YYYY-MM-DD ')
   )
@@ -41,11 +42,7 @@ const FormAddVehicle = () => {
       })
   }
   const onFinishFailed = () => {}
-  // Lấy giá trị initialValues từ localStorage/sessionStorage
-  useEffect(() => {
-    const initialValues = sessionStorage.getItem('parkingCode')
-    setParkingCode(initialValues)
-  }, [])
+
   useEffect(() => {
     if (parkingCode) {
       form.setFieldsValue({ parkingCode: parkingCode })

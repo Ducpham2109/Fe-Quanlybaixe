@@ -35,33 +35,32 @@ const FormAddAccount = () => {
   }
 
   const onFinish = (values) => {
-    console.log("va", values)
-    setIsLoading(true);
+    console.log('va', values)
+    setIsLoading(true)
 
     axios
       .post(`${BASE_URL}account`, values)
       .then(() => {
         // Gọi API đầu tiên thành công
-        setIsLoading(false);
+        setIsLoading(false)
         // Tiếp tục gọi API thứ hai
-        setIsLoading(true);
-    
+        setIsLoading(true)
+
         axios
           .post(`${BASE_URL}management`, values)
           .then(() => {
-            setIsLoading(false);
-            message.info('Thêm thành công');
+            setIsLoading(false)
+            message.info('Thêm thành công')
           })
           .catch((error) => {
-            setIsLoading(false);
-            message.error(error.response.data.message);
-          });
+            setIsLoading(false)
+            message.error(error.response.data.message)
+          })
       })
       .catch((error) => {
-        setIsLoading(false);
-        message.error(error.response.data.message);
-      });
-    
+        setIsLoading(false)
+        message.error(error.response.data.message)
+      })
   }
   const onFinishFailed = (errorInfo) => {}
   const SelectRole = (value) => {
@@ -82,75 +81,75 @@ const FormAddAccount = () => {
           validateMessages={validateMessages}
         >
           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>
-            Thêm tài khoản Admin 
+            Thêm tài khoản Admin
           </h2>
-          <Row gutter={[16,32]}>
+          <Row gutter={[16, 32]}>
             <Col>
-          {rolee == 0 && (
-            <Form.Item
-              label="Role"
-              name="role"
-              rules={[
-                {
-                  required: true,
-                  message: 'Xin Hãy chọn Quyền!'
-                }
-              ]}
-            >
-              <Select
-                // defaultValue={2}
-                style={{
-                  width: 120
-                }}
-                onChange={SelectRole}
-                options={[
-                  {
-                    value: 1,
-                    label: 'Admin'
-                  },
-                ]}
-              />
-            </Form.Item>
-          )}
-          </Col>
-          <Col >
-          {rolee == 0 && (
-            <Form.Item
-              label="Bãi quản lý"
-              name="parkingCode"
-              rules={[
-                {
-                  required: true,
-                  message: 'Xin Hãy chọn bãi xe!'
-                }
-              ]}
-            >
-              <Select
-                // defaultValue={2}
-                style={{
-                  width: 200
-                }}
-                onChange={SelectRole}
-                options={[
-                  {
-                    value: 1,
-                    label: 'Chợ Láng Hạ'
-                  },
-                  {
-                    value: 2,
-                    label: '88 Láng Hạ'
-                  }, 
-                   {
-                    value: 3,
-                    label: '112 Giải Phóng'
-                  }
-                ]}
-              />
-            </Form.Item>
-          )}
-          </Col>
+              {rolee == 0 && (
+                <Form.Item
+                  label="Role"
+                  name="role"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Xin Hãy chọn Quyền!'
+                    }
+                  ]}
+                >
+                  <Select
+                    // defaultValue={2}
+                    style={{
+                      width: 120
+                    }}
+                    onChange={SelectRole}
+                    options={[
+                      {
+                        value: 1,
+                        label: 'Admin'
+                      }
+                    ]}
+                  />
+                </Form.Item>
+              )}
+            </Col>
+            <Col>
+              {rolee == 0 && (
+                <Form.Item
+                  label="Bãi quản lý"
+                  name="parkingCode"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Xin Hãy chọn bãi xe!'
+                    }
+                  ]}
+                >
+                  <Select
+                    // defaultValue={2}
+                    style={{
+                      width: 200
+                    }}
+                    onChange={SelectRole}
+                    options={[
+                      {
+                        value: 1,
+                        label: 'Chợ Láng Hạ'
+                      },
+                      {
+                        value: 2,
+                        label: '88 Láng Hạ'
+                      },
+                      {
+                        value: 3,
+                        label: '112 Giải Phóng'
+                      }
+                    ]}
+                  />
+                </Form.Item>
+              )}
+            </Col>
           </Row>
-          
+
           {rolee == 1 && (
             <Form.Item
               label="Role"
@@ -168,10 +167,12 @@ const FormAddAccount = () => {
                   width: 120
                 }}
                 onChange={SelectRole}
-                defaultValue={{
-                  value: 2,
-                  label: 'User'
-                }}
+                options={[
+                  {
+                    value: 2,
+                    label: 'User'
+                  }
+                ]}
               />
             </Form.Item>
           )}
@@ -246,7 +247,11 @@ const FormAddAccount = () => {
             rules={[
               {
                 required: true,
-                message: 'Hãy Nhâp số điện thoại !'
+                message: 'Hãy Nhập số điện thoại!'
+              },
+              {
+                pattern: /^0[3|5|7|8|9]\d{8}$/,
+                message: 'Nhập đúng số điện thoại!'
               }
             ]}
           >

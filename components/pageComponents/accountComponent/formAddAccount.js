@@ -35,6 +35,7 @@ const FormAddAccount = () => {
   }
 
   const onFinish = (values) => {
+    console.log(values)
     setIsLoading(true)
     axios
       .post(`${BASE_URL}account`, values)
@@ -47,7 +48,11 @@ const FormAddAccount = () => {
         message.error(error.response.data.message)
       })
   }
-  const onFinishFailed = (errorInfo) => {}
+  const onFinishFailed = (errorInfo) => {
+    errorInfo.errorFields.forEach((field) => {
+      message.error(field.errors[0]);
+    });
+  };
   const SelectRole = (value) => {
     setAccountRole(value)
   }
@@ -68,9 +73,8 @@ const FormAddAccount = () => {
           <h2 style={{ fontSize: '20px', textAlign: 'center' }}>
             Thêm tài khoản
           </h2>
-          <Row gutter={[16,32]}>
-            <Col>
-          {rolee == 0 && (
+         
+  
             <Form.Item
               label="Role"
               name="role"
@@ -85,78 +89,17 @@ const FormAddAccount = () => {
                 // defaultValue={2}
                 style={{
                   width: 120
-                }}
-                onChange={SelectRole}
-                defaultValue={{
-                  value: 1,
-                  label: 'Admin'
-                }}
-              />
-            </Form.Item>
-          )}
-          </Col>
-          <Col >
-          {rolee == 0 && (
-            <Form.Item
-              label="Bãi quản lý"
-              name="parkingCode"
-              rules={[
-                {
-                  required: true,
-                  message: 'Xin Hãy chọn bãi xe!'
-                }
-              ]}
-            >
-              <Select
-                // defaultValue={2}
-                style={{
-                  width: 200
                 }}
                 onChange={SelectRole}
                 options={[
                   {
-                    value: 1,
-                    label: 'Chợ Láng Hạ'
-                  },
-                  {
                     value: 2,
-                    label: '88 Láng Hạ'
-                  }, 
-                   {
-                    value: 3,
-                    label: '112 Giải Phóng'
+                    label: 'User'
                   }
                 ]}
               />
             </Form.Item>
-          )}
-          </Col>
-          </Row>
-          
-          {rolee == 1 && (
-            <Form.Item
-              label="Role"
-              name="role"
-              rules={[
-                {
-                  required: true,
-                  message: 'Xin Hãy chọn Quyền!'
-                }
-              ]}
-            >
-              <Select
-                // defaultValue={2}
-                style={{
-                  width: 120
-                }}
-                onChange={SelectRole}
-                defaultValue={{
-                  value: 2,
-                  label: 'User'
-                }}
-              />
-            </Form.Item>
-          )}
+      
           <Form.Item
             label="Tài Khoản"
             name="userName"
@@ -197,19 +140,7 @@ const FormAddAccount = () => {
               onBlur={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
-          {/* <Form.Item
-            label="Quyền quản lý bãi"
-            name="parkingCode"
-            rules={[
-              {
-                required: true,
-                message: 'Hãy Nhâp ParkingCode!'
-              }
-            ]}
-             >
-            <Input value={parkingCode} onBlur={(e) => setParkingCode(e.target.value)} />
-
-             </Form.Item> */}
+          
           <Form.Item
             label="Email"
             name="email"
@@ -223,20 +154,25 @@ const FormAddAccount = () => {
             <Input value={email} onBlur={(e) => setEmail(e.target.value)} />
           </Form.Item>
           <Form.Item
-            label="Số Điện Thoại"
-            name="phoneNumber"
-            rules={[
-              {
-                required: true,
-                message: 'Hãy Nhâp số điện thoại !'
-              }
-            ]}
-          >
-            <Input
-              value={phoneNumber}
-              onBlur={(e) => setPhoneNumber(e.target.value)}
-            />
-          </Form.Item>
+  label="Số Điện Thoại"
+  name="phoneNumber"
+  rules={[
+    {
+      required: true,
+      message: 'Hãy Nhập số điện thoại!',
+    },
+    {
+      pattern: /^0[3|5|7|8|9]\d{8}$/,
+      message: 'Nhập đúng số điện thoại!',
+    },
+  ]}
+>
+  <Input
+    value={phoneNumber}
+    onBlur={(e) => setPhoneNumber(e.target.value)}
+  />
+</Form.Item>
+
 
           <Form.Item style={{ textAlign: 'center' }}>
             <StyledButtonPressedEffect type="primary" htmlType="submit">

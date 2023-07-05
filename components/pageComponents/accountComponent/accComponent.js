@@ -32,6 +32,7 @@ import ReloadIcon from '../../icons/reloadIcon'
 import AddAccountModal from './addAccountModal'
 import SearchAccount from './searchAccount'
 import AddAdminModal from './addAdminModal'
+import AddTicketModal from './AddTicketModal'
 
 const TableAntStyled = styled(Table)`
   background-color: #f5f0bb !important;
@@ -328,22 +329,23 @@ const AccComoponent = () => {
       editable: true,
       render: (text) => {
         if (text === 1) {
-          return 'Admin';
+          return 'Admin'
         }
         if (text === 2) {
-          return 'User';
+          return 'User'
         }
 
-        return text;
-      },
+        return text
+      }
     },
-          {
-            title: 'Quản lý bãi',
-            dataIndex: 'parkingCode',
-            width: '130px',
-            editable: true,
-          },
-  ]
+     (parseInt(Cookies.get('role')) === 0&&
+    {
+      title: 'Quản lý bãi',
+      dataIndex: 'parkingCode',
+      width: '130px',
+      editable: true
+    })
+  ].filter(Boolean);
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col
@@ -377,9 +379,12 @@ const AccComoponent = () => {
           ></Button>
 
           <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
-            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-            {role==0 && <AddAdminModal title="Thêm" form="add" />}
-            {role==1 && <AddAccountModal title="Thêm" form="add" />}
+            <Col xs={{ span: 24 }} lg={{ span: 3 }}>
+              {role == 0 && <AddAdminModal title="Thêm" form="add" />}
+              {role == 1 && <AddAccountModal title="Thêm" form="add" />}
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 3 }}>
+              {role == 1 && <AddTicketModal title="Thêm" form="add" />}
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 4 }}>
               <SearchAccount />

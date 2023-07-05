@@ -6,6 +6,7 @@ import {
   modalbillVisible,
   parkingDataAtom,
   totalParkSearchAtom,
+  totalSearchAtom,
   valueParkSearchAtom,
   vehicleBillModalData,
   vehicleModalData
@@ -49,6 +50,8 @@ const VehicleHistoryComponent = () => {
   const [isCellClicked, setIsCellClicked] = useState(false)
   const [billmodalData, setBillModalData] = useAtom(vehicleBillModalData)
   const [userName, setUserName] = useState('')
+  const [totalSearch, setTotalSearch] = useAtom(totalSearchAtom)
+
   // const [parkingCode, setParkingCode] = useState('')
 
 
@@ -79,6 +82,58 @@ const VehicleHistoryComponent = () => {
   const handlePaging = (page, pageSizeAnt) => {
     setSkip((page - 1) * 7)
     setPageSize(pageSizeAnt)
+  //   setIsLoading(true)
+  //   if(parseInt(Cookies.get('role'))==0){
+  //   const getVehicles = async () => {
+  //     await axios
+  //       .get(
+  //         `${BASE_URL}bill/search?Skip=${(page - 1) * 7}&PageSize=${valueSearch}&Search=${valueSearch}`
+  //       )
+  //       .then((response) => {
+  //         if (response.data.result.items.length === 0) {
+  //           message.error('Không tìm thấy kết quả nào')
+  //         } else {
+  //           message.info('Lấy dữ liệu thành công')
+  //           //setValueAccSearch(value)
+  //           setDataAccSearch(response.data.result.items)
+  //           console.log('aabbbbbaaaa', dataSearch)
+  //           setTotalSearch(response.data.result.totalItems)
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         message.error('Không tồn tại')
+  //         // setData(newDataConfigFailure)
+  //       })
+  //     setIsLoading(false)
+  //   }
+  //   getVehicles()
+  // }
+  // else{
+  //   const getVehicles = async () => {
+  //     await axios
+  //       .get(
+  //         `${BASE_URL}bill/parkingCode/search?Skip=${(page - 1) * 7}&PageSize=${valueSearch}&Search=${valueSearch}&ParkingCode=${(parseInt(Cookies.get('parkingCode'))==0)}`
+  //       )
+  //       .then((response) => {
+  //         if (response.data.result.items.length === 0) {
+  //           message.error('Không tìm thấy kết quả nào')
+  //         } else {
+  //           message.info('Lấy dữ liệu thành công')
+  //           //setValueAccSearch(value)
+  //           setDataAccSearch(response.data.result.items)
+  //           console.log('aabbbbbaaaa', dataSearch)
+  //           setTotalSearch(response.data.result.totalItems)
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         message.error('Không tồn tại')
+  //         // setData(newDataConfigFailure)
+  //       })
+  //     setIsLoading(false)
+  //   }
+  //   getVehicles()
+  // }
+  
     // const getImei = async () => {
     //   await axios
     //     .get(
@@ -139,7 +194,9 @@ const VehicleHistoryComponent = () => {
           const response = await axios.get(
             `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
           )
-          setBillsAdmin(response.data.result.items)
+          setBills(response.data.result.items)
+          setTotalItem(response.data.result.totalItems)
+
         } else {
           const response = await axios.get(
             `${BASE_URL}bill/userName?UserName=${userName}`
@@ -159,7 +216,7 @@ const VehicleHistoryComponent = () => {
 
   useEffect(() => {
     Object.entries(
-      parseInt(Cookies.get('role')) === 0 ? bills : billsAdmin
+      parseInt(Cookies.get('role')) === 0 ? bills : bills
     ).map((item, index) => {
       originData.push({
         key: index,
@@ -176,7 +233,7 @@ const VehicleHistoryComponent = () => {
       })
     })
     setDataOri(originData)
-  }, [bills, billsAdmin])
+  }, [bills])
 
   const columns = [
     {

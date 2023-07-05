@@ -27,9 +27,11 @@ const SearchParking = () =>{
           message.error('Không tìm thấy kết quả nào')
         } else {
           message.info('Lấy dữ liệu thành công')
-          setValueParkSearch(value)
+          
           setDataParkSearch(response.data.result.items)
           setTotalParkSearch(response.data.result.totalItems)
+          console.log('aabbbbbaaaa',response.data.result.items)
+
         }
       })
 

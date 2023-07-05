@@ -32,6 +32,7 @@ const AddAccountModal = () => {
       </Modal>
     </>
   )
+  
 }
 
 export default memo(AddAccountModal)

@@ -22,7 +22,7 @@ const validateMessages = {
   number: {
     range: '${label} must be between ${min} and ${max}'
   }
-}
+};
 const FormOutVehilce = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [cost, setCost] = useAtom(modalCostVehicle)
@@ -31,12 +31,12 @@ const FormOutVehilce = () => {
   )
   const [modalData, setModalData] = useAtom(vehicleModalData)
   const [parkingCode, setParkingCode] = useState()
-  const [lisenseVehicle, setLisenseVehicle] = useState()
-  const [username, setUserName] = useState()
   const [entryTime, setEntryTime] = useState()
-
+  
   const [BillsId, setBillsId] = useState()
   const [imageOut, setImageOut] = useState('')
+  const [lisenseVehicle, setLisenseVehicle] = useState()
+  const [username, setUserName] = useState()
   const [vehicleyType, setVehicleyType] = useState()
   const [imageIn, setImageIn] = useState()
   const router = useRouter()
@@ -58,7 +58,7 @@ const FormOutVehilce = () => {
     setIsLoading(true)
     setTimeout(() => {
       setModalVisible(false)
-    }, 3500)
+    }, 20000)
     axios
       .delete(
         `${BASE_URL}entryVehicles/lisenseVehicle?LisenseVehicle=${lisenseVehicle}&VehileyType=${vehicleyType}&ParkingCode=${parkingCode}`
