@@ -2,6 +2,9 @@ export const UrlPath = {
   home: { url: '/', title: 'Trang Chủ' },
  
   account: { url: '/account', title: 'Quản Lý Tài Khoản' },
+  history: { url: '/history', title: 'Lịch sử gửi xe' },
+ 
+  historyy: { url: '/parking/forParking', title: 'Lịch sử gửi xe' },
 
   auth: { url: '/auth', title: 'Đăng nhập' },
   device: { url: '/parking', title: 'Quản Lý Bãi Xe' },
@@ -21,19 +24,16 @@ export const UrlPath = {
     title:'Thông tin xe gửi'
   },
   sendMoto: {
-    url: '/parking/',
+    url: '/parking/sendMoto',
     title:'Gửi xe máy'
   },
   sendCar: {
-    url: '/parking/',
+    url: '/parking/sendCar',
     title:'Gửi xe oto'
   },
   outMoto: {
-    url: '/parking/',
+    url: '/parking/outMoto',
     title:'Xe máy ra'
   },
-  outOto: {
-    url: '/parking/',
-    title:'Xe ôto ra'
-  }
+
 }

@@ -118,7 +118,7 @@ const SendMotoComponent = () => {
     } catch (error) {
       console.error(error); // Handle the error if the API call fails
     }
-    inputRef.current.focus()
+    // inputRef.current.focus()
   };
 
   const onFinishFailed = () => {};

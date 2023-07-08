@@ -30,6 +30,8 @@ function SideBarFull({ onClick }) {
   const router = useRouter()
   const [isRoleVip, setIsRoleVip] = useState()
   const [isRoleAdmin, setIsRoleAdmin] = useState()
+  const [isRoleUser, setIsRoleUser] = useState()
+
   const [isActiveParkingPage, setIsActiveParkingPage] = useState()
   const [role, setRole] = useState(0)
   const [isActiveDeivce, setIsActiveDevice] = useState(false)
@@ -42,6 +44,8 @@ function SideBarFull({ onClick }) {
     setParkingCode(sessionStorage.getItem('parkingCode'))
     setIsRoleVip(role === RoleEnum.superAdmin)
     setIsRoleAdmin(role === RoleEnum.admin)
+    setIsRoleUser(role === RoleEnum.user)
+
     setIsActiveParkingPage(
       router.pathname === `${UrlPath.parkingCode.url}[parking]` ||
         router.pathname === `${UrlPath.parkingCode.url}/sendMoto` ||
@@ -222,16 +226,16 @@ function SideBarFull({ onClick }) {
               <MenuChildrenButton
                 active={
                   router.pathname ===
-                  `${UrlPath.parkingCode.url}[parking]/forParking`
+                  `${UrlPath.parkingCode.url}/forParking`
                 }
-                href={`${UrlPath.parkingCode.url}${parkingCodeee}/forParking`}
+                href={`${UrlPath.parkingCode.url}/forParking`}
                 icon={
                   <ListIcon
                     width={'1.5em'}
                     height={'1.5em'}
                     light={
                       router.pathname ===
-                      `${UrlPath.parkingCode.url}[parking]/forParking`
+                      `${UrlPath.parkingCode.url}/forParking`
                         ? 1
                         : 0
                     }
@@ -277,26 +281,35 @@ function SideBarFull({ onClick }) {
               {UrlPath.account.title}
             </MenuButtonSideBarFull>
           )}
+          {!isRoleUser&&(
           <MenuButtonSideBarFull
-            active={
-              router.pathname === `${UrlPath.parkingCode.url}[parking]/sending`
-            }
-            href={`${UrlPath.parkingCode.url}${parkingCodeee}/vehicleHistory`}
+          active={router.pathname === UrlPath.history.url}
+          href={UrlPath.history.url}
+          icon={
+            <HomeIcon
+              light={router.pathname === UrlPath.history.url ? 1 : 0}
+              color={COLOR.PRIMARY.BLACK}
+            />
+          }
+        >
+          {UrlPath.history.title}
+      
+          </MenuButtonSideBarFull>
+          )}
+          {isRoleUser&&(
+            <MenuButtonSideBarFull
+            active={router.pathname === UrlPath.historyUser.url}
+            href={UrlPath.historyUser.url}
             icon={
               <ListIcon
-                width={'1.5em'}
-                height={'1.5em'}
-                light={
-                  router.pathname ===
-                  `${UrlPath.parkingCode.url}[parking]/vehicleHistory`
-                    ? 1
-                    : 0
-                }
+                light={router.pathname === UrlPath.historyUser.url ? 1 : 0}
+                color={COLOR.PRIMARY.BLACK}
               />
             }
           >
-            Lịch sử xe gửi
+            {UrlPath.historyUser.title}
           </MenuButtonSideBarFull>
+          )}
           <MenuButtonSideBarFull
             active={router.pathname === UrlPath.help.url}
             href={UrlPath.help.url}

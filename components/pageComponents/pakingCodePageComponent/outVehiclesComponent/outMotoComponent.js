@@ -80,47 +80,46 @@ const OutMotoComponent = () => {
   }
 
   const onFinish = async (values) => {
-      (values.IDCard = IDCard),
-      (values.username = username),
-      (values.lisenseVehicle = lisenseVehicle),
-      (values.entryTime = entryTime),
-      (values.outTime = outTime),
-      (values.vehicleyType = vehicleyType),
-      (values.parkingCode = parkingCode),
-      (values.cost = cost),
-      setIsLoading(true)
-    axios
+    // (values.username = username),
+    // (values.lisenseVehicle = lisenseVehicle),
+    // (values.entryTime = entryTime),
+    // (values.outTime = outTime),
+    // (values.vehicleyType = vehicleyType),
+    // (values.parkingCode = parkingCode),
+    // (values.cost = cost),
+    setIsLoading(true)
+    const data= {username,lisenseVehicle,entryTime,outTime,vehicleyType,parkingCode,cost}
+    await axios 
       .delete(
         `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard}`
       )
       .then((response) => {
-       
-        console.log('va', values)
-        axios
-          .post(`${BASE_URL}bill`, values)
-
-          .then(() => {
-            setIsLoading(false)
-            message.info('Cho xe ra thành công')
-            inputRef.current.focus()
-            setIDCard()
-            setlisenseVehicle()
-            setvehicleyType()
-             
-            setEntryTime()
-          })
-          .catch((error) => {
-            setIsLoading(false)
-            message.error(error.response.data.message)
-            setIDCard()
-            inputRef.current.focus()
-          })
+        setIsLoading(true)
       })
       .catch((error) => {
         inputRef.current.focus()
         setIDCard()
         setIsLoading(false)
         message.error(error.response.data.message)
+      })
+      console.log('va',data)
+      await axios
+      .post(`https://localhost:44366/api/bill`, data)
+      .then(() => {
+        // setIsLoading(false)
+        message.info('Cho xe ra thành công')
+        // inputRef.current.focus()
+        // setIDCard()
+        // setlisenseVehicle()
+        // setvehicleyType()
+         
+        // setEntryTime()
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        message.error(error.response.data.message)
+        setIDCard()
+        inputRef.current.focus()
       })
   }
   const fetchData = async (IDCard) => {
@@ -138,10 +137,10 @@ const OutMotoComponent = () => {
       setvehicleyType(response.data.result.items[0].vehicleyType)
       setlisenseVehicle(response.data.result.items[0].lisenseVehicle)
       setEntryTime(response.data.result.items[0].entryTime)
-      setCost(res.data.cost)
-      const cost= res.data.cost;
+      setCost(res.data.cost+ "" + "VND")
+      const costt= res.data.cost;
       const idCard = IDCard
-      const data = { cost, idCard };
+      const data = { costt, idCard };
      
       console.log("cost", data)
       const putResponse = await axios.put(`${BASE_URL}ticket/money`, data)
@@ -275,7 +274,7 @@ const OutMotoComponent = () => {
 
               <Row>
                 <Form.Item name="cost" style={{ marginBottom: '7px' }}>
-                  <h2>Thành tiền: {cost}</h2>
+                  <h2>Thành tiền: {cost}VND</h2>
                 </Form.Item>
               </Row>
             </Col>

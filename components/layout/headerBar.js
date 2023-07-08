@@ -8,6 +8,7 @@ import RightMenuAdmin from '../header/adminHeader/rightMenuAdmin'
 
 const HeaderBar = ({ onToggleSidebar }) => {
   const getTitle = (url) => {
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1",url)
     switch (url) {
       case UrlPath.home.url: {
         return UrlPath.home.title
@@ -21,6 +22,21 @@ const HeaderBar = ({ onToggleSidebar }) => {
       }
       case UrlPath.help.url: {
         return UrlPath.help.title
+      }
+      case UrlPath.history.url: {
+        return UrlPath.history.title
+      }
+      case UrlPath.historyy.url: {
+        return UrlPath.historyy.title
+      }
+      case UrlPath.sendMoto.url: {
+        return UrlPath.sendMoto.title
+      }
+      case UrlPath.sendCar.url: {
+        return UrlPath.sendCar.title
+      }  
+      case UrlPath.outMoto.url: {
+        return UrlPath.outMoto.title
       }
     
     }

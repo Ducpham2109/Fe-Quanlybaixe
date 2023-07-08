@@ -379,7 +379,7 @@ const AccComoponent = () => {
           ></Button>
 
           <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
-            <Col xs={{ span: 24 }} lg={{ span: 3 }}>
+            <Col  xs={{ span: 24 }} lg={{ span: 3 }}>
               {role == 0 && <AddAdminModal title="Thêm" form="add" />}
               {role == 1 && <AddAccountModal title="Thêm" form="add" />}
             </Col>

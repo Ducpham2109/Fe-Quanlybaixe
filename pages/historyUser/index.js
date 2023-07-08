@@ -1,29 +1,18 @@
 import { useAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import {
-  dataParkSearchAtom,
-  dataParkingAtom,
-  modalbillVisible,
-  parkingDataAtom,
-  totalParkSearchAtom,
-  totalSearchAtom,
-  valueParkSearchAtom,
-  vehicleBillModalData,
-  vehicleModalData
-} from '../../../atom/store'
-import { BASE_URL } from '../../../../api/requet'
+
+
 import Cookies from 'js-cookie'
-import { Button, Col, Modal, Pagination, Row, Spin, Table, Tooltip } from 'antd'
-import BillIcon from '../../../icons/billIcon'
-import { useRouter } from 'next/router'
-import Container from '../../../containers/container'
-import COLOR from '../../../../utils/color'
-import SearchParking from '../../parkingComponent/searchParking'
-import ReloadIcon from '../../../icons/reloadIcon'
+import { Button, Col, Form, Input, Modal, Pagination, Row, Spin, Table, Tooltip } from 'antd'
+
 import axios from 'axios'
-import FormBillVehilce from './formBillVehicle'
-import SearchBill from './searchBill'
-import { BorderBillStyded } from '../../../styled/HomeStyledComponent/listStyled'
+
+import { dataParkSearchAtom, dataParkingAtom, modalbillVisible, parkingDataAtom, totalSearchAtom, vehicleBillModalData } from '../../components/atom/store'
+import { useRouter } from 'next/router'
+import SearchBill from '../../components/pageComponents/pakingCodePageComponent/vehicleHistoryComponent/searchBill'
+import COLOR from '../../utils/color'
+import Container from '../../components/containers/container'
+import ReloadIcon from '../../components/icons/reloadIcon'
 
 const validateMessages = {
   required: '${label} is required!',
@@ -35,7 +24,7 @@ const validateMessages = {
     range: '${label} must be between ${min} and ${max}'
   }
 }
-const VehicleHistoryComponent = () => {
+const VehicleHistoryUserComponent = () => {
   const [modalVisible, setModalVisible] = useAtom(modalbillVisible)
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useAtom(parkingDataAtom)
@@ -44,6 +33,8 @@ const VehicleHistoryComponent = () => {
   const [bills, setBills] = useState([])
   const [totalItem, setTotalItem] = useState(0)
   const [billsAdmin, setBillsAdmin] = useState([])
+  const [showAdditionalField, setShowAdditionalField] = useState(false);
+
   const [dataSearch, setDataAccSearch] = useAtom(dataParkSearchAtom)
   const [pageSize, setPageSize] = useState(7)
   const [parking, setParking] = useAtom(dataParkingAtom)
@@ -51,16 +42,14 @@ const VehicleHistoryComponent = () => {
   const [billmodalData, setBillModalData] = useAtom(vehicleBillModalData)
   const [userName, setUserName] = useState('')
   const [totalSearch, setTotalSearch] = useAtom(totalSearchAtom)
-
+const [IDCard,setIDCard]= useState()
   useEffect(() => {
     // const initialValues = parseInt(Cookies.get('parkingCode'))
     // setParkingCode(initialValues)
     const parsedUserName = String(Cookies.get('userName'))
     setUserName(parsedUserName)
   }, [])
-  const onFinish = (values) => {
-    setIsLoading(true)
-  }
+
   const handlePaging = (page, pageSizeAnt) => {
     setSkip((page - 1) * 7)
     setPageSize(pageSizeAnt)
@@ -141,58 +130,35 @@ const VehicleHistoryComponent = () => {
     //   getImei()
     // }
   }
-  const onFinishFailed = () => {}
+
   const handleCellClick = (record) => {
     setBillModalData(record)
     setIsCellClicked(true)
     setModalVisible(true)
   }
-  useEffect(() => {
-    if (isCellClicked) {
-      console.log('code', billmodalData.parkingCode)
-      const getParking = async () => {
-        const response = await axios.get(
-          `${BASE_URL}Parking/PakingCode?ParkingCode=${billmodalData.parkingCode}`
-        )
-        setParking(response.data)
-      }
-      getParking()
-      setIsCellClicked(false)
-    }
-  }, [billmodalData, isCellClicked])
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setShowAdditionalField(true);
       try {
-        if (parseInt(Cookies.get('role')) === 0) {
-          const response = await axios.get(
+          const response =  axios.get(
             `${BASE_URL}bill?Skip=${skip}&PageSize=${pageSize}`
           )
           setBills(response.data.result.items)
           setTotalItem(response.data.result.totalItems)
-
+    
         }
-        if (parseInt(Cookies.get('role')) === 1) {
-          const response = await axios.get(
-            `${BASE_URL}bill/parkingCode?Skip=${skip}&PageSize=${pageSize}&ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
-          )
-          setBills(response.data.result.items)
-          setTotalItem(response.data.result.totalItems)
-
-        } else {
-          const response = await axios.get(
-            `${BASE_URL}bill/userName?UserName=${userName}`
-          )
-          setBillsAdmin(response.data.result.items)
-        }
-      } catch (error) {
+        
+      catch (error) {
         // Xử lý lỗi khi gọi API
         console.error(error)
       }
     }
+  };
+  
+    
 
-    fetchData()
-  }, [skip])
+
  
   const originData = []
 
@@ -218,28 +184,18 @@ const VehicleHistoryComponent = () => {
   }, [bills])
 
   const columns = [
-    {
-      title: 'ParkingCode',
-      dataIndex: 'parkingCode',
-      width: '10%',
-      editable: true
-    },
-    {
-      title: ' Tên tài khoản',
-      dataIndex: 'username',
-      width: '10%',
-      editable: true
-    },
-    {
-      title: 'Loại xe',
-      dataIndex: 'vehicleyType',
-      width: '8%',
-      editable: true
-    },
+   
     {
       title: 'Biển số xe',
       dataIndex: 'lisenseVehicle',
       width: '10%',
+      editable: true
+    },
+ 
+    {
+      title: 'Loại xe',
+      dataIndex: 'vehicleyType',
+      width: '8%',
       editable: true
     },
     {
@@ -289,66 +245,76 @@ const VehicleHistoryComponent = () => {
 
   return (
     <>
-
       <Spin spinning={isLoading} tip={'Đang xử lý'}>
         <Container backgroundColor={COLOR.BEE[1]}>
-          <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
-            <Col span={3}>
-            <Button
-            onClick={() => router.reload()}
-            icon={
-              <ReloadIcon
-                style={{ margin: '2px 1px 0 4px' }}
-                width={'17px'}
-                height={'17px'}
-              />
+        <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
+        
+        <Button
+        onClick={() => router.reload()}
+        icon={
+          <ReloadIcon
+          style={{ margin: '2px 1px 0 4px' }}
+          width={'17px'}
+          height={'17px'}
+          />
+        }
+        ></Button>
+        </Row>
+        <Row style={{ marginLeft: '30px' }}>
+        <Form.Item
+          label="Nhập IDCard để tìm kiếm"
+          name="idCard"
+          rules={[
+            {
+              required: true,
+              message: 'Hãy Nhâp IDCard!'
+            },
+            {
+              pattern: /^[0-9]+$/,
+              message: 'Hãy nhập số IDCard! '
             }
-          ></Button>
-          </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-              <SearchBill />
-            </Col>
-          </Row>
+          ]}
+        >
+          <Input   onKeyDown={handleKeyDown} value={IDCard} onBlur={(e) => setIDCard(e.target.value)} />
+        </Form.Item>
+        </Row>
+        {/* {setShowAdditionalField&&(    
+             <Row>
+               <SearchBill />
+           </Row>
+          )} */}
+
+      
+       
           <Table
-            style={{ paddingTop: '20px' }}
-            columns={columns}
-            bordered
-            scroll={{
-              x: 400,
-              y: 600
-            }}
-            pagination={false}
-
-            dataSource={
-              dataSearch.length === 0
-                ? Object.keys(data).length === 0
-                  ? dataOri
-                  : data
-                : dataSearch
-            }
-            rowClassName="editable-row"
+          style={{ paddingTop: '20px' }}
+          columns={columns}
+          bordered
+          scroll={{
+            x: 400,
+            y: 600
+          }}
+          pagination={false}
+          
+          dataSource={
+            dataSearch.length === 0
+            ? Object.keys(data).length === 0
+            ? dataOri
+            : data
+            : dataSearch
+          }
+          rowClassName="editable-row"
           ></Table>
-
-          <Modal
-            title=""
-            visible={modalVisible}
-            onCancel={() => setModalVisible(false)}
-            onOk={() => setModalVisible(false)}
-            validateMessages={validateMessages}
-            footer={[]}
-            width={'350px'}
-          >
-            <FormBillVehilce />
-          </Modal>
           <Pagination
             total={dataSearch.length === 0 ? totalItem : totalSearch}
             onChange={handlePaging}
             style={{ float: 'right', margin: '10px' }}
           />
+   
         </Container>
       </Spin>
     </>
   )
 }
 
-export default VehicleHistoryComponent
+export default VehicleHistoryUserComponent
