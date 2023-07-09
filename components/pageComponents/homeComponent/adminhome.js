@@ -8,7 +8,8 @@ import AdminHomeParkingIcon from '../../icons/aminHomeParkingIcon'
 import GreenTickIcon from '../../icons/greenTickIcon'
 import {
   H5Styled,
-  SpanStyled
+  SpanStyled,
+  SpanStyledd
 } from '../../styled/HomeStyledComponent/listStyled'
 import NewUserIcon from '../../icons/newUserIcon'
 import MoneyIcon from '../../icons/moneyIcon'
@@ -19,6 +20,7 @@ import { BASE_URL } from '../../../api/requet'
 import Cookies from 'js-cookie'
 import { VerticalBarChart } from '../../chart/verticalBarChart'
 import { PieChart } from '../../chart/pieChart'
+import { WaveChart } from '../../chart/waveChart'
 
 const Adminhome = () => {
   const [monthRevenue, setMonthRevenue] = useState()
@@ -30,7 +32,12 @@ const Adminhome = () => {
   const [totalItemAcc, setTotalItemAcc] = useState()
   const [skip, setSkip] = useState(0)
   const [pageSize, setPageSize] = useState(10)
-
+  const [parkingName, setParkingName] = useState()
+  const [parkingAddress, setParkingAddress] = useState()
+  const [mmPrice, setMmPrice] = useState()
+  const [mnPrice, setMnPrice] = useState()
+  const [nnPrice, setNnPrice] = useState()
+  const [nmPrice, setNmPrice] = useState()
   //   useEffect(() => {
   //   setParkingCode(parseInt(Cookies.get('parkingCode ')))
   // },[parkingCode]);
@@ -63,6 +70,22 @@ const Adminhome = () => {
       }
       gettData()  
   }, [])
+  useEffect(() => {
+    
+    const gettData = async () => {
+      const response = await axios.get(
+        `${BASE_URL}parking/PakingCode?ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
+      )
+      setParkingName(response.data.parkingName)
+      setParkingAddress(response.data.parkingAddress)
+      setMmPrice(response.data.mmPrice)
+      setMnPrice(response.data.mnPrice)
+      setNmPrice(response.data.nmPrice)
+      setNnPrice(response.data.nnPrice)
+
+    }
+    gettData()  
+}, [])
   useEffect(() => {
     if (currentMonth !== '') {
       const getData = async () => {
@@ -160,15 +183,27 @@ const Adminhome = () => {
         <Row justify="center" gutter={[16, 16]}>
           <Col xs={24} sm={12}>
             <StyledDivChart top={'-56px'}>
-              <VerticalBarChart />
+              <WaveChart />
+
               <br />
             </StyledDivChart>
           </Col>
-          <Col xs={24} sm={12}>
+        <Col xs={24} sm={12}>
             <StyledDivChart top={'-56px'}>
-              <PieChart />
+            <H5Styled style={{ fontSize: '20px', textAlign: 'center', marginTop:'20px' }}>
+         {parkingName}
+        </H5Styled>
+        <div style={{marginLeft:'40px'}}>
+        <SpanStyledd>Giá xe ôto buổi sáng: {nmPrice}VND</SpanStyledd>
+        <SpanStyledd>Giá xe ôto buổi tối: {nnPrice}VND</SpanStyledd>
+        <SpanStyledd>Giá xe máy buổi sáng: {mmPrice}VND</SpanStyledd>
+        <SpanStyledd>Giá xe máy buổi sáng: {mnPrice}VND</SpanStyledd>
+        </div>
+        <p style={{ fontSize: '20px', textAlign: 'center',marginTop:'30px' }}>
+         Địa chỉ: {parkingAddress}
+        </p>
 
-              <br />
+          
             </StyledDivChart>
           </Col>
         </Row>

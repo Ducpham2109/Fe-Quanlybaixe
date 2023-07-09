@@ -69,21 +69,31 @@ export function VerticalBarChartCode() {
   const [revenue, setRevenue]= useState([])
   const [labels, setLabels] = useState([])
   const [parkingCode,setParkingCode] = useState()
-  useEffect(() => {
-    const initialValues = parseInt(Cookies.get('parkingCode'))
-    setParkingCode(initialValues);
-  }, []);
+
   useEffect(() => {
     
     const getData = async () => {
+      console.log(parseInt(Cookies.get('role')))
+      if(parseInt(Cookies.get('role'))==0){
       const revenueData = [];
       for (let i = 1; i <= 12; i++) {
       const response = await axios.get(
-        `${BASE_URL}bill/revenue/month?Month=${i}&ParkingCode=${parkingCode}`
+        `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=${(sessionStorage.getItem('parkingCode'))}`
       )
       revenueData.push(response.data.revenve) 
     }
     setRevenue(revenueData);
+  }
+    // else{
+    //   const revenueData = [];
+    //   for (let i = 1; i <= 12; i++) {
+    //   const response = await axios.get(
+    //     `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=${parseInt(Cookies.get('parkingCode'))}`
+    //   )
+    //   revenueData.push(response.data.revenve) 
+    // }
+    // setRevenue(revenueData);
+    // }
   }
 
     getData()

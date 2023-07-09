@@ -4,7 +4,7 @@ export const UrlPath = {
   account: { url: '/account', title: 'Quản Lý Tài Khoản' },
   history: { url: '/history', title: 'Lịch sử gửi xe' },
  
-  historyy: { url: '/parking/forParking', title: 'Lịch sử gửi xe' },
+  historyUser: { url: '/historyUser', title: 'Lịch sử gửi xe' },
 
   auth: { url: '/auth', title: 'Đăng nhập' },
   device: { url: '/parking', title: 'Quản Lý Bãi Xe' },

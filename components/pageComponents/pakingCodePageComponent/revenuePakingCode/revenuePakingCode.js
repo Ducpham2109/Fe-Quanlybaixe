@@ -17,6 +17,7 @@ import axios from 'axios'
 import { BASE_URL } from '../../../../api/requet'
 import { WaveChart } from '../../../chart/waveChart'
 import { VerticalBarChartCode } from '../../../chart/verticalBarChartCode'
+import { VerticalBarChart } from '../../../chart/verticalBarChart'
 
 const RevenuePakingCode = () => {
   const [parkingCode, setParkingCode] = useState()

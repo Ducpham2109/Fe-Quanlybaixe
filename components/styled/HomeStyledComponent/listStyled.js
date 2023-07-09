@@ -22,6 +22,14 @@ export const SpanStyled = styled.span`
   font-size:20px ;
   font-weight: 600;
   color: #32325d;
+  display:block;
+`
+export const SpanStyledd = styled.span`
+  font-size:20px ;
+  font-weight: 600;
+  color: #32325d;
+  display:block;
+  margin-top: 25px;
 `
 export const PStyled = styled.p`
   font-size: 16px;

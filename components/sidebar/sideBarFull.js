@@ -301,7 +301,7 @@ function SideBarFull({ onClick }) {
             active={router.pathname === UrlPath.historyUser.url}
             href={UrlPath.historyUser.url}
             icon={
-              <ListIcon
+              <HomeIcon
                 light={router.pathname === UrlPath.historyUser.url ? 1 : 0}
                 color={COLOR.PRIMARY.BLACK}
               />

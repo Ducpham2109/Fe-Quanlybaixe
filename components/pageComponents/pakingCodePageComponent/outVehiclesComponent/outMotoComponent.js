@@ -137,7 +137,7 @@ const OutMotoComponent = () => {
       setvehicleyType(response.data.result.items[0].vehicleyType)
       setlisenseVehicle(response.data.result.items[0].lisenseVehicle)
       setEntryTime(response.data.result.items[0].entryTime)
-      setCost(res.data.cost+ "" + "VND")
+      setCost(res.data.cost)
       const costt= res.data.cost;
       const idCard = IDCard
       const data = { costt, idCard };

@@ -144,7 +144,9 @@ const FormAddTicket = () => {
           <Input value={idCard} onBlur={(e) => setIDCard(e.target.value)} />
         </Form.Item> */}
         
-  
+        <p>
+    IDCard: {idCard}
+  </p>
   <p>
     Số dư tài khoản: {moneyd}
   </p>

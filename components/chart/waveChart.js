@@ -71,13 +71,10 @@ export function WaveChart() {
   const [month, setMonth] = useState()
   const [revenue, setRevenue]= useState([])
   const [labels, setLabels] = useState([])
+  const [currentMonth, setCurrentMonth] = useState("");
   const [parkingCode,setParkingCode] = useState()
-const [currentMonth, setCurrentMonth] = useState("");
 
-  useEffect(() => {
-    const initialValues =(sessionStorage.getItem('parkingCode'))
-    setParkingCode(initialValues);
-  }, []);
+
   useEffect(() => {
     const monthNumber = parseInt(moment().format("M"));
     setCurrentMonth(monthNumber);
@@ -89,7 +86,7 @@ const [currentMonth, setCurrentMonth] = useState("");
       const revenueData = [];
       for (let i = 1; i <= 30; i++) {
       const response = await axios.get(
-        `${BASE_URL}bill/revenue/parkingCode/month/day?Day=${i}&Month=${currentMonth}&ParkingCode=${parkingCode}`
+        `${BASE_URL}bill/revenue/parkingCode/month/day?Day=${i}&Month=${currentMonth}&ParkingCode=${(sessionStorage.getItem('parkingCode'))}`
       )
       revenueData.push(response.data.revenve)
     }

@@ -23,11 +23,11 @@ const HeaderBar = ({ onToggleSidebar }) => {
       case UrlPath.help.url: {
         return UrlPath.help.title
       }
+      case UrlPath.historyUser.url: {
+        return UrlPath.historyUser.title
+      }
       case UrlPath.history.url: {
         return UrlPath.history.title
-      }
-      case UrlPath.historyy.url: {
-        return UrlPath.historyy.title
       }
       case UrlPath.sendMoto.url: {
         return UrlPath.sendMoto.title

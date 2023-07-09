@@ -46,7 +46,7 @@ const FormLogin = () => {
         Cookies.set('userName', userNameTemp, { expires: 7 })
         Cookies.set('role', res.data.role, { expires: 7 })
         Cookies.set('parkingCode', res.data.parkingCode, { expires: 7 })
-
+        sessionStorage.setItem('parkingCode', res.data.parkingCode);
         const metaViewport = document.querySelector('meta[name="viewport"]')
         metaViewport.setAttribute(
           'content',

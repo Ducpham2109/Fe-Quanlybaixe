@@ -6,7 +6,7 @@ import {
   Legend,
   LinearScale,
   Title,
-  Tooltip, 
+  Tooltip,
   scales
 } from 'chart.js'
 import React, { useEffect, useState } from 'react'
@@ -16,103 +16,99 @@ import Cookies from 'js-cookie'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top'
-      },
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top'
+    },
+    title: {
+      display: true,
+      text: 'Biểu đồ thống kê doanh thu theo từng tháng '
+    },
+    tooltip: {
+      mode: 'index',
+      intersect: false,
+      callbacks: {
+        label: function (context) {
+          var label = context.dataset.label || ''
+          if (label) {
+            label += ': '
+          }
+          if (context.parsed.y !== null) {
+            label += context.parsed.y.toLocaleString('en-US') + ' VND'
+          }
+          return label
+        }
+      }
+    }
+  },
+  scales: {
+    x: {
+      beginAtZero: true,
       title: {
         display: true,
-        text: 'Biểu đồ thống kê doanh thu theo từng tháng '
-      },
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-        callbacks: {
-          label: function (context) {
-            var label = context.dataset.label || '';
-            if (label) {
-              label += ': ';
-            }
-            if (context.parsed.y !== null) {
-              label += context.parsed.y.toLocaleString('en-US') + ' VND';
-            }
-            return label;
-          },
-        },
-     
+        text: 'Tháng'
+      }
     },
-    },
-      scales: {
-        x: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Tháng',
-          },
-        },
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'VND',
-          },
-        },
-      },
-       
-    
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'VND'
+      }
+    }
   }
-  
+}
+
 export function VerticalBarChart() {
   const [month, setMonth] = useState()
-  const [revenue, setRevenue]= useState([])
+  const [revenue, setRevenue] = useState([])
   const [labels, setLabels] = useState([])
+  const [parkingCode, setParkingCode] = useState()
+
 
   useEffect(() => {
-    
     const getData = async () => {
-      const revenueData = [];
-      if(parseInt(Cookies.get('role')) === 0){
-      for (let i = 1; i <= 12; i++) {
-      const response = await axios.get(
-        `${BASE_URL}bill/revenue/month?Month=${i}`
-      )
-      revenueData.push(response.data.revenve)
+      const revenueData = []
+      if (parseInt(Cookies.get('role')) === 0) {
+        for (let i = 1; i <= 12; i++) {
+          const response = await axios.get(
+            `${BASE_URL}bill/revenue/month?Month=${i}`
+          )
+          revenueData.push(response.data.revenve)
+        }
+        setRevenue(revenueData)
+      } else {
+        for (let i = 1; i <= 12; i++) {
+          const response = await axios.get(
+            `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=1`
+          )
+          revenueData.push(response.data.revenve)
+        }
+        setRevenue(revenueData)
+      }
     }
-    setRevenue(revenueData);
-  }
-  else{
-    for (let i = 1; i <= 12; i++) {
-    const response = await axios.get(
-      `${BASE_URL}bill/revenue/parkingCode/month?Month=${i}&ParkingCode=1`
-    )
-    revenueData.push(response.data.revenve)
-  }
-  setRevenue(revenueData);
-}
-}
 
     getData()
   }, [])
-useEffect(()=>{
-  const label = revenue.map((item,index)=>{
-    console.log("in",index)
-    const monthH= index +1;
-    return monthH
-  })
-setLabels([... label])
-
-},[revenue])
-    const data = {
-      labels,
-        datasets: [
-          {
-            label: 'Doanh thu',
+  useEffect(() => {
+    const label = revenue.map((item, index) => {
+      console.log('in', index)
+      const monthH = index + 1
+      return monthH
+    })
+    setLabels([...label])
+  }, [revenue])
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Doanh thu',
         data: labels.map((item, index) => revenue[index]),
-            backgroundColor: 'rgba(255, 99, 132, 0.5)'
-          },
-        ]
+        backgroundColor: 'rgba(255, 99, 132, 0.5)'
       }
-    return <Bar options={options} data={data}  />
+    ]
   }
+  return <Bar options={options} data={data} />
+}
