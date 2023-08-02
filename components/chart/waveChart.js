@@ -25,7 +25,11 @@ export const options = {
       legend: {
         position: 'top'
       },
+    
       title: {
+        font: {
+          size: 16, // Thay đổi cỡ chữ cho tiêu đề
+        },
         display: true,
         text: 'Biểu đồ thống kê doanh thu theo từng ngày '
       },

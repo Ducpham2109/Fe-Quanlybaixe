@@ -301,29 +301,34 @@ const AccComoponent = () => {
     {
       title: 'Tên Đăng Nhập',
       dataIndex: 'userName',
+      fixed: 'left',
       width: '15%',
       editable: true
     },
     {
       title: 'Mật Khẩu',
+      fixed: 'left',
       dataIndex: 'password',
       width: '17%',
       editable: true
     },
     {
       title: 'Số điện thoại',
+      fixed: 'left',
       dataIndex: 'phoneNumber',
       width: '17%',
       editable: true
     },
     {
       title: 'Email',
+      fixed: 'left',
       dataIndex: 'email',
       width: '23%',
       editable: true
     },
     {
       title: 'Quyền',
+      fixed: 'left',
       dataIndex: 'permission',
       width: '100px',
       editable: true,
@@ -341,6 +346,7 @@ const AccComoponent = () => {
      (parseInt(Cookies.get('role')) === 0&&
     {
       title: 'Quản lý bãi',
+      fixed: 'left',
       dataIndex: 'parkingCode',
       width: '130px',
       editable: true

@@ -222,22 +222,29 @@ const VehicleHistoryComponent = () => {
       title: 'ParkingCode',
       dataIndex: 'parkingCode',
       width: '10%',
-      editable: true
+      editable: true,
+      fixed: 'left'
+
+
     },
     {
       title: ' Tên tài khoản',
       dataIndex: 'username',
       width: '10%',
+      fixed: 'left',
+
       editable: true
     },
     {
       title: 'Loại xe',
+      fixed: 'left',
       dataIndex: 'vehicleyType',
       width: '8%',
       editable: true
     },
     {
       title: 'Biển số xe',
+      fixed: 'left',
       dataIndex: 'lisenseVehicle',
       width: '10%',
       editable: true
@@ -245,16 +252,19 @@ const VehicleHistoryComponent = () => {
     {
       title: 'Thời gian vào',
       dataIndex: 'entryTime',
+      fixed: 'left',
       width: '10%',
       editable: true
     },
     {
+      fixed: 'left',
       title: 'Thời gian ra',
       dataIndex: 'outTime',
       width: '10%',
       editable: true
     },
     {
+      fixed: 'left',
       title: 'Giá tiền',
       dataIndex: 'cost',
       width: '8%',
@@ -262,6 +272,7 @@ const VehicleHistoryComponent = () => {
     },
     {
       title: 'Thao tác',
+      fixed: 'left',
       dataIndex: 'operation',
       width: '10%',
       fixed: 'left',
@@ -331,7 +342,7 @@ const VehicleHistoryComponent = () => {
 
           <Modal
             title=""
-            visible={modalVisible}
+            open={modalVisible}
             onCancel={() => setModalVisible(false)}
             onOk={() => setModalVisible(false)}
             validateMessages={validateMessages}

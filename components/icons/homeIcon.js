@@ -26,3 +26,4 @@ const HomeIcon = (prop) => {
 }
 
 export default memo(HomeIcon)
+

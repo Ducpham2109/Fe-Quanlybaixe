@@ -38,6 +38,12 @@ const HeaderBar = ({ onToggleSidebar }) => {
       case UrlPath.outMoto.url: {
         return UrlPath.outMoto.title
       }
+      case UrlPath.forParking.url: {
+        return UrlPath.forParking.title
+      }
+      case UrlPath.parkingCode.url: {
+        return UrlPath.parkingCode.title
+      }
     
     }
   }

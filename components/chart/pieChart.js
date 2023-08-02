@@ -18,12 +18,12 @@ export const options = {
 }
 export const data = {
   labels: [
-    'Hà Nội',
-    'Hồ Chí Minh',
-    'Cần Thơ',
-    'Đà Nẵng',
-    'Hải Phòng',
-    'Tỉnh Khác'
+    '88 Láng Hạ',
+    'Chợ Láng Hạ',
+    '1112 Giải Phóng',
+    'Chung cư 243',
+    'T4 Time City',
+    'Kho Lĩnh Nam'
   ],
   datasets: [
     {

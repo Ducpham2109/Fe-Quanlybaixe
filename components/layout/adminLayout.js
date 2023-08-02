@@ -36,7 +36,7 @@ const FooterStyled = styled(Footer)`
 `
 const ContentStyledAnt = styled(Content)`
   margin-top: 64px;
-  // background-color: #ccc;
+   background-color: #fff;
 `
 const AdminLayout = ({ children }) => {
   const [isSideBarLess, setSideBarLess] = useState(false)
@@ -67,7 +67,7 @@ const AdminLayout = ({ children }) => {
                 width={isSideBarLess ? 91 : 216}
                 theme="light"
                 style={{
-                  backgroundColor: '#3260A9'
+                  backgroundColor: '#575a5e'
                 }}
               >
                 {isSideBarLess ? (
@@ -82,14 +82,16 @@ const AdminLayout = ({ children }) => {
         />
 
         <Layout style={{ backgroundColor: COLOR.GRAY[1], minHeight: '100vh' }}>
-          <HeaderStyled style={{ backgroundColor: COLOR.THAN[1] }}>
+          <HeaderStyled style={{ backgroundColor: '#575a5e'}}>
             <HeaderBar onToggleSidebar={handleToggleSidebar} />
           </HeaderStyled>
           <ContentStyledAnt>{children}</ContentStyledAnt>
           <FooterStyled
             style={{
-              backgroundColor: COLOR.THAN[1],
-              color: '#fff'
+              backgroundColor: '#575a5e',
+              color: '#fff',
+              fontSize:'16px',
+              fontWeight:400
             }}
           >
             @Design by: Phạm Trung Đức

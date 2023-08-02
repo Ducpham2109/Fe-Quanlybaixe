@@ -8,12 +8,12 @@ export const RowAntStyled = styled(Row)`
   border-top: 1px solid hsla(0, 0%, 100%, 0.08);
 `
 export const H5Styled = styled.h5`
-  color: #101010;
+  color: #28282c;
   text-transform: uppercase;
   font-size: 14px;
 `
 export const H8Styled = styled.h5`
-  color: #101010;
+  color: #7D7463;
   text-transform: uppercase;
   font-size: 25px;
   font-weight: 400;
@@ -21,13 +21,13 @@ export const H8Styled = styled.h5`
 export const SpanStyled = styled.span`
   font-size:20px ;
   font-weight: 600;
-  color: #32325d;
+  color: #484876;
   display:block;
 `
 export const SpanStyledd = styled.span`
   font-size:20px ;
   font-weight: 600;
-  color: #32325d;
+  color: #1e1e44;
   display:block;
   margin-top: 25px;
 `

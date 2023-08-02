@@ -79,7 +79,6 @@ const SendMotoComponent = () => {
              button.click();
            }
   };
-
   const capturePhoto = async () => {
     setEntryTime(moment().format('HH:mm:ss  YYYY-MM-DD '))
     const imageSrc = webcamRef.current.getScreenshot();
@@ -98,7 +97,15 @@ const SendMotoComponent = () => {
         }
       );
       setUrlImage(response.data.secure_url);
+      
       console.log('Image uploaded successfully:', response.data.secure_url);
+      const recognitionUrl = 'http://localhost:80/api/recognition';
+      const requestBody = response.data.secure_url; // Adjust the data value as required
+
+      const recognitionResponse = await axios.post(recognitionUrl, requestBody);
+      
+      console.log(recognitionResponse.data.data[0].textPlate); // Handle the data returned from the API
+      setLisenseVehicle(recognitionResponse.data.data[0].textPlate);
       // Save the URL of the image to the database or handle the response as needed
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -106,18 +113,18 @@ const SendMotoComponent = () => {
     setTimeout(() => {
       setCapturedImage('');
     }, 3000);
-    console.log('Image URL:', image);
     setIsLoading(true);
-    try {
-      const recognitionUrl = 'http://localhost:80/api/recognition';
-      const requestBody = 'https://res.cloudinary.com/deae9vxvg/image/upload/v1687963412/b67mtgekdjqjlbsjjb74.jpg'; // Adjust the data value as required
+    // try {
+    //   const recognitionUrl = 'http://localhost:80/api/recognition';
+    //   const requestBody = ""; // Adjust the data value as required
 
-      const recognitionResponse = await axios.post(recognitionUrl, requestBody);
-      setLisenseVehicle(recognitionResponse.data.license_plate);
-      console.log(recognitionResponse.data); // Handle the data returned from the API
-    } catch (error) {
-      console.error(error); // Handle the error if the API call fails
-    }
+    //   const recognitionResponse = await axios.post(recognitionUrl, requestBody);
+      
+    //   console.log(recognitionResponse.data.data[0].textPlate); // Handle the data returned from the API
+    //   setLisenseVehicle(recognitionResponse.data.data[0].textPlate);
+    // } catch (error) {
+    //   console.error(error); // Handle the error if the API call fails
+    // }
     // inputRef.current.focus()
   };
 
@@ -163,7 +170,7 @@ const SendMotoComponent = () => {
     <>
       <Row justify="center">
         <Col span={23}>
-          <H8Styled style={{ margin: '20px 0px 20px 0px', textAlign: 'center' }}>
+          <H8Styled style={{ margin: '10px 0px 10px 0px', textAlign: 'center' }}>
             Hệ thống gửi xe Dparking
           </H8Styled>
           <Row gutter={[16, 16]}>
@@ -174,14 +181,14 @@ const SendMotoComponent = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '80%'
+                    height: '70%'
                   }}
                 >
                   <div style={{ width: '80%', height: '80%' }}>
                     <Webcam
                       audio={false}
                       ref={webcamRef}
-                      videoSource="usb" // Specify the webcam connected via USB
+                     // videoSource="usb" // Specify the webcam connected via USB
                       style={{ width: '100%', height: '100%', transform: 'scaleX(-1)' }}
                     />
                   </div>

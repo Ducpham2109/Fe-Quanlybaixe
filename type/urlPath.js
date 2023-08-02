@@ -12,7 +12,7 @@ export const UrlPath = {
   help: { url: '/help', title: 'Help' },
 
   forParking: {
-    url: '/parking/',
+    url: '/parking/forParking',
     title:'Gửi xe'
   },
   revenue: {
@@ -33,7 +33,7 @@ export const UrlPath = {
   },
   outMoto: {
     url: '/parking/outMoto',
-    title:'Xe máy ra'
+    title:'Cho xe ra'
   },
 
 }

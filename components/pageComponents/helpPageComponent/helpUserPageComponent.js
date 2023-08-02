@@ -3,10 +3,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { memo, useState } from 'react'
 import { BASE_URL } from '../../../api/requet'
-import {
-  StyledButtonPressedEffect,
-  StyledH2Hepl
-} from '../../styled/styledListOfDevice/styledComponent'
+import { StyledButtonPressedEffect, StyledH2Hepl } from '../../styled/styledListOfDevice/styledComponent'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -27,6 +24,20 @@ const HelpUserPageComponent = () => {
 
   const onFinish = async (values) => {
     setIsLoading(true)
+    await axios
+      .post(`${BASE_URL}notification/user/send`, {
+        user: Cookies.get('userName'),
+        msgText: values.content,
+        msgHeader: values.headerContent
+      })
+      .then(() => {
+        message.info('Ý kiến đã được gửi thành công!')
+        setIsLoading(false)
+      })
+      .catch(() => {
+        message.error('Gửi ý kiến thất bại, vui lòng thử lại!')
+        setIsLoading(false)
+      })
   }
   const onFinishFailed = () => {}
 

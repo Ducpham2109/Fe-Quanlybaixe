@@ -3,10 +3,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { memo, useState } from 'react'
 import { BASE_URL } from '../../../api/requet'
-import {
-  StyledButtonPressedEffect,
-  StyledH2Hepl
-} from '../../styled/styledListOfDevice/styledComponent'
+import { StyledButtonPressedEffect, StyledH2Hepl } from '../../styled/styledListOfDevice/styledComponent'
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -19,12 +16,33 @@ const validateMessages = {
 }
 
 const HelpUserPageComponent = () => {
+
   const [headerContent, setHeaderContent] = useState('')
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const onFinish = async (values) => {
     setIsLoading(true)
+    await axios
+      .post(`${BASE_URL}notification/admin/send`, {
+        user: Cookies.get('userName'),
+        msgText: values.content,
+        msgHeader: values.headerContent
+      })
+      .then(() => {
+        message.info('Thông báo đã được gửi thành công!')
+        setIsLoading(false)
+      })
+      .catch(() => {
+        message.error('Gửi thông báo thất bại, vui lòng thử lại!')
+        setIsLoading(false)
+      })
+    // await axios.post(`${BASE_URL}message`, {
+    //   userName: Cookies.get('userName'),
+    //   role: Cookies.get('role'),
+    //   headerContent: values.headerContent,
+    //   content: values.content
+    // })
   }
   const onFinishFailed = () => {}
 

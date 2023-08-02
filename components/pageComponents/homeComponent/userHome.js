@@ -210,74 +210,21 @@ const ParkingComponent = () => {
 
   const columns = [
     {
-      title: 'Thao tác',
-      dataIndex: 'operation',
-      width: '10%',
-      fixed: 'left'
-      // render: (_, record) => {
-      //   const editable = isEditing(record)
-      //   return editable ? (
-      //     <Row justify="center" gutter={[8, 4]}>
-
-      //       <Col>
-      //         <Typography.Link onClick={() => save(record.key)}>
-      //           <Button>Lưu</Button>
-      //         </Typography.Link>
-      //       </Col>
-      //       <Col>
-      //         <Popconfirm title="chắc chắn để hủy?" onConfirm={cancel}>
-      //           <Button>Hủy</Button>
-      //         </Popconfirm>
-      //       </Col>
-      //     </Row>
-      //   ) : (
-      //     <Row justify="center" gutter={[8, 4]}>
-      //        <Col>
-      //         <Tooltip title="Xem chi tiết" mouseEnterDelay={0.5}>
-      //           <EyeOutlined
-      //             onClick={() => {
-      //               handleClickEye(record)
-      //             }}
-      //             style={{ fontSize: '20px' }}
-      //           />
-      //         </Tooltip>
-      //         </Col>
-      //       <Col>
-      //         <Typography.Link
-      //           disabled={editingKey !== ''}
-      //           onClick={() => edit(record)}
-      //         >
-      //           <EditIcon height={'1.5em'} width={'1.5em'} />
-      //         </Typography.Link>
-      //       </Col>
-      //       <Col>
-      //         <Popconfirm
-      //           title="chắc chắn để xóa?"
-      //           onConfirm={() => handleDelete(record.key)}
-      //         >
-      //           <div style={{ cursor: 'pointer' }}>
-      //             <DeleteIcon width={'20px'} height={'20px'} />
-
-      //           </div>
-      //         </Popconfirm>
-      //       </Col>
-      //     </Row>
-      //   )
-      // }
-    },
-    {
       title: ' Tên Bãi Đỗ',
       dataIndex: 'parkingName',
+      fixed: 'left',
       width: '10%',
       editable: true
     },
     {
       title: 'Địa Chỉ',
+      fixed: 'left',
       dataIndex: 'parkingAddress',
       width: '15%',
       editable: true
     },
     {
+      fixed: 'left',
       title: 'Trạng thái',
       dataIndex: 'capacity',
       width: '10%',
@@ -287,6 +234,7 @@ const ParkingComponent = () => {
       }
     },
     {
+      fixed: 'left',
       title: ' Giá oto sáng',
       dataIndex: 'nmPrice',
       width: '10%',
@@ -295,10 +243,12 @@ const ParkingComponent = () => {
     {
       title: 'Giá oto tối',
       dataIndex: 'nnPrice',
+      fixed: 'left',
       width: '10%',
       editable: true
     },
     {
+      fixed: 'left',
       title: 'Giá xe máy sáng',
       dataIndex: 'mmPrice',
       width: '11%',
@@ -306,6 +256,7 @@ const ParkingComponent = () => {
     },
     {
       title: 'Giá xe máy tối',
+      fixed: 'left',
       dataIndex: 'mnPrice',
       width: '10%',
       editable: true

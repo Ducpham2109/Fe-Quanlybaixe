@@ -24,6 +24,10 @@ import MenuButtonSideBarFull from './menuButtonSideBarFull'
 import MenuButtonTemp from './menuButtonTemp'
 import MenuChildrenButton from './menuChildrenButton'
 import COLOR from '../../utils/color'
+import CarIcon from '../icons/carIcon'
+import MotoIcon from '../icons/motoIcon'
+import ExitsideIcon from '../icons/exitsideIcon'
+import HistoryIcon from '../icons/historyIcon'
 
 function SideBarFull({ onClick }) {
   const logo = '/images/logoauth.png'
@@ -160,16 +164,16 @@ function SideBarFull({ onClick }) {
                  <MenuChildrenButton
                 active={
                   router.pathname ===
-                  `${UrlPath.parkingCode.url}/sendMoto`
+                  `${UrlPath.parkingCode.url}sendMoto`
                 }
-                href={`${UrlPath.parkingCode.url}/sendMoto`}
+                href={`${UrlPath.parkingCode.url}sendMoto`}
                 icon={
-                  <ListIcon
+                  <MotoIcon
                     width={'1.5em'}
                     height={'1.5em'}
                     light={
                       router.pathname ===
-                      `${UrlPath.parkingCode.url}/sendMoto`
+                      `${UrlPath.parkingCode.url}sendMoto`
                         ? 1
                         : 0
                     }
@@ -181,11 +185,11 @@ function SideBarFull({ onClick }) {
               <MenuChildrenButton
                 active={
                   router.pathname ===
-                  `${UrlPath.parkingCode.url}/sendCar`
+                  `${UrlPath.parkingCode.url}sendCar`
                 }
-                href={`${UrlPath.parkingCode.url}/sendCar`}
+                href={`${UrlPath.parkingCode.url}sendCar`}
                 icon={
-                  <ListIcon
+                  <CarIcon
                     width={'1.5em'}
                     height={'1.5em'}
                     light={
@@ -204,16 +208,16 @@ function SideBarFull({ onClick }) {
               <MenuChildrenButton
                 active={
                   router.pathname ===
-                  `${UrlPath.parkingCode.url}/outMoto`
+                  `${UrlPath.parkingCode.url}outMoto`
                 }
-                href={`${UrlPath.parkingCode.url}/outMoto`}
+                href={`${UrlPath.parkingCode.url}outMoto`}
                 icon={
-                  <ListIcon
+                  <ExitsideIcon
                     width={'1.5em'}
                     height={'1.5em'}
                     light={
                       router.pathname ===
-                      `${UrlPath.parkingCode.url}/outMoto`
+                      `${UrlPath.parkingCode.url}outMoto`
                         ? 1
                         : 0
                     }
@@ -226,16 +230,16 @@ function SideBarFull({ onClick }) {
               <MenuChildrenButton
                 active={
                   router.pathname ===
-                  `${UrlPath.parkingCode.url}/forParking`
+                  `${UrlPath.parkingCode.url}forParking`
                 }
-                href={`${UrlPath.parkingCode.url}/forParking`}
+                href={`${UrlPath.parkingCode.url}forParking`}
                 icon={
                   <ListIcon
                     width={'1.5em'}
                     height={'1.5em'}
                     light={
                       router.pathname ===
-                      `${UrlPath.parkingCode.url}/forParking`
+                      `${UrlPath.parkingCode.url}forParking`
                         ? 1
                         : 0
                     }
@@ -286,7 +290,7 @@ function SideBarFull({ onClick }) {
           active={router.pathname === UrlPath.history.url}
           href={UrlPath.history.url}
           icon={
-            <HomeIcon
+            <HistoryIcon
               light={router.pathname === UrlPath.history.url ? 1 : 0}
               color={COLOR.PRIMARY.BLACK}
             />
@@ -301,7 +305,7 @@ function SideBarFull({ onClick }) {
             active={router.pathname === UrlPath.historyUser.url}
             href={UrlPath.historyUser.url}
             icon={
-              <HomeIcon
+              <HistoryIcon
                 light={router.pathname === UrlPath.historyUser.url ? 1 : 0}
                 color={COLOR.PRIMARY.BLACK}
               />
@@ -310,15 +314,18 @@ function SideBarFull({ onClick }) {
             {UrlPath.historyUser.title}
           </MenuButtonSideBarFull>
           )}
-          <MenuButtonSideBarFull
-            active={router.pathname === UrlPath.help.url}
-            href={UrlPath.help.url}
-            icon={
-              <HelpIcon light={router.pathname === UrlPath.help.url ? 1 : 0} />
-            }
-          >
-            Thông Báo
-          </MenuButtonSideBarFull>
+          {!isRoleAdmin&&(
+               <MenuButtonSideBarFull
+               active={router.pathname === UrlPath.help.url}
+               href={UrlPath.help.url}
+               icon={
+                 <HelpIcon light={router.pathname === UrlPath.help.url ? 1 : 0} />
+               }
+             >
+               Thông Báo
+             </MenuButtonSideBarFull>
+          )}
+       
         </DivSideBarStyled3>
       </DivSideBarStyled1>
     </>

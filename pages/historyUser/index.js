@@ -189,32 +189,42 @@ const VehicleHistoryUserComponent = () => {
       title: 'Biển số xe',
       dataIndex: 'lisenseVehicle',
       width: '10%',
-      editable: true
+      editable: true,
+      fixed: 'left',
+
     },
 
     {
       title: 'Loại xe',
       dataIndex: 'vehicleyType',
       width: '8%',
-      editable: true
+      fixed: 'left',
+      editable: true,
     },
     {
       title: 'Thời gian vào',
       dataIndex: 'entryTime',
       width: '10%',
-      editable: true
+      editable: true,
+      fixed: 'left',
+
     },
     {
       title: 'Thời gian ra',
       dataIndex: 'outTime',
       width: '10%',
-      editable: true
+      editable: true,
+      fixed: 'left',
+
     },
     {
       title: 'Giá tiền',
       dataIndex: 'cost',
       width: '8%',
-      editable: true
+      editable: true,
+    
+      fixed: 'left',
+
     },
     {
       title: 'Thao tác',

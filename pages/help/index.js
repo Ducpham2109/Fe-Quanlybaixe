@@ -12,7 +12,7 @@ const Index = () => {
 
   useEffect(() => {
     setRole(parseInt(Cookies.get('role')))
-    setIsRoleVip(role === RoleEnum.superAdmin || role === RoleEnum.admin)
+    setIsRoleVip(role === RoleEnum.superAdmin)
   })
   return (
     <>

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const DivSideBarStyled1 = styled.div`
-  background: #FFA500;
+  background: #3a74c0;
   height: 100vh;
   position: fixed;
   z-index: 1000;

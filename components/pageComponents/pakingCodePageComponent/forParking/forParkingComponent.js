@@ -162,62 +162,47 @@ const ForParkingComponent = (prop) => {
       title: 'ParkingCode',
       dataIndex: 'parkingCode',
       width: '10%',
-      editable: true
+      editable: true,
+      fixed: 'left'
     },
     {
       title: ' Tên tài khoản',
       dataIndex: 'username',
       width: '13%',
+      fixed: 'left',
+
       editable: true
     },
     {
       title: 'Loại xe',
       dataIndex: 'vehicleyType',
       width: '10%',
-      editable: true
+      fixed: 'left',
+
+      editable: true,
+      fixed: 'left'
     },
     {
       title: 'Biển số xe',
       dataIndex: 'lisenseVehicle',
+      fixed: 'left',
       width: '12%',
       editable: true
     },
     {
       title: 'Thời gian vào',
       dataIndex: 'entryTime',
+      fixed: 'left',
       width: '15%',
-      editable: true
+      editable: true,
+      
     },
     {
+      fixed: 'left',
       title: 'Hình ảnh',
       dataIndex: 'image',
       width: '28%',
       editable: true
-    },
-    {
-      title: 'Thao tác',
-      dataIndex: 'operation',
-      width: '10%',
-      fixed: 'left',
-
-      onCell: (record) => {
-        return {
-          record,
-
-          onClick: () => {
-            // gọi hàm để hiển thị modal
-            // showModal(record);
-            handleClickExit(record)
-          }
-        }
-      },
-      render: () => (
-        <Tooltip title="Cho xe ra" mouseEnterDelay={0.5}>
-          <div>
-            <ExitParking width={'30px'} height={'30px'} color={'red'} />
-          </div>
-        </Tooltip>
-      )
     }
   ]
   return (
@@ -234,10 +219,8 @@ const ForParkingComponent = (prop) => {
               />
             }
           ></Button>
-          <Row gutter={[8, 10]} style={{ marginBottom: '16px' }}>
-            <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-              <AddVehicleModal title="Thêm" form="add" />
-            </Col>
+          <Row justify="center" gutter={[8, 10]} style={{ marginBottom: '16px' }}>
+         
             <Col xs={{ span: 24 }} lg={{ span: 20 }}>
               <SearchVehicle />
             </Col>
@@ -261,7 +244,7 @@ const ForParkingComponent = (prop) => {
             ></Table>
 
             <Modal
-              visible={modalVisible}
+              open={modalVisible}
               onCancel={() => setModalVisible(false)}
               onOk={() => setModalVisible(false)}
               footer={[]}

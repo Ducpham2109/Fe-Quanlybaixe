@@ -43,7 +43,7 @@ export const StyledButtonPressedEffect = styled(Button)`
 `
 
 export const StyledDiv = styled.div`
-  background-color: #FFFACD;
+  background-color: #e9e0d9;
   border-radius: 8px;
   box-sizing: border-box;
   @media (min-width: 992px) {
@@ -87,7 +87,7 @@ export const StyledGrandchildrenDiv = styled.div`
 `
 
 export const StyledDivChart = styled.div`
-  background-color: #fff;
+  background-color: #dfe2e7;
   padding:10px;
   border-radius: 12px;
   height: 330px;
