@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
 import axios from 'axios'
 import { BASE_URL } from '../../../api/requet'
+import Cookies from 'js-cookie'
 
 const validateMessages = {
   required: '${label} is required!',
@@ -19,7 +20,7 @@ const FormAddTicket = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [moneyd, setMoneyd]= useState()
 
-  const [money, setMoney] = useState()
+  const [monney, setMoney] = useState()
   const [showAdditionalField, setShowAdditionalField] = useState(false);
 
   const onFinish1 = (values) => {
@@ -31,7 +32,7 @@ const FormAddTicket = () => {
         setMoneyd(response.data.monney+""+"VND")
         setIsLoading(false)
         // setIDCard('')
-        message.info('IDCard tồn tại , nhập số tiền cần nạp thêm')
+        message.info('Nhập số tiền cần nạp thêm')
         
       })
       .catch((error)=>{
@@ -45,7 +46,9 @@ const FormAddTicket = () => {
     
   };
   const onFinish2 = (values) => {
+    
     values.idCard=idCard;
+    values.parkingCode = parseInt(Cookies.get('parkingCode'))
     console.log('va', values)
     setIsLoading(true)
 
@@ -154,7 +157,7 @@ const FormAddTicket = () => {
       
        <Form.Item
           label="Số tiền cần nạp"
-          name="money"
+          name="monney"
           rules={[
             {
               required: true,
@@ -166,7 +169,7 @@ const FormAddTicket = () => {
             }
           ]}
         >
-          <Input value={money} onBlur={(e) => setMoney(e.target.value)} />
+          <Input value={monney} onBlur={(e) => setMoney(e.target.value)} />
         </Form.Item>
        
    

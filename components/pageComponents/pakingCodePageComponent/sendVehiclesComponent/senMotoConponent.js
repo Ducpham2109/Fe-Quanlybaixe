@@ -68,7 +68,15 @@ const SendMotoComponent = () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
-  
+  const handleIDCardChange = (e) => {
+    const newValue = e.target.value
+    if (newValue.length <= 12) {
+      setIDCard(newValue)
+    } else {
+      // Nếu độ dài vượt quá 10 kí tự, reset về rỗng
+      setIDCard('')
+    }
+  }
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -217,90 +225,89 @@ const SendMotoComponent = () => {
           </Row>
         </Col>
       </Row>
-      <Col span={20} style={{ marginLeft: '120px' }}>
-      <Form
-        name="basic"
-        form={form}
-        initialValues={{
-          remember: true
-        }}
-        layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        validateMessages={validateMessages}
-      >
-        
-        <Row justify="center" >
-     
-          <Col xs={24} sm={12} lg={12}>
-          <Row>
-            <Form.Item
-              
-              name="IDCard"
-              style={{ paddingTop: '20px', marginBottom: '7px' }}
-            ><h2 style={{ display: 'flex', alignItems: 'center' }}>
-            IDCard: 
-            <Input ref={inputRef} value={IDCard} onChange={(e) => setIDCard(e.target.value)} />
-          </h2>
-          
-            </Form.Item>
-            </Row>
-            <Row>
-            <Row>
-            <Form.Item name="parkingCode" style={{ marginBottom: '7px' }}>
-              <h2>ParkingCode : {parkingCode}</h2>
-            </Form.Item>
-            </Row>
-            {/* <Form.Item
+      <Col span={20} style={{marginLeft:'80px'}}>
+        <Form
+          name="basic"
+          form={form}
+          initialValues={{
+            remember: true
+          }}
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          validateMessages={validateMessages}
+        >
+          <Row justify="center">
+            <Col xs={24} sm={8} lg={8}>
+              <Row>
+                <Form.Item
+                  name="IDCard"
+                  style={{ paddingTop: '20px', marginBottom: '7px' }}
+                >
+                  <h2 style={{ display: 'flex', alignItems: 'center' }}>
+                    IDCard:
+                    <Input
+                      ref={inputRef}
+                      value={IDCard}
+                      onChange={handleIDCardChange}
+                    />
+                  </h2>
+                </Form.Item>
+              </Row>
+              <Row>
+                <Row>
+                  <Form.Item name="parkingCode" style={{ marginBottom: '7px' }}>
+                    <h2>ParkingCode : {parkingCode}</h2>
+                  </Form.Item>
+                </Row>
+                {/* <Form.Item
               name="parkingCode"
             >
               <h2>ParkingCode: {parkingCode} </h2>
             </Form.Item> */}
-            </Row>
-            <Row>
-          <Form.Item name="vehicleyType" >
-              <h2>Loại xe: {vehicleyType}</h2>
-            </Form.Item>
-            </Row>
-            
-       
-       
-        </Col>
-        <Col xs={24} sm={12} lg={12}>
-        <Row>
-            <Form.Item name="entryTime" style={{ paddingTop: '20px', marginBottom: '7px' }}>
-              <h2>Thời gian vào: {entryTime}</h2>
-            </Form.Item>
-          </Row>
-     
-        <Row>
-            <Form.Item name="lisenseVehicle" style={{ marginBottom: '7px' }}>
-              <h2>Biển số xe: {lisenseVehicle}</h2>
-            </Form.Item>
-            </Row>
-            <Row>
-            <Form.Item
-              name="username"
-            >
-              <h2>Tài khoản gửi: {username}</h2>
-            </Form.Item>
+              </Row>
            
+            </Col>
+            <Col xs={24} sm={8} lg={8}>
+            <Row>
+                <Form.Item     style={{ paddingTop: '20px', marginBottom: '7px' }}name="vehicleyType">
+                  <h2>Loại xe: {vehicleyType}</h2>
+                </Form.Item>
+              </Row>
+           
+              <Row>
+                <Form.Item
+                  name="lisenseVehicle"
+                  style={{ marginBottom: '7px' }}
+                >
+                  <h2>Biển số xe: {lisenseVehicle}</h2>
+                </Form.Item>
+              </Row>
+            
+            </Col>
+            <Col xs={24} sm={8} lg={8}>
+              <Row>
+                <Form.Item
+                  name="entryTime"
+                  style={{ paddingTop: '20px', marginBottom: '7px' }}
+                >
+                  <h2>Thời gian vào: {entryTime}</h2>
+                </Form.Item>
+              </Row>
+
+              <Row>
+                <Form.Item name="username">
+                  <h2>Tài khoản gửi: {username}</h2>
+                </Form.Item>
+              </Row>
+            </Col>
+            <Form.Item style={{ textAlign: 'center' }}>
+              <StyledButtonPressedEffect type="primary" htmlType="submit">
+                Thêm xe vào bãi
+              </StyledButtonPressedEffect>
+            </Form.Item>
           </Row>
-          <Row>
-            {/* <Form.Item name="image" style={{ marginBottom: '7px' }}>
-              <h2>Url ảnh: {image}</h2>
-            </Form.Item> */}
-  
-        </Row>
-        </Col>
-        
-        <Form.Item style={{ textAlign: 'center' }}>
-          <StyledButtonPressedEffect type="primary" htmlType="submit">
-            Thêm xe vào bãi
-          </StyledButtonPressedEffect>
-        </Form.Item>
-      </Row>
-      </Form>
+        </Form>
       </Col>
     </>
   );

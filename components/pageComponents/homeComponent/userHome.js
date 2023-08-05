@@ -7,6 +7,7 @@ import {
   totalParkSearchAtom,
   valueParkSearchAtom
 } from '../../atom/store'
+import { FaArrowRight, FaArrowRightLong, FaLongArrowAltRight, FaMapMarkerAlt } from 'react-icons/fa';
 import { BASE_URL } from '../../../api/requet'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -18,7 +19,6 @@ import styled from 'styled-components'
 import ReloadIcon from '../../icons/reloadIcon'
 import SearchParking from '../parkingComponent/searchParking'
 import { StyledButtonPressedEffect } from '../../styled/styledListOfDevice/styledComponent'
-
 const TableAntStyled = styled(Table)`
   background-color: #f5f0bb !important;
 `
@@ -203,7 +203,10 @@ const ParkingComponent = () => {
       </td>
     )
   }
-
+  const redirectToExternalURL = () => {
+    const url = 'https://www.google.com/maps'; // Thay bằng địa chỉ URL của Google Maps hoặc trang bạn muốn chuyển hướng đến
+    window.location.href = url;
+  };
   const [form] = Form.useForm()
   const [editingKey, setEditingKey] = useState('')
   const isEditing = (record) => record.key === editingKey
@@ -374,6 +377,11 @@ const ParkingComponent = () => {
             style={{ float: 'right', margin: '10px' }}
           />
         </Container>
+        <div style={{padding:'10px',position:'fixed', right:'10px',bottom:'90px'}}>
+      <Button onClick={redirectToExternalURL}>
+        Đi đến GoogleMap <FaMapMarkerAlt/>
+        </Button>
+    </div>
       </Spin>
     </>
   )

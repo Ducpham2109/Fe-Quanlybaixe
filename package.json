@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
     "react-webcam": "^7.1.1",
     "server-side-media-queries-for-react": "^0.0.5",
     "styled-components": "^5.3.6"

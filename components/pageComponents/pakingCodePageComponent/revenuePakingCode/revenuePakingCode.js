@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd'
+import { Button, Col, Row } from 'antd'
 import {
   StyledDiv,
   StyledDivChart,
@@ -18,6 +18,7 @@ import { BASE_URL } from '../../../../api/requet'
 import { WaveChart } from '../../../chart/waveChart'
 import { VerticalBarChartCode } from '../../../chart/verticalBarChartCode'
 import { VerticalBarChart } from '../../../chart/verticalBarChart'
+import MoneyModal from './moneyModal'
 
 const RevenuePakingCode = () => {
   const [parkingCode, setParkingCode] = useState()
@@ -25,6 +26,7 @@ const RevenuePakingCode = () => {
   const [pageSize, setPageSize] = useState(10)
   const [currentMonth, setCurrentMonth] = useState('')
   const [monthRevenue, setMonthRevenue] = useState()
+  const [preLoading, setPreLoading] = useState()
   const [totalVehicleTrue, setTotalVehicleTrue] = useState()
   const [totalVehicleFalse, setTotalVehicleFalse] = useState()
 
@@ -41,9 +43,10 @@ const RevenuePakingCode = () => {
       console.log('mao', currentMonth)
       const getData = async () => {
         const response = await axios.get(
-          `${BASE_URL}bill/revenue/month?Month=${currentMonth}&ParkingCode=${parkingCode}`
+          `${BASE_URL}bill/revenue/parkingCode/month?Month=${currentMonth}&ParkingCode=${parkingCode}`
         )
         setMonthRevenue(response.data.revenve)
+        setPreLoading(response.data.preLoading)
         console.log('doanh', response.data.revenve)
       }
       getData()
@@ -64,9 +67,9 @@ const RevenuePakingCode = () => {
   return (
     <>
       <Row justify="center">
-        <Col span={20} style={{ marginLeft: '18px' }}>
+        <Col span={22} style={{ marginLeft: '6px' }}>
           <Row gutter={[32, 16]}>
-            <Col xs={24} sm={12} lg={8} style={{ textAlign: 'center' }}>
+            <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
               <StyledDiv>
                 <Row gutter={[24, 16]}>
                   <Col xs={18}>
@@ -83,7 +86,7 @@ const RevenuePakingCode = () => {
                 </Row>
               </StyledDiv>
             </Col>
-            <Col xs={24} sm={12} lg={8} style={{ textAlign: 'center' }}>
+            <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
               <StyledDiv>
                 <Row gutter={[24, 16]}>
                   <Col xs={18}>
@@ -100,7 +103,7 @@ const RevenuePakingCode = () => {
                 </Row>
               </StyledDiv>
             </Col>
-            <Col xs={24} sm={12} lg={8} style={{ textAlign: 'center' }}>
+            <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
               <StyledDiv>
                 <Row gutter={[24, 16]}>
                   <Col xs={18}>
@@ -111,6 +114,23 @@ const RevenuePakingCode = () => {
                     <StyledGrandchildrenDiv des="#f5365c" sou="#f56036">
                       <div style={{ padding: '5px' }}>
                         <MoneyIcon width={'2em'} height={'2em'} />
+                      </div>
+                    </StyledGrandchildrenDiv>
+                  </Col>
+                </Row>
+              </StyledDiv>
+            </Col>
+            <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
+              <StyledDiv>
+                <Row gutter={[24, 16]}>
+                  <Col xs={18}>
+                    <H5Styled>Tiền nạp từ khách hàng :</H5Styled>
+                    <SpanStyled>{preLoading} VND</SpanStyled>
+                  </Col>
+                  <Col xs={6}>
+                    <StyledGrandchildrenDiv des="#f5365c" sou="#f56036">
+                      <div style={{ padding: '5px' }}>
+                  <MoneyModal/>
                       </div>
                     </StyledGrandchildrenDiv>
                   </Col>

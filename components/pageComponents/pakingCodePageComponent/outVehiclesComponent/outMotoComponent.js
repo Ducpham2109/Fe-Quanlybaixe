@@ -40,10 +40,10 @@ const OutMotoComponent = () => {
   const [entryTime, setEntryTime] = useState()
   const [username, setUserName] = useState('')
   const [lisenseVehicle, setlisenseVehicle] = useAtom(licenseMoto)
-  const [lisenseVehicleUrl, setLisenseVehicleUrl] = useState('');
-  const cloudinaryCloudName = 'dmjzk4esn';
-  const cloudinaryUploadPreset = 'ImageMoto';
-  const [urlImage, setUrlImage] = useState('');
+  const [lisenseVehicleUrl, setLisenseVehicleUrl] = useState('')
+  const cloudinaryCloudName = 'dmjzk4esn'
+  const cloudinaryUploadPreset = 'ImageMoto'
+  const [urlImage, setUrlImage] = useState('')
   const inputRef = useRef(null)
   const webcamRef = useRef(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -53,7 +53,6 @@ const OutMotoComponent = () => {
   const [cost, setCost] = useState()
   const [form] = Form.useForm()
   const [image, setImage] = useState()
-
 
   useEffect(() => {
     const initialValues = parseInt(Cookies.get('parkingCode'))
@@ -93,11 +92,17 @@ const OutMotoComponent = () => {
     // (values.parkingCode = parkingCode),
     // (values.cost = cost),
     setIsLoading(true)
-    const data= {username,lisenseVehicle,entryTime,outTime,vehicleyType,parkingCode,cost}
-    await axios 
-      .delete(
-        `${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard}`
-      )
+    const data = {
+      username,
+      lisenseVehicle,
+      entryTime,
+      outTime,
+      vehicleyType,
+      parkingCode,
+      cost
+    }
+    await axios
+      .delete(`${BASE_URL}entryVehicles/IDCard?IDCard=${IDCard}`)
       .then((response) => {
         setIsLoading(true)
       })
@@ -107,18 +112,18 @@ const OutMotoComponent = () => {
         setIsLoading(false)
         message.error(error.response.data.message)
       })
-      console.log('va',data)
-      await axios
+    console.log('va', data)
+    await axios
       .post(`https://localhost:44366/api/bill`, data)
       .then(() => {
         // setIsLoading(false)
         message.info('Cho xe ra thành công')
         inputRef.current.focus()
-         setIDCard('')
-         setlisenseVehicle()
-         setvehicleyType()
-         setCost()
-         setEntryTime()
+        setIDCard('')
+        setlisenseVehicle()
+        setvehicleyType()
+        setCost()
+        setEntryTime()
         // setEntryTime()
       })
       .catch((error) => {
@@ -129,11 +134,11 @@ const OutMotoComponent = () => {
       })
   }
   const fetchData = async (IDCard) => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    const formData = new FormData();
-    let a;
-    formData.append('file', imageSrc);
-    formData.append('upload_preset', cloudinaryUploadPreset);
+    const imageSrc = webcamRef.current.getScreenshot()
+    const formData = new FormData()
+    let a
+    formData.append('file', imageSrc)
+    formData.append('upload_preset', cloudinaryUploadPreset)
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
@@ -143,25 +148,25 @@ const OutMotoComponent = () => {
             'Content-Type': 'multipart/form-data'
           }
         }
-      );
-      console.log('Image uploaded successfully:', response.data.secure_url);
-      const recognitionUrl = 'http://localhost:80/api/recognition';
-      const requestBody = response.data.secure_url; // Adjust the data value as required
+      )
+      console.log('Image uploaded successfully:', response.data.secure_url)
+      const recognitionUrl = 'http://localhost:80/api/recognition'
+      const requestBody = response.data.secure_url // Adjust the data value as required
 
-      const recognitionResponse = await axios.post(recognitionUrl, requestBody);
-       a = recognitionResponse.data.data[0].textPlate;
-       console.log("aabb",a);
-      setLisenseVehicleUrl(recognitionResponse.data.data[0].textPlate);
-      console.log(recognitionResponse.data);
+      const recognitionResponse = await axios.post(recognitionUrl, requestBody)
+      a = recognitionResponse.data.data[0].textPlate
+      console.log('aabb', a)
+      setLisenseVehicleUrl(recognitionResponse.data.data[0].textPlate)
+      console.log(recognitionResponse.data)
       // Save the URL of the image to the database or handle the response as needed
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading image:', error)
     }
     setTimeout(() => {
-      setCapturedImage('');
-    }, 3000);
-    console.log('Image URL:', image);
-    setIsLoading(true);
+      setCapturedImage('')
+    }, 3000)
+    console.log('Image URL:', image)
+    setIsLoading(true)
     // try {
     //    // Handle the data returned from the API
     // } catch (error) {
@@ -177,35 +182,35 @@ const OutMotoComponent = () => {
       )
 
       setlisenseVehicle(response.data.result.items[0].lisenseVehicle)
-      const b =response.data.result.items[0].lisenseVehicle;
+      const b = response.data.result.items[0].lisenseVehicle
       setImage(response.data.result.items[0].image)
-      if(a==b){
-      console.log('aaaaaaa', response.data.result.items[0].image)
-      setvehicleyType(response.data.result.items[0].vehicleyType)
-      setEntryTime(response.data.result.items[0].entryTime)
-      setCost(res.data.cost)
-      const costt= res.data.cost;
-      const idCard = IDCard
-      const data = { costt, idCard };
-      const putResponse = await axios.put(`${BASE_URL}ticket/money`, data)
-      .then(() => {
+      if (a == b) {
+        console.log('aaaaaaa', response.data.result.items[0].image)
+        setvehicleyType(response.data.result.items[0].vehicleyType)
+        setEntryTime(response.data.result.items[0].entryTime)
+        setCost(res.data.cost)
+        const costt = res.data.cost
+        const idCard = IDCard
+        const data = { costt, idCard }
+        const putResponse = await axios
+          .put(`${BASE_URL}ticket/money`, data)
+          .then(() => {
+            setIsLoading(false)
+            message.info('Thanh toán thành công thành công')
+          })
+          .catch((error) => {
+            setIsLoading(false)
+            message.error(error.response.data.message)
+            console.log(error)
+          })
+      } else {
         setIsLoading(false)
-        message.info('Thanh toán thành công thành công')
-      })
-      .catch((error) => {
-        setIsLoading(false)
-         message.error(error.response.data.message)
-         console.log(error)
-      })}
-      else{
-        setIsLoading(false)
-        message.error('Biển số xe không đúng');
-        setIDCard('');
+        message.error('Biển số xe không đúng')
+        setIDCard('')
       }
-      
     } catch (error) {
       message.error('IDCard chưa được gắn biển số')
-      setIDCard('')  
+      setIDCard('')
       console.error(error)
     }
   }
@@ -213,9 +218,7 @@ const OutMotoComponent = () => {
     <>
       <Row justify="center">
         <Col span={23}>
-          <H8Styled
-            style={{ margin: '10px 0px 5px 0px', textAlign: 'center' }}
-          >
+          <H8Styled style={{ margin: '10px 0px 5px 0px', textAlign: 'center' }}>
             Hệ thống gửi xe Dparking{' '}
           </H8Styled>
           <Row gutter={[16, 16]}>
@@ -238,7 +241,7 @@ const OutMotoComponent = () => {
                     <Webcam
                       audio={false}
                       ref={webcamRef}
-               //       videosource="usb" // Specify the webcam connected via USB
+                      //       videosource="usb" // Specify the webcam connected via USB
                       style={{
                         width: '100%',
                         height: '100%',
@@ -274,7 +277,7 @@ const OutMotoComponent = () => {
           </Row>
         </Col>
       </Row>
-      <Col span={20} style={{ marginLeft: '120px' }}>
+      <Col span={20} style={{ marginLeft: '80px' }}>
         <Form
           name="basic"
           form={form}
@@ -287,7 +290,7 @@ const OutMotoComponent = () => {
           validateMessages={validateMessages}
         >
           <Row justify="center">
-            <Col xs={24} sm={12} lg={12}>
+            <Col xs={24} sm={8} lg={8}>
               <Row>
                 <Form.Item
                   name="IDCard"
@@ -303,49 +306,25 @@ const OutMotoComponent = () => {
                   </h2>
                 </Form.Item>
               </Row>
-              <Row>
+         
                 <Row>
                   <Form.Item name="parkingCode" style={{ marginBottom: '7px' }}>
                     <h2>ParkingCode : {parkingCode}</h2>
                   </Form.Item>
                 </Row>
-                {/* <Form.Item
-              name="parkingCode"
-            >
-              <h2>ParkingCode: {parkingCode} </h2>
-            </Form.Item> */}
-              </Row>
-              <Row>
-                <Form.Item name="username" style={{ marginBottom: '7px' }}>
-                  <h2>Tài khoản gửi: {username}</h2>
-                </Form.Item>
-              </Row>
-
-              <Row>
+                <Row>
                 <Form.Item name="cost" style={{ marginBottom: '7px' }}>
                   <h2>Thành tiền: {cost}VND</h2>
                 </Form.Item>
               </Row>
+          
+         
             </Col>
-            <Col xs={24} sm={12} lg={12}>
-              <Row>
-                <Form.Item
-                  name="entryTime"
-                  style={{ paddingTop: '15px', marginBottom: '7px' }}
-                >
-                  <h2>Thời gian vào: {entryTime}</h2>
-                </Form.Item>
-              </Row>
-              <Row>
-                <Form.Item name="outTime" style={{ marginBottom: '7px' }}>
-                  <h2>Thời gian ra: {outTime}</h2>
-                </Form.Item>
-              </Row>
-
-              <Row>
+            <Col xs={24} sm={8} lg={8}>
+            <Row>
                 <Form.Item
                   name="lisenseVehicle"
-                  style={{ marginBottom: '7px' }}
+                  style={{ paddingTop: '15px', marginBottom: '7px' }}
                 >
                   <h2>Biển số xe: {lisenseVehicle}</h2>
                 </Form.Item>
@@ -353,6 +332,27 @@ const OutMotoComponent = () => {
               <Row>
                 <Form.Item name="vehicleyType" style={{ marginBottom: '7px' }}>
                   <h2>Loại xe: {vehicleyType}</h2>
+                </Form.Item>
+              </Row>
+              <Row>
+                <Form.Item
+                  name="entryTime"
+                  style={{marginBottom: '7px' }}
+                >
+                  <h2>Thời gian vào: {entryTime}</h2>
+                </Form.Item>
+              </Row>
+
+            </Col>
+            <Col xs={24} sm={8} lg={8}>
+            <Row>
+                <Form.Item name="outTime" style={{ marginBottom: '7px',marginTop:'15px' }}>
+                  <h2>Thời gian ra: {outTime}</h2>
+                </Form.Item>
+              </Row>
+              <Row>
+                <Form.Item name="username" style={{ marginBottom: '7px' }}>
+                  <h2>Tài khoản gửi: {username}</h2>
                 </Form.Item>
               </Row>
             </Col>

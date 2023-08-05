@@ -425,6 +425,9 @@ const ParkingComponent = () => {
               {parseInt(Cookies.get('role')) === 0 && (
                 <AddParkingModal title="Thêm bãi đỗ" form="add" />
               )}
+                {/* {parseInt(Cookies.get('role')) === 0 && (
+                <ParkingModal title="nhận tiền" form="add" />
+              )} */}
             </Col>
             <Row justify="center">
               <Col xs={{ span: 24 }} lg={{ span: 20 }}>
